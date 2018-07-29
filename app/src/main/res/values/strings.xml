@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">Part Time</string>
+    <string name="activity_job_detail">Job Detail</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="fragment_home">Home</string>
+    <string name="fragment_my_job">My Job</string>
+
+    <string name="string_img_company">Company Image</string>
+    <string name="string_requirements">Requirements</string>
+    <string name="string_description">Description</string>
+    <string name="string_note">Note</string>
+
+    <string name="btn_share">Share</string>
+    <string name="btn_wishlist">Wishlist</string>
+    <string name="btn_apply_now">Apply Now</string>
+
+    <string name="example_company_name">[Company Name]</string>
+    <string name="example_job_distance">##.## KM</string>
+    <string name="example_rate_value">4.3</string>
+    <string name="example_job_title">[Job Title]</string>
+    <string name="example_location">[Location]</string>
+    <string name="example_date">[Date]</string>
+    <string name="example_wage">[RM 000.00]</string>
+    <string name="example_job_requirement">[Job Requirement]</string>
+    <string name="example_job_description">[Job Description]</string>
+    <string name="example_job_note">[Job Note]</string>
+
+
+</resources>
