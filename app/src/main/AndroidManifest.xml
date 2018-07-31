@@ -15,6 +15,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -22,6 +23,18 @@
             android:name=".JobDetailActivity"
             android:label="@string/activity_job_detail"
             android:parentActivityName=".MainActivity" />
+        <activity
+            android:name="com.ptjs.ptjs.activity.company.CompanyMainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.ptjs.ptjs.activity.company.PostNewJobActivity"
+            android:label="@string/activity_add_job_post"
+            android:parentActivityName="com.ptjs.ptjs.activity.company.CompanyMainActivity" />
+        <activity
+            android:name="com.ptjs.ptjs.activity.company.UpdateJobPostActivity"
+            android:label="@string/activity_update_job_post"
+            android:parentActivityName="com.ptjs.ptjs.activity.company.CompanyMainActivity" />
     </application>
 
 </manifest>

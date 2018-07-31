@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Part Time</string>
     <string name="activity_job_detail">Job Detail</string>
+    <string name="activity_add_job_post">New Job Post</string>
+    <string name="activity_update_job_post">Update Job Post</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -16,6 +18,8 @@
     <string name="btn_share">Share</string>
     <string name="btn_wishlist">Wishlist</string>
     <string name="btn_apply_now">Apply Now</string>
+    <string name="btn_post_new_job">Post Job</string>
+    <string name="btn_update_job_post">Update Job</string>
 
     <string name="example_company_name">[Company Name]</string>
     <string name="example_job_distance">##.## KM</string>
@@ -28,5 +32,12 @@
     <string name="example_job_description">[Job Description]</string>
     <string name="example_job_note">[Job Note]</string>
 
+    <string-array name="array_payment_term">
+        <item>7 days</item>
+        <item>14 days</item>
+        <item>30 days</item>
+        <item>45 days</item>
+        <item>60 days</item>
+    </string-array>
 
 </resources>

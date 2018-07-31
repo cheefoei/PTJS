@@ -7,19 +7,18 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:layout_marginTop="4dp"
         app:cardBackgroundColor="@color/colorWhite"
-        app:cardElevation="5dp"
-        android:layout_marginTop="@dimen/margin"
-        app:contentPadding="12dp">
+        app:cardElevation="2dp"
+        app:contentPadding="16dp">
 
         <LinearLayout
             android:id="@+id/layout_job"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="?selectableItemBackgroundBorderless"
-            android:orientation="vertical"
-            android:paddingEnd="0dp"
-            android:paddingStart="0dp">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -83,14 +82,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:layout_marginTop="14dp"
+                android:layout_marginTop="@dimen/margin"
                 android:orientation="vertical">
 
                 <HorizontalScrollView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
-                    android:layout_marginEnd="24dp"
+                    android:layout_marginEnd="@dimen/margin"
                     android:scrollbars="none">
 
                     <TextView
@@ -108,7 +107,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
+                    android:layout_marginBottom="@dimen/margin"
                     android:orientation="horizontal">
 
                     <TextView
@@ -129,7 +128,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginEnd="@dimen/margin"
                     android:scrollbars="none">
 
                     <TextView

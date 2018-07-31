@@ -1,6 +1,7 @@
 package com.ptjs.ptjs.NaviFragment;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ptjs.ptjs.activity.company.CompanyMainActivity;
 import com.ptjs.ptjs.adapter.JobListAdapter;
 import com.ptjs.ptjs.db.entity.Job;
 import com.ptjs.ptjs.R;
@@ -81,6 +83,8 @@ public class HomeFragment extends Fragment {
         int id = item.getItemId();
 
         if (id == R.id.notification) {
+            Intent i = new Intent(getActivity(), CompanyMainActivity.class);
+            startActivity(i);
         }
 
         return super.onOptionsItemSelected(item);

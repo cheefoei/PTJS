@@ -36,12 +36,12 @@
     </style>
 
     <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="colorPrimary">@color/colorPrimaryDark</item>
+        <item name="android:colorPrimary">@color/colorPrimary</item>
+        <item name="android:textColor">@color/colorAccent</item>
     </style>
 
     <style name="RatingBarTheme" parent="Widget.AppCompat.RatingBar.Small">
         <item name="android:colorControlNormal">#f9a825</item>
-        <item name="colorControlNormal">#f9a825</item>
         <item name="android:colorControlActivated">#f9a825</item>
     </style>
 
