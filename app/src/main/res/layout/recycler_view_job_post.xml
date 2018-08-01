@@ -7,11 +7,14 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"
+        android:layout_marginTop="4dp"
         app:cardBackgroundColor="@color/colorWhite"
         app:cardElevation="2dp"
-        app:contentPadding="@dimen/padding">
+        app:contentPaddingBottom="8dp"
+        app:contentPaddingLeft="@dimen/padding"
+        app:contentPaddingRight="@dimen/padding"
+        app:contentPaddingTop="@dimen/padding">
 
         <LinearLayout
             android:id="@+id/layout_job"
@@ -99,16 +102,15 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="36dp"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/btn_update_job_post"
-                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="?selectableItemBackground"
-                    android:fontFamily="@string/font_family_condensed"
+                    android:fontFamily="@string/font_family_medium"
                     android:text="Update"
                     android:textAllCaps="true"
                     android:textColor="@color/colorAccent"
@@ -116,11 +118,11 @@
 
                 <Button
                     android:id="@+id/btn_remove_job_post"
-                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin"
                     android:background="?selectableItemBackground"
+                    android:fontFamily="@string/font_family_medium"
                     android:text="Remove"
                     android:textAllCaps="true"
                     android:textColor="@color/colorAccent"

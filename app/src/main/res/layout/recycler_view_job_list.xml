@@ -11,7 +11,10 @@
         android:layout_marginTop="4dp"
         app:cardBackgroundColor="@color/colorWhite"
         app:cardElevation="2dp"
-        app:contentPadding="16dp">
+        app:contentPaddingBottom="8dp"
+        app:contentPaddingLeft="@dimen/padding"
+        app:contentPaddingRight="@dimen/padding"
+        app:contentPaddingTop="@dimen/padding">
 
         <LinearLayout
             android:id="@+id/layout_job"
@@ -171,16 +174,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:layout_marginBottom="4dp"
-                android:background="@android:color/darker_gray" />
+                android:background="@android:color/darker_gray"
+                android:visibility="gone" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="36dp"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:weightSum="1">
 
                 <Button
-                    android:id="@+id/btn_add_job_wishlist"
                     style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="0dp"
                     android:layout_height="36dp"
@@ -199,7 +203,6 @@
                     android:textSize="14sp" />
 
                 <Button
-                    android:id="@+id/btn_share_job"
                     style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="0dp"
                     android:layout_height="36dp"
@@ -216,6 +219,36 @@
                     android:textAllCaps="true"
                     android:textColor="@color/colorTextPrimary"
                     android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_add_job_wishlist"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?selectableItemBackground"
+                    android:fontFamily="@string/font_family_medium"
+                    android:text="@string/btn_wishlist"
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/btn_share_job"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin"
+                    android:background="?selectableItemBackground"
+                    android:fontFamily="@string/font_family_medium"
+                    android:text="@string/btn_share"
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="16sp" />
 
             </LinearLayout>
 

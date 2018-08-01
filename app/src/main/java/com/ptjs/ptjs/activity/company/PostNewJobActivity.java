@@ -1,6 +1,7 @@
 package com.ptjs.ptjs.activity.company;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,6 +33,8 @@ public class PostNewJobActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
 
+                                Intent intent = new Intent(PostNewJobActivity.this, PaymentActivity.class);
+                                startActivity(intent);
                             }
                         })
                         .setNegativeButton("No", null);

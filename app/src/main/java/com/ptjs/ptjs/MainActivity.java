@@ -1,5 +1,6 @@
 package com.ptjs.ptjs;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -53,6 +54,9 @@ public class MainActivity extends AppCompatActivity
         mFragmentTransaction = fragmentManager.beginTransaction();
         mFragmentTransaction.add(R.id.content_frame, mFragment);
         mFragmentTransaction.commit();
+
+        Intent i = new Intent(this, LoginRegisterActivity.class);
+        startActivity(i);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")

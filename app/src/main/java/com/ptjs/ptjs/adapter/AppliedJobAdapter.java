@@ -1,12 +1,16 @@
 package com.ptjs.ptjs.adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.widget.CardView;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ptjs.ptjs.JobDetailActivity;
@@ -55,6 +59,14 @@ public class AppliedJobAdapter extends RecyclerView.Adapter<AppliedJobAdapter.Ap
                 mContext.startActivity(intent);
             }
         });
+
+        appliedJobViewHolder.btnRate.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                rateJob();
+            }
+        });
     }
 
     @Override
@@ -62,20 +74,55 @@ public class AppliedJobAdapter extends RecyclerView.Adapter<AppliedJobAdapter.Ap
         return jobList.size();
     }
 
+    private void rateJob() {
+
+        View dialogView = View.inflate(mContext, R.layout.dialog_rate_employer, null);
+
+        final AlertDialog dialogRateJob = new AlertDialog.Builder(mContext, R.style.DialogTheme)
+                .setTitle("Rate Employer")
+                .setView(dialogView)
+                .setPositiveButton("Submit", null)
+                .setNegativeButton("Cancel", null)
+                .setCancelable(false)
+                .create();
+
+        dialogRateJob.setOnShowListener(new DialogInterface.OnShowListener() {
+
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+
+                Button button = dialogRateJob.getButton(AlertDialog.BUTTON_POSITIVE);
+                button.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+            }
+        });
+
+        dialogRateJob.show();
+
+        EditText etReview = (EditText) dialogView.findViewById(R.id.et_job_review);
+    }
+
     class AppliedJobViewHolder extends RecyclerView.ViewHolder {
 
-        CardView layoutJob;
+        LinearLayout layoutJob;
         TextView title, companyName, workplace, workingDate, wages;
+        Button btnRate;
 
         AppliedJobViewHolder(View view) {
 
             super(view);
-            layoutJob = (CardView) view.findViewById(R.id.cv_applied_job);
+            layoutJob = (LinearLayout) view.findViewById(R.id.layout_job);
             title = (TextView) view.findViewById(R.id.tv_job_title);
             companyName = (TextView) view.findViewById(R.id.tv_company_name);
             workplace = (TextView) view.findViewById(R.id.tv_workplace);
             workingDate = (TextView) view.findViewById(R.id.tv_working_date);
             wages = (TextView) view.findViewById(R.id.tv_wages);
+            btnRate = (Button) view.findViewById(R.id.btn_rate_employer);
         }
     }
 }

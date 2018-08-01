@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     tools:context="com.ptjs.ptjs.activity.company.PostNewJobActivity">
 
     <Button
@@ -32,7 +34,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@string/font_family_regular"
-                android:text="Job Tittle"
+                android:text="Job Title"
                 android:textSize="16sp" />
 
             <EditText

@@ -1,9 +1,13 @@
 package com.ptjs.ptjs;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.ptjs.ptjs.activity.company.ApplicantListActivity;
 import com.ptjs.ptjs.db.entity.Job;
 
 import java.util.Locale;
@@ -41,5 +45,25 @@ public class JobDetailActivity extends AppCompatActivity {
 
         TextView tvNote = (TextView) findViewById(R.id.tv_job_note);
         tvNote.setText(job.getNote());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.menu_job_detail, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        if (id == R.id.applicant) {
+            Intent i = new Intent(this, ApplicantListActivity.class);
+            startActivity(i);
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
