@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.ptjs.TimeToWork.activity.company.UpdateJobPostActivity">
+
+    <Button
+        android:id="@+id/btn_update_job_post"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorButtonPrimary"
+        android:text="@string/btn_update_job_post" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/btn_update_job_post"
+        android:layout_alignParentTop="true"
+        android:overScrollMode="ifContentScrolls"
+        android:scrollbars="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorWhite"
+            android:orientation="vertical"
+            android:padding="@dimen/padding">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@string/font_family_regular"
+                android:text="Job Tittle"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/et_job_title"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edit_text_height"
+                android:layout_marginBottom="18dp"
+                android:background="@drawable/edit_text_bg"
+                android:inputType="text"
+                android:labelFor="@+id/et_job_title" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@string/font_family_regular"
+                android:text="Location"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/et_job_location"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edit_text_height"
+                android:layout_marginBottom="18dp"
+                android:background="@drawable/edit_text_bg"
+                android:inputType="text"
+                android:labelFor="@id/et_job_location" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@string/font_family_regular"
+                android:text="Working Date"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/et_job_working_date"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edit_text_height"
+                android:layout_marginBottom="18dp"
+                android:background="@drawable/edit_text_bg"
+                android:inputType="date"
+                android:labelFor="@id/et_job_working_date" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@string/font_family_regular"
+                    android:text="Wages"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@string/font_family_regular"
+                    android:text="Payment Term"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="18dp"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <EditText
+                    android:id="@+id/et_wages"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/edit_text_height"
+                    android:layout_marginEnd="@dimen/margin"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/edit_text_bg"
+                    android:inputType="numberSigned"
+                    android:labelFor="@id/et_wages"
+                    android:maxLength="4" />
+
+                <Spinner
+                    android:id="@+id/spinner_payment_term"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_weight="0.5"
+                    android:entries="@array/array_payment_term"
+                    android:fontFamily="@string/font_family_light" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@string/font_family_regular"
+                android:text="Requirements"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/et_job_requirement"
+                android:layout_width="match_parent"
+                android:layout_height="96dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/edit_text_bg"
+                android:inputType="text|textMultiLine"
+                android:labelFor="@id/et_job_requirement"
+                android:lines="5"
+                android:scrollHorizontally="false"
+                android:scrollbarStyle="insideInset"
+                android:scrollbars="vertical" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@string/font_family_regular"
+                android:text="Description"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/et_job_description"
+                android:layout_width="match_parent"
+                android:layout_height="96dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/edit_text_bg"
+                android:inputType="text|textMultiLine"
+                android:labelFor="@id/et_job_description"
+                android:lines="5"
+                android:scrollHorizontally="false"
+                android:scrollbarStyle="insideInset"
+                android:scrollbars="vertical" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@string/font_family_regular"
+                android:text="Notes"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/et_job_note"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/edit_text_bg"
+                android:inputType="text|textMultiLine"
+                android:labelFor="@id/et_job_note"
+                android:lines="3"
+                android:scrollHorizontally="false"
+                android:scrollbarStyle="insideInset"
+                android:scrollbars="vertical" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="20dp" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="20dp" />
+
+</RelativeLayout>

@@ -1,0 +1,98 @@
+<resources>
+    <string name="app_name">Brand Name</string>
+    <string name="activity_job_detail">Job Detail</string>
+    <string name="activity_add_job_post">New Job Post</string>
+    <string name="activity_update_job_post">Update Job Post</string>
+    <string name="activity_payment">Payment</string>
+    <string name="activity_applicant">Applicant</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="fragment_home">Home</string>
+    <string name="fragment_my_job">My Job</string>
+
+    <string name="string_img_company">Company Image</string>
+    <string name="string_requirements">Requirements</string>
+    <string name="string_description">Description</string>
+    <string name="string_note">Note</string>
+
+    <string name="btn_share">Share</string>
+    <string name="btn_wishlist">Wishlist</string>
+    <string name="btn_apply_now">Apply Now</string>
+    <string name="btn_post_new_job">Post Job</string>
+    <string name="btn_update_job_post">Update Job</string>
+    <string name="btn_make_payment">Make Payment</string>
+    <string name="btn_rate_this">Rate This</string>
+
+    <string name="example_company_name">[Company Name]</string>
+    <string name="example_job_distance">##.## KM</string>
+    <string name="example_rate_value">4.3</string>
+    <string name="example_job_title">[Job Title]</string>
+    <string name="example_location">[Location]</string>
+    <string name="example_date">[Date]</string>
+    <string name="example_wage">[RM 000.00]</string>
+    <string name="example_job_requirement">[Job Requirement]</string>
+    <string name="example_job_description">[Job Description]</string>
+    <string name="example_job_note">[Job Note]</string>
+
+    <string-array name="array_payment_term">
+        <item>7 days</item>
+        <item>14 days</item>
+        <item>30 days</item>
+        <item>45 days</item>
+        <item>60 days</item>
+    </string-array>
+
+    <!-- TODO: Error messages -->
+    <string name="error_required_field">This field is required</string>
+    <string name="error_email_invalid">Invalid email address</string>
+    <string name="error_password_not_match">Password and confirm password are not match</string>
+
+    <!-- TODO: Login and Register activity Strings -->
+    <string name="string_login">login</string>
+    <string name="string_register">register</string>
+    <string name="string_back">back</string>
+    <string name="string_full_name">Full Name</string>
+    <string name="string_email">Email</string>
+    <string name="string_password">Password</string>
+    <string name="string_confirm_password">Confirm Password</string>
+    <string name="tv_forgot_password">I forgot password</string>
+
+    <!-- TODO: Payment -->
+    <string name="string_card_type">Card type</string>
+    <string name="string_card_name">Card Holders Name</string>
+    <string name="string_card_number">Card Number</string>
+    <string name="string_cvv">CVV</string>
+    <string name="string_exp_date">Expiration Date</string>
+
+    <string-array name="month">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
+
+    <string-array name="year">
+        <item>2018</item>
+        <item>2019</item>
+        <item>2020</item>
+        <item>2021</item>
+        <item>2022</item>
+        <item>2023</item>
+        <item>2024</item>
+        <item>2025</item>
+        <item>2026</item>
+        <item>2027</item>
+        <item>2028</item>
+    </string-array>
+
+</resources>

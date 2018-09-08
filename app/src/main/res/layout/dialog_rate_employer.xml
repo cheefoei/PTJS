@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/padding"
+    android:paddingEnd="@dimen/padding"
+    android:paddingStart="@dimen/padding"
+    android:paddingTop="24dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@string/font_family_regular"
+        android:text="Rate This Employer"
+        android:textSize="16sp" />
+
+    <RatingBar
+        android:id="@+id/rate_bar_company"
+        style="@style/Widget.AppCompat.RatingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="42dp"
+        android:layout_gravity="start"
+        android:layout_marginBottom="@dimen/margin"
+        android:numStars="5"
+        android:rating="0"
+        android:scaleX="0.6"
+        android:scaleY="0.6"
+        android:stepSize="0.5" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@string/font_family_regular"
+        android:text="Write a short review"
+        android:textSize="16sp" />
+
+    <EditText
+        android:id="@+id/et_job_review"
+        android:layout_width="match_parent"
+        android:layout_height="96dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/edit_text_bg"
+        android:inputType="text|textMultiLine"
+        android:labelFor="@id/et_job_requirement"
+        android:lines="5"
+        android:scrollHorizontally="false"
+        android:scrollbarStyle="insideInset"
+        android:scrollbars="vertical" />
+
+</LinearLayout>
