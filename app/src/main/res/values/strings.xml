@@ -13,6 +13,7 @@
     <string name="fragment_my_job">My Job</string>
 
     <!-- TODO: Dialog messages -->
+    <string name="progress_loading">Loading …</string>
     <string name="progress_logging_in">Logging in …</string>
 
     <string name="string_img_company">Company Image</string>
@@ -106,6 +107,7 @@
 
     <!-- TODO: Urls -->
     <string name="url_login">https&#58;&#47;&#47;timetowork.azurewebsites.net&#47;TimeToWork&#47;JobseekerLogin.php</string>
+    <string name="url_recover_password">https://timetowork-function.azurewebsites.net/api/RecoverPassword?code=oqwrUG7kXuj/D2eicZ1kNFzg0LldCvau5AkOH/NbUEAYqiqddlGYwA==</string>
     <string name="url_sign_up">http&#58;&#47;&#47;34.223.245.46&#47;SignUp</string>
 
 </resources>

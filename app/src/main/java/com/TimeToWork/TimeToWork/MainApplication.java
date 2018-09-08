@@ -11,6 +11,7 @@ import com.android.volley.toolbox.Volley;
 
 public class MainApplication extends Application {
 
+    public static String userType;
     public static RequestQueue mRequestQueue;
 
     public static void setRequestQueue(Context context) {

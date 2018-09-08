@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.TimeToWork.TimeToWork.CustomClass.CustomProgressDialog;
 import com.TimeToWork.TimeToWork.CustomClass.CustomVolleyErrorListener;
@@ -18,6 +19,7 @@ import com.TimeToWork.TimeToWork.Database.Entity.Jobseeker;
 import com.TimeToWork.TimeToWork.Database.JobseekerDA;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
+import com.microsoft.azure.documentdb.DocumentClient;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -56,6 +58,7 @@ public class LoginFragment extends Fragment {
             public void onClick(View v) {
 
                 View dialogView = View.inflate(getContext(), R.layout.dialog_forgot_password, null);
+                final EditText etForgotEmail = (EditText) dialogView.findViewById(R.id.et_email);
 
                 final AlertDialog dialogRateJob = new AlertDialog.Builder(getContext(), R.style.DialogStyle)
                         .setTitle("Recover Password")
@@ -76,6 +79,14 @@ public class LoginFragment extends Fragment {
                             @Override
                             public void onClick(View view) {
 
+                                String forgotEmail = etForgotEmail.getText().toString();
+                                if (forgotEmail.equals("")) {
+                                    etForgotEmail.setError(getString(R.string.error_required_field));
+                                } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(forgotEmail).matches()) {
+                                    etForgotEmail.setError(getString(R.string.error_email_invalid));
+                                } else {
+                                    attemptRecoverPassword(forgotEmail);
+                                }
                             }
                         });
                     }
@@ -266,6 +277,31 @@ public class LoginFragment extends Fragment {
         }
     }
 
+    private void attemptRecoverPassword(final String forgotEmail) {
+
+        //Show progress dialog
+        mProgressDialog.setMessage(getString(R.string.progress_loading));
+        mProgressDialog.toggleProgressDialog();
+
+        final Response.Listener<String> responseListener = new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                mProgressDialog.toggleProgressDialog();
+                Toast.makeText(getActivity(), response, Toast.LENGTH_LONG).show();
+            }
+        };
+
+        CustomVolleyErrorListener errorListener
+                = new CustomVolleyErrorListener(getActivity(), mProgressDialog, mRequestQueue);
+        LoginFragment.RecoverPasswordRequest recoverPasswordRequest = new LoginFragment.RecoverPasswordRequest(
+                getString(R.string.url_recover_password) + "&forgotEmail=" + forgotEmail,
+                responseListener,
+                errorListener
+        );
+        mRequestQueue.add(recoverPasswordRequest);
+    }
+
     private class LoginRequest extends StringRequest {
 
         private Map<String, String> params;
@@ -284,6 +320,15 @@ public class LoginFragment extends Fragment {
 
         public Map<String, String> getParams() {
             return params;
+        }
+    }
+
+    private class RecoverPasswordRequest extends StringRequest {
+
+        RecoverPasswordRequest(String url,
+                               Response.Listener<String> listener,
+                               Response.ErrorListener errorListener) {
+            super(Method.GET, url, listener, errorListener);
         }
     }
 
