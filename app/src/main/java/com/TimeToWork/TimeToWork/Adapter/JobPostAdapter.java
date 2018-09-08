@@ -1,4 +1,4 @@
-package com.TimeToWork.TimeToWork.adapter;
+package com.TimeToWork.TimeToWork.Adapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.TimeToWork.TimeToWork.JobDetailActivity;
 import com.TimeToWork.TimeToWork.R;
 import com.TimeToWork.TimeToWork.activity.company.UpdateJobPostActivity;
-import com.TimeToWork.TimeToWork.db.entity.Job;
+import com.TimeToWork.TimeToWork.Database.Entity.Job;
 
 import java.util.List;
 import java.util.Locale;
@@ -76,7 +76,7 @@ public class JobPostAdapter extends RecyclerView.Adapter<JobPostAdapter.JobPostV
             public void onClick(View v) {
 
                 AlertDialog.Builder builder
-                        = new AlertDialog.Builder(mContext, R.style.DialogTheme)
+                        = new AlertDialog.Builder(mContext, R.style.DialogStyle)
                         .setTitle("Confirmation")
                         .setMessage("Delete this job post? You cannot undo this action. ")
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {

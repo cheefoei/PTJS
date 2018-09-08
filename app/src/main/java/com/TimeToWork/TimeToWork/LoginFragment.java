@@ -1,6 +1,7 @@
 package com.TimeToWork.TimeToWork;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -11,11 +12,29 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.TimeToWork.TimeToWork.CustomClass.CustomProgressDialog;
+import com.TimeToWork.TimeToWork.CustomClass.CustomVolleyErrorListener;
+import com.TimeToWork.TimeToWork.Database.Entity.Jobseeker;
+import com.TimeToWork.TimeToWork.Database.JobseekerDA;
+import com.android.volley.Response;
+import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+
+import static com.TimeToWork.TimeToWork.MainApplication.mRequestQueue;
 
 public class LoginFragment extends Fragment {
 
+    private CustomProgressDialog mProgressDialog;
     private EditText etEmail, etPassword;
     private String email, password;
 
@@ -38,7 +57,7 @@ public class LoginFragment extends Fragment {
 
                 View dialogView = View.inflate(getContext(), R.layout.dialog_forgot_password, null);
 
-                final AlertDialog dialogRateJob = new AlertDialog.Builder(getContext(), R.style.DialogTheme)
+                final AlertDialog dialogRateJob = new AlertDialog.Builder(getContext(), R.style.DialogStyle)
                         .setTitle("Recover Password")
                         .setView(dialogView)
                         .setPositiveButton("Submit", null)
@@ -66,17 +85,9 @@ public class LoginFragment extends Fragment {
             }
         });
 
+        mProgressDialog = new CustomProgressDialog(getActivity());
         etEmail = (EditText) view.findViewById(R.id.et_email);
         etPassword = (EditText) view.findViewById(R.id.et_password);
-
-//        TextView tvForgot = (TextView) view.findViewById(R.id.tv_forgot);
-//        tvForgot.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
 
         Button btnLogin = (Button) view.findViewById(R.id.btn_login);
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -137,6 +148,86 @@ public class LoginFragment extends Fragment {
 
     private void attemptLogin() {
 
+        //Show progress dialog
+        mProgressDialog.setMessage(getString(R.string.progress_logging_in));
+        mProgressDialog.toggleProgressDialog();
+
+        final Response.Listener<String> responseListener = new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    JSONObject jsonResponse = new JSONObject(response);
+                    boolean success = jsonResponse.getBoolean("success");
+
+                    if (success) {
+                        //Change jobseeker JSON to Array
+                        JSONObject jobseekerObject = jsonResponse.getJSONObject("JOBSEEKER");
+                        //Create jobseeker object
+
+                        Jobseeker jobseeker = new Jobseeker();
+                        jobseeker.setId(jobseekerObject.getString("jobseeker_id"));
+                        jobseeker.setName(jobseekerObject.getString("jobseeker_name"));
+                        jobseeker.setGender(jobseekerObject.getString("jobseeker_gender").charAt(0));
+                        jobseeker.setDob(new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(jobseekerObject.getString("jobseeker_dob")));
+                        jobseeker.setIc(jobseekerObject.getString("jobseeker_ic"));
+                        jobseeker.setAddress(jobseekerObject.getString("jobseeker_address"));
+                        jobseeker.setPhone_number(jobseekerObject.getString("jobseeker_phone_number"));
+                        jobseeker.setEmail(jobseekerObject.getString("jobseeker_email"));
+                        jobseeker.setPreferred_job(jobseekerObject.getString("jobseeker_preferred_job"));
+                        jobseeker.setPreferred_location(jobseekerObject.getString("jobseeker_preferred_location"));
+                        jobseeker.setExperience(jobseekerObject.getString("jobseeker_experience"));
+                        jobseeker.setRating(jobseekerObject.getDouble("jobseeker_rating"));
+                        jobseeker.setImg(jobseekerObject.getString("jobseeker_img"));
+
+                        //Save jobseeker data
+                        saveJobseekerData(jobseeker);
+
+                    } else {
+                        //If failed, then show alert dialog
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        builder.setMessage(jsonResponse.getString("error_msg"))
+                                .setPositiveButton("OK", null)
+                                .create()
+                                .show();
+                    }
+                    //To close progress dialog
+                    mProgressDialog.toggleProgressDialog();
+
+                } catch (JSONException e) {
+
+                    e.printStackTrace();
+                    //To close progress dialog
+                    mProgressDialog.toggleProgressDialog();
+                    //If exception, then show alert dialog
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setMessage(e.getMessage())
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    getActivity().finish();
+                                }
+                            })
+                            .create()
+                            .show();
+
+                } catch (ParseException ignored) {
+                }
+            }
+        };
+
+        CustomVolleyErrorListener errorListener
+                = new CustomVolleyErrorListener(getActivity(), mProgressDialog, mRequestQueue);
+        LoginFragment.LoginRequest loginRequest = new LoginFragment.LoginRequest(
+                email,
+                getEncryptedPassword(),
+                getString(R.string.url_login),
+                responseListener,
+                errorListener
+        );
+        mRequestQueue.add(loginRequest);
     }
 
     private String getEncryptedPassword() {
@@ -159,28 +250,41 @@ public class LoginFragment extends Fragment {
         return encryptedPassword;
     }
 
-    private void doSuccessLogin() {
+    private void saveJobseekerData(Jobseeker jobseeker) {
 
-//        //Opening User sqlite database
-//        UserDA userDA = new UserDA(getActivity());
-//
-//        //Saving user data into sqlite database
-//        User user = userDA.insertUser(
-//                loginUser.getId(),
-//                loginUser.getName(),
-//                loginUser.getGender(),
-//                loginUser.getEmail(),
-//                loginUser.getProfile(),
-//                loginUser.getPocketMoney()
-//        );
-//
-//        //Closing sqlite database
-//        userDA.close();
-//
-//        if (user != null) {
-//            Intent intent = new Intent(getActivity(), MainActivity.class);
-//            getActivity().startActivity(intent);
-//            getActivity().finish();
-//        }
+        //Opening Jobseeker sqlite database
+        JobseekerDA jobseekerDA = new JobseekerDA(getActivity());
+        //Saving jobseeker data into sqlite database
+        Jobseeker j = jobseekerDA.insertJobseeker(jobseeker);
+        //Closing sqlite database
+        jobseekerDA.close();
+
+        if (j != null) {
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            getActivity().startActivity(intent);
+            getActivity().finish();
+        }
     }
+
+    private class LoginRequest extends StringRequest {
+
+        private Map<String, String> params;
+
+        LoginRequest(String email,
+                     String password,
+                     String url,
+                     Response.Listener<String> listener,
+                     Response.ErrorListener errorListener) {
+            super(Method.POST, url, listener, errorListener);
+
+            params = new HashMap<>();
+            params.put("email", email);
+            params.put("password", password);
+        }
+
+        public Map<String, String> getParams() {
+            return params;
+        }
+    }
+
 }

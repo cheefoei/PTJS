@@ -15,8 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.TimeToWork.TimeToWork.activity.company.CompanyMainActivity;
-import com.TimeToWork.TimeToWork.adapter.JobListAdapter;
-import com.TimeToWork.TimeToWork.db.entity.Job;
+import com.TimeToWork.TimeToWork.Adapter.JobListAdapter;
+import com.TimeToWork.TimeToWork.Database.Entity.Job;
 import com.TimeToWork.TimeToWork.R;
 
 import java.util.ArrayList;

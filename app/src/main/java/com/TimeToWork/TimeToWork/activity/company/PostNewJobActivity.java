@@ -25,7 +25,7 @@ public class PostNewJobActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 AlertDialog.Builder builder
-                        = new AlertDialog.Builder(PostNewJobActivity.this, R.style.DialogTheme)
+                        = new AlertDialog.Builder(PostNewJobActivity.this, R.style.DialogStyle)
                         .setTitle("Job is posted successfully")
                         .setMessage("Make advertisement for this job post? ")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {

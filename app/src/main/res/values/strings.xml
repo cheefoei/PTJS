@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Brand Name</string>
+    <string name="app_name">TimeToWork</string>
     <string name="activity_job_detail">Job Detail</string>
     <string name="activity_add_job_post">New Job Post</string>
     <string name="activity_update_job_post">Update Job Post</string>
@@ -11,6 +11,9 @@
 
     <string name="fragment_home">Home</string>
     <string name="fragment_my_job">My Job</string>
+
+    <!-- TODO: Dialog messages -->
+    <string name="progress_logging_in">Logging in …</string>
 
     <string name="string_img_company">Company Image</string>
     <string name="string_requirements">Requirements</string>
@@ -48,6 +51,12 @@
     <string name="error_required_field">This field is required</string>
     <string name="error_email_invalid">Invalid email address</string>
     <string name="error_password_not_match">Password and confirm password are not match</string>
+    <string name="error_password_too_short">Your password must be at least 8 characters</string>
+    <string name="error_general">Error occurred!</string>
+    <string name="error_connection_timeout">Connection timeout. Please check your internet connection</string>
+    <string name="error_no_connection">Cannot connect to Internet. Please check your connection</string>
+    <string name="error_server_connection">The server could not be found. Please try again later</string>
+    <string name="error_no_internet">No Internet Connections</string>
 
     <!-- TODO: Login and Register activity Strings -->
     <string name="string_login">login</string>
@@ -94,5 +103,9 @@
         <item>2027</item>
         <item>2028</item>
     </string-array>
+
+    <!-- TODO: Urls -->
+    <string name="url_login">https&#58;&#47;&#47;timetowork.azurewebsites.net&#47;TimeToWork&#47;JobseekerLogin.php</string>
+    <string name="url_sign_up">http&#58;&#47;&#47;34.223.245.46&#47;SignUp</string>
 
 </resources>

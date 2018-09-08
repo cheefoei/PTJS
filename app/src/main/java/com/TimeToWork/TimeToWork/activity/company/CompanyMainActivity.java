@@ -12,8 +12,8 @@ import android.view.Menu;
 import android.view.View;
 
 import com.TimeToWork.TimeToWork.R;
-import com.TimeToWork.TimeToWork.adapter.JobPostAdapter;
-import com.TimeToWork.TimeToWork.db.entity.Job;
+import com.TimeToWork.TimeToWork.Adapter.JobPostAdapter;
+import com.TimeToWork.TimeToWork.Database.Entity.Job;
 
 import java.util.ArrayList;
 import java.util.Date;

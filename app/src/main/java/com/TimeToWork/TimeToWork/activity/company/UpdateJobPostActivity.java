@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.widget.EditText;
 
 import com.TimeToWork.TimeToWork.R;
-import com.TimeToWork.TimeToWork.db.entity.Job;
+import com.TimeToWork.TimeToWork.Database.Entity.Job;
 
 import java.util.Locale;
 

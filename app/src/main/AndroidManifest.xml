@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".MainApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -12,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.ptjs.TimeToWork.MainActivity"
+            android:name="com.TimeToWork.TimeToWork.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -22,32 +23,32 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.ptjs.TimeToWork.LoginRegisterActivity"
+            android:name="com.TimeToWork.TimeToWork.LoginRegisterActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.ptjs.TimeToWork.JobDetailActivity"
+            android:name="com.TimeToWork.TimeToWork.JobDetailActivity"
             android:label="@string/activity_job_detail"
-            android:parentActivityName="com.ptjs.TimeToWork.MainActivity" />
+            android:parentActivityName="com.TimeToWork.TimeToWork.MainActivity" />
         <activity
-            android:name="com.ptjs.TimeToWork.activity.company.CompanyMainActivity"
+            android:name="com.TimeToWork.TimeToWork.activity.company.CompanyMainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.ptjs.TimeToWork.activity.company.PostNewJobActivity"
+            android:name="com.TimeToWork.TimeToWork.activity.company.PostNewJobActivity"
             android:label="@string/activity_add_job_post"
-            android:parentActivityName="com.ptjs.TimeToWork.activity.company.CompanyMainActivity" />
+            android:parentActivityName="com.TimeToWork.TimeToWork.activity.company.CompanyMainActivity" />
         <activity
-            android:name="com.ptjs.TimeToWork.activity.company.UpdateJobPostActivity"
+            android:name="com.TimeToWork.TimeToWork.activity.company.UpdateJobPostActivity"
             android:label="@string/activity_update_job_post"
-            android:parentActivityName="com.ptjs.TimeToWork.activity.company.CompanyMainActivity" />
+            android:parentActivityName="com.TimeToWork.TimeToWork.activity.company.CompanyMainActivity" />
         <activity
-            android:name="com.ptjs.TimeToWork.activity.company.PaymentActivity"
+            android:name="com.TimeToWork.TimeToWork.activity.company.PaymentActivity"
             android:label="@string/activity_payment"
-            android:parentActivityName="com.ptjs.TimeToWork.activity.company.PostNewJobActivity" />
+            android:parentActivityName="com.TimeToWork.TimeToWork.activity.company.PostNewJobActivity" />
         <activity
-            android:name="com.ptjs.TimeToWork.activity.company.ApplicantListActivity"
+            android:name="com.TimeToWork.TimeToWork.activity.company.ApplicantListActivity"
             android:label="@string/activity_applicant"
-            android:parentActivityName="com.ptjs.TimeToWork.JobDetailActivity" />
+            android:parentActivityName="com.TimeToWork.TimeToWork.JobDetailActivity" />
     </application>
 
 </manifest>

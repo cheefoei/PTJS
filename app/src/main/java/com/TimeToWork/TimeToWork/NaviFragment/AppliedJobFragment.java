@@ -10,8 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.TimeToWork.TimeToWork.R;
-import com.TimeToWork.TimeToWork.adapter.AppliedJobAdapter;
-import com.TimeToWork.TimeToWork.db.entity.Job;
+import com.TimeToWork.TimeToWork.Adapter.AppliedJobAdapter;
+import com.TimeToWork.TimeToWork.Database.Entity.Job;
 
 import java.util.ArrayList;
 import java.util.Date;

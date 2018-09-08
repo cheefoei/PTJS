@@ -8,7 +8,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.TimeToWork.TimeToWork.activity.company.ApplicantListActivity;
-import com.TimeToWork.TimeToWork.db.entity.Job;
+import com.TimeToWork.TimeToWork.Database.Entity.Job;
 
 import java.util.Locale;
 

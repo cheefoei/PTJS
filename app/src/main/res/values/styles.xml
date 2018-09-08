@@ -9,7 +9,8 @@
         <item name="android:fontFamily">@string/font_family_medium</item>
         <item name="android:textColor">@color/colorTextPrimary</item>
         <item name="editTextStyle">@style/EditTextStyle</item>
-        <item name="buttonStyle">@style/ButtonColor</item>
+        <item name="buttonStyle">@style/ButtonStyle</item>
+        <item name="alertDialogTheme">@style/DialogStyle</item>
         <item name="ratingBarStyle">@style/RatingBarTheme</item>
     </style>
 
@@ -22,7 +23,7 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="ButtonColor" parent="@style/Widget.AppCompat.Button.Borderless">
+    <style name="ButtonStyle" parent="@style/Widget.AppCompat.Button.Borderless">
         <item name="android:textColor">@color/colorWhite</item>
         <item name="android:fontFamily">@string/font_family_condensed</item>
         <item name="android:textSize">18sp</item>
@@ -35,9 +36,19 @@
         <item name="android:background">@drawable/edit_text_bg</item>
     </style>
 
-    <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="android:colorPrimary">@color/colorPrimary</item>
+    <style name="DialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+    </style>
+
+    <style name="PositiveButtonStyle">
         <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:background">?selectableItemBackgroundBorderless</item>
+    </style>
+
+    <style name="NegativeButtonStyle">
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:background">?selectableItemBackgroundBorderless</item>
     </style>
 
     <style name="RatingBarTheme" parent="Widget.AppCompat.RatingBar.Small">

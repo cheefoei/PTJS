@@ -6,7 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.TimeToWork.TimeToWork.R;
-import com.TimeToWork.TimeToWork.adapter.ApplicantListAdapter;
+import com.TimeToWork.TimeToWork.Adapter.ApplicantListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

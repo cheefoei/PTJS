@@ -1,4 +1,4 @@
-package com.TimeToWork.TimeToWork.adapter;
+package com.TimeToWork.TimeToWork.Adapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -82,7 +82,7 @@ public class ApplicantListAdapter extends RecyclerView.Adapter<ApplicantListAdap
 
         View dialogView = View.inflate(mContext, R.layout.dialog_rate_jobseeker, null);
 
-        final AlertDialog dialogRateJob = new AlertDialog.Builder(mContext, R.style.DialogTheme)
+        final AlertDialog dialogRateJob = new AlertDialog.Builder(mContext, R.style.DialogStyle)
                 .setTitle("Rate Jobseeker")
                 .setView(dialogView)
                 .setPositiveButton("Submit", null)

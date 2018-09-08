@@ -1,4 +1,4 @@
-package com.TimeToWork.TimeToWork.adapter;
+package com.TimeToWork.TimeToWork.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.TimeToWork.TimeToWork.JobDetailActivity;
-import com.TimeToWork.TimeToWork.db.entity.Job;
+import com.TimeToWork.TimeToWork.Database.Entity.Job;
 import com.TimeToWork.TimeToWork.R;
 
 import java.util.List;

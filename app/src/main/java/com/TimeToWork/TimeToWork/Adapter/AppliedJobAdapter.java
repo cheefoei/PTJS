@@ -1,4 +1,4 @@
-package com.TimeToWork.TimeToWork.adapter;
+package com.TimeToWork.TimeToWork.Adapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.TimeToWork.TimeToWork.JobDetailActivity;
 import com.TimeToWork.TimeToWork.R;
-import com.TimeToWork.TimeToWork.db.entity.Job;
+import com.TimeToWork.TimeToWork.Database.Entity.Job;
 
 import java.util.List;
 import java.util.Locale;
@@ -78,7 +78,7 @@ public class AppliedJobAdapter extends RecyclerView.Adapter<AppliedJobAdapter.Ap
 
         View dialogView = View.inflate(mContext, R.layout.dialog_rate_employer, null);
 
-        final AlertDialog dialogRateJob = new AlertDialog.Builder(mContext, R.style.DialogTheme)
+        final AlertDialog dialogRateJob = new AlertDialog.Builder(mContext, R.style.DialogStyle)
                 .setTitle("Rate Employer")
                 .setView(dialogView)
                 .setPositiveButton("Submit", null)

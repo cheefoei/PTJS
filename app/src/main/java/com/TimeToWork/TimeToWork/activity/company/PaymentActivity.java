@@ -23,7 +23,7 @@ public class PaymentActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 AlertDialog.Builder builder
-                        = new AlertDialog.Builder(PaymentActivity.this, R.style.DialogTheme)
+                        = new AlertDialog.Builder(PaymentActivity.this, R.style.DialogStyle)
                         .setTitle("Successful")
                         .setMessage("Your payment is made.")
                         .setPositiveButton("OK", null);

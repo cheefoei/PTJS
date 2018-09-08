@@ -1,4 +1,4 @@
-package com.TimeToWork.TimeToWork.db.entity;
+package com.TimeToWork.TimeToWork.Database.Entity;
 
 public class Company {
 
