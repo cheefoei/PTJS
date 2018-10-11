@@ -1,4 +1,4 @@
-package com.TimeToWork.TimeToWork.activity.company;
+package com.TimeToWork.TimeToWork.Company;
 
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;

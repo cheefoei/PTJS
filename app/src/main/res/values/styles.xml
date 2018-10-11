@@ -3,15 +3,18 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/colorPrimaryDark</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:fontFamily">@string/font_family_medium</item>
         <item name="android:textColor">@color/colorTextPrimary</item>
         <item name="editTextStyle">@style/EditTextStyle</item>
-        <item name="buttonStyle">@style/ButtonStyle</item>
         <item name="alertDialogTheme">@style/DialogStyle</item>
         <item name="ratingBarStyle">@style/RatingBarTheme</item>
+    </style>
+
+    <style name="AppTheme.WhiteStatusBar" parent="AppTheme">
+        <item name="colorPrimary">@color/colorPrimaryDark</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

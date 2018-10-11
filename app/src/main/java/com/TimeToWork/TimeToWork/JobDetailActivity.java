@@ -7,8 +7,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.TimeToWork.TimeToWork.activity.company.ApplicantListActivity;
-import com.TimeToWork.TimeToWork.Database.Entity.Job;
+import com.TimeToWork.TimeToWork.Company.ApplicantListActivity;
+import com.TimeToWork.TimeToWork.Database.Entity.JobPost;
 
 import java.util.Locale;
 
@@ -20,31 +20,31 @@ public class JobDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_job_detail);
 
-        Job job = (Job) getIntent().getSerializableExtra("JOB");
+        JobPost jobPost = (JobPost) getIntent().getSerializableExtra("JOB");
 
         TextView tvJobTitle = (TextView) findViewById(R.id.tv_job_title);
-        tvJobTitle.setText(job.getTitle());
+        tvJobTitle.setText(jobPost.getTitle());
 
         TextView tvCompanyName = (TextView) findViewById(R.id.tv_company_name);
         tvCompanyName.setText("Connect Dots Sdn Bhd");
 
         TextView tvWorkplace = (TextView) findViewById(R.id.tv_workplace);
-        tvWorkplace.setText(job.getWorkplace());
+//        tvWorkplace.setText(jobPost.getWorkplace());
 
         TextView tvWorkingDate = (TextView) findViewById(R.id.tv_working_date);
         tvWorkingDate.setText("30 July 2018");
 
         TextView tvWages = (TextView) findViewById(R.id.tv_wages);
-        tvWages.setText(String.format(Locale.getDefault(), "RM %.2f", job.getWages()));
+        tvWages.setText(String.format(Locale.getDefault(), "RM %.2f", jobPost.getWages()));
 
         TextView tvRequirement = (TextView) findViewById(R.id.tv_job_requirement);
-        tvRequirement.setText(job.getRequirement());
+        tvRequirement.setText(jobPost.getRequirement());
 
         TextView tvDescription = (TextView) findViewById(R.id.tv_job_description);
-        tvDescription.setText(job.getDescription());
+        tvDescription.setText(jobPost.getDescription());
 
         TextView tvNote = (TextView) findViewById(R.id.tv_job_note);
-        tvNote.setText(job.getNote());
+        tvNote.setText(jobPost.getNote());
     }
 
     @Override

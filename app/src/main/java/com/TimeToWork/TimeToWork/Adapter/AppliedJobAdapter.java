@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.TimeToWork.TimeToWork.JobDetailActivity;
 import com.TimeToWork.TimeToWork.R;
-import com.TimeToWork.TimeToWork.Database.Entity.Job;
+import com.TimeToWork.TimeToWork.Database.Entity.JobPost;
 
 import java.util.List;
 import java.util.Locale;
@@ -23,11 +23,11 @@ import java.util.Locale;
 public class AppliedJobAdapter extends RecyclerView.Adapter<AppliedJobAdapter.AppliedJobViewHolder> {
 
     private Context mContext;
-    private List<Job> jobList;
+    private List<JobPost> jobPostList;
 
-    public AppliedJobAdapter(Context mContext, List<Job> jobList) {
+    public AppliedJobAdapter(Context mContext, List<JobPost> jobPostList) {
         this.mContext = mContext;
-        this.jobList = jobList;
+        this.jobPostList = jobPostList;
     }
 
     @Override
@@ -41,13 +41,13 @@ public class AppliedJobAdapter extends RecyclerView.Adapter<AppliedJobAdapter.Ap
     @Override
     public void onBindViewHolder(AppliedJobViewHolder appliedJobViewHolder, int i) {
 
-        final Job job = jobList.get(i);
+        final JobPost jobPost = jobPostList.get(i);
 
-        appliedJobViewHolder.title.setText(job.getTitle());
+        appliedJobViewHolder.title.setText(jobPost.getTitle());
         appliedJobViewHolder.companyName.setText("Connect Dots");
-        appliedJobViewHolder.workplace.setText(job.getWorkplace());
+//        appliedJobViewHolder.workplace.setText(jobPost.getWorkplace());
         appliedJobViewHolder.workingDate.setText("30 July 2018");
-        appliedJobViewHolder.wages.setText(String.format(Locale.getDefault(), "RM %.2f", job.getWages()));
+        appliedJobViewHolder.wages.setText(String.format(Locale.getDefault(), "RM %.2f", jobPost.getWages()));
 
         appliedJobViewHolder.layoutJob.setOnClickListener(new View.OnClickListener() {
 
@@ -55,7 +55,7 @@ public class AppliedJobAdapter extends RecyclerView.Adapter<AppliedJobAdapter.Ap
             public void onClick(View v) {
 
                 Intent intent = new Intent(mContext, JobDetailActivity.class);
-                intent.putExtra("JOB", job);
+                intent.putExtra("JOB", jobPost);
                 mContext.startActivity(intent);
             }
         });
@@ -71,7 +71,7 @@ public class AppliedJobAdapter extends RecyclerView.Adapter<AppliedJobAdapter.Ap
 
     @Override
     public int getItemCount() {
-        return jobList.size();
+        return jobPostList.size();
     }
 
     private void rateJob() {

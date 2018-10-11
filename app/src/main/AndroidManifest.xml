@@ -13,42 +13,50 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.TimeToWork.TimeToWork.MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:name=".MainActivity"
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.TimeToWork.TimeToWork.LoginRegisterActivity"
+            android:name=".LoginOptionActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.TimeToWork.TimeToWork.JobDetailActivity"
-            android:label="@string/activity_job_detail"
-            android:parentActivityName="com.TimeToWork.TimeToWork.MainActivity" />
+            android:name=".LoginActivity"
+            android:label="@string/activity_login"
+            android:parentActivityName=".LoginOptionActivity"
+            android:theme="@style/AppTheme.WhiteStatusBar" />
         <activity
-            android:name="com.TimeToWork.TimeToWork.activity.company.CompanyMainActivity"
+            android:name=".ForgotPasswordActivity"
+            android:label="@string/activity_forgot_password"
+            android:parentActivityName=".LoginActivity"
+            android:theme="@style/AppTheme.WhiteStatusBar" />
+        <activity
+            android:name=".JobDetailActivity"
+            android:label="@string/activity_job_detail"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".Company.CompanyMainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.TimeToWork.TimeToWork.activity.company.PostNewJobActivity"
+            android:name=".Company.PostNewJobActivity"
             android:label="@string/activity_add_job_post"
-            android:parentActivityName="com.TimeToWork.TimeToWork.activity.company.CompanyMainActivity" />
+            android:parentActivityName=".Company.CompanyMainActivity" />
         <activity
-            android:name="com.TimeToWork.TimeToWork.activity.company.UpdateJobPostActivity"
+            android:name=".Company.UpdateJobPostActivity"
             android:label="@string/activity_update_job_post"
-            android:parentActivityName="com.TimeToWork.TimeToWork.activity.company.CompanyMainActivity" />
+            android:parentActivityName=".Company.CompanyMainActivity" />
         <activity
-            android:name="com.TimeToWork.TimeToWork.activity.company.PaymentActivity"
+            android:name=".Company.PaymentActivity"
             android:label="@string/activity_payment"
-            android:parentActivityName="com.TimeToWork.TimeToWork.activity.company.PostNewJobActivity" />
+            android:parentActivityName=".Company.PostNewJobActivity" />
         <activity
-            android:name="com.TimeToWork.TimeToWork.activity.company.ApplicantListActivity"
+            android:name=".Company.ApplicantListActivity"
             android:label="@string/activity_applicant"
-            android:parentActivityName="com.TimeToWork.TimeToWork.JobDetailActivity" />
+            android:parentActivityName=".JobDetailActivity" />
     </application>
 
 </manifest>

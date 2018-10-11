@@ -1,4 +1,4 @@
-package com.TimeToWork.TimeToWork.NaviFragment;
+package com.TimeToWork.TimeToWork.NavigationFragment;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -14,9 +14,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.TimeToWork.TimeToWork.activity.company.CompanyMainActivity;
+import com.TimeToWork.TimeToWork.Company.CompanyMainActivity;
 import com.TimeToWork.TimeToWork.Adapter.JobListAdapter;
-import com.TimeToWork.TimeToWork.Database.Entity.Job;
+import com.TimeToWork.TimeToWork.Database.Entity.JobPost;
 import com.TimeToWork.TimeToWork.R;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ public class HomeFragment extends Fragment {
     private ProgressDialog mProgressDialog;
 
     private JobListAdapter adapter;
-    private List<Job> jobList;
+    private List<JobPost> jobPostList;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -49,8 +49,8 @@ public class HomeFragment extends Fragment {
         mProgressDialog = new ProgressDialog(getActivity());
         mProgressDialog.setCancelable(false);
 
-        jobList = new ArrayList<>();
-        adapter = new JobListAdapter(getContext(), jobList);
+        jobPostList = new ArrayList<>();
+        adapter = new JobListAdapter(getContext(), jobPostList);
 
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -95,14 +95,14 @@ public class HomeFragment extends Fragment {
         mProgressDialog.setMessage("Getting your data ...");
         mProgressDialog.show();
 
-        Job job1 = new Job("1", "Part Time Mandarin Interpreter - Work From Home!", "C1", "Suria KLCC, Kuala Lumpur City Centre, City Centre, 50088 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur", new Date(), 100,
-                "Native or native-like level of proficiency in English and Target language, with a good command of both colloquial and written English and Target ",
-                "Looking to find freelance work online? We are looking for new subtitle translators and captioners to join our team of professionals!",
-                "Inclueded meals");
-        Job job2 = new Job("2", "UPSR Teacher (Homeroom, English & Add-Math) ", "C2", "7, Jalan Malinja 2, Taman Bunga Raya, 53000 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur", new Date(), 80, "", "", "");
-
-        jobList.add(job1);
-        jobList.add(job2);
+//        JobPost jobPost1 = new JobPost("1", "Part Time Mandarin Interpreter - Work From Home!", "C1", "Suria KLCC, Kuala Lumpur City Centre, City Centre, 50088 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur", new Date(), 100,
+//                "Native or native-like level of proficiency in English and Target language, with a good command of both colloquial and written English and Target ",
+//                "Looking to find freelance work online? We are looking for new subtitle translators and captioners to join our team of professionals!",
+//                "Inclueded meals");
+//        JobPost jobPost2 = new JobPost("2", "UPSR Teacher (Homeroom, English & Add-Math) ", "C2", "7, Jalan Malinja 2, Taman Bunga Raya, 53000 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur", new Date(), 80, "", "", "");
+//
+//        jobPostList.add(jobPost1);
+//        jobPostList.add(jobPost2);
         adapter.notifyDataSetChanged();
 
         mProgressDialog.dismiss();

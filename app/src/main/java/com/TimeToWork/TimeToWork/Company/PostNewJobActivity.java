@@ -1,4 +1,4 @@
-package com.TimeToWork.TimeToWork.activity.company;
+package com.TimeToWork.TimeToWork.Company;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -26,7 +26,7 @@ public class PostNewJobActivity extends AppCompatActivity {
 
                 AlertDialog.Builder builder
                         = new AlertDialog.Builder(PostNewJobActivity.this, R.style.DialogStyle)
-                        .setTitle("Job is posted successfully")
+                        .setTitle("JobPost is posted successfully")
                         .setMessage("Make advertisement for this job post? ")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 

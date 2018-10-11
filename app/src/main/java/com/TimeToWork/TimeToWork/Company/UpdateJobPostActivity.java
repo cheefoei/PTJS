@@ -1,11 +1,11 @@
-package com.TimeToWork.TimeToWork.activity.company;
+package com.TimeToWork.TimeToWork.Company;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.EditText;
 
 import com.TimeToWork.TimeToWork.R;
-import com.TimeToWork.TimeToWork.Database.Entity.Job;
+import com.TimeToWork.TimeToWork.Database.Entity.JobPost;
 
 import java.util.Locale;
 
@@ -17,7 +17,7 @@ public class UpdateJobPostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_job_post);
 
-        Job job = (Job) getIntent().getSerializableExtra("JOB");
+        JobPost jobPost = (JobPost) getIntent().getSerializableExtra("JOB");
 
         EditText etJobTitle = (EditText) findViewById(R.id.et_job_title);
         EditText etLocation = (EditText) findViewById(R.id.et_job_location);
@@ -27,13 +27,13 @@ public class UpdateJobPostActivity extends AppCompatActivity {
         EditText etDescription = (EditText) findViewById(R.id.et_job_description);
         EditText etNote = (EditText) findViewById(R.id.et_job_note);
 
-        etJobTitle.setText(job.getTitle());
-        etLocation.setText(job.getWorkplace());
+        etJobTitle.setText(jobPost.getTitle());
+//        etLocation.setText(jobPost.getWorkplace());
         etWorkingDate.setText("30 July 2018");
-        etWages.setText(String.format(Locale.getDefault(), "RM %.2f", job.getWages()));
-        etRequirement.setText(job.getRequirement());
-        etDescription.setText(job.getDescription());
-        etNote.setText(job.getNote());
+        etWages.setText(String.format(Locale.getDefault(), "RM %.2f", jobPost.getWages()));
+        etRequirement.setText(jobPost.getRequirement());
+        etDescription.setText(jobPost.getDescription());
+        etNote.setText(jobPost.getNote());
 
     }
 }

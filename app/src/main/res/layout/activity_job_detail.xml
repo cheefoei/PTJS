@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/colorButtonPrimary"
+        android:background="@color/colorButtonGreen"
         android:text="@string/btn_apply_now" />
 
     <ScrollView

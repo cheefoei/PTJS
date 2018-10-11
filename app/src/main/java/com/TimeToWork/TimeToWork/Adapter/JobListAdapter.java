@@ -13,8 +13,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.TimeToWork.TimeToWork.Database.Entity.JobPost;
 import com.TimeToWork.TimeToWork.JobDetailActivity;
-import com.TimeToWork.TimeToWork.Database.Entity.Job;
 import com.TimeToWork.TimeToWork.R;
 
 import java.util.List;
@@ -25,11 +25,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.JobListViewHolder> {
 
     private Context mContext;
-    private List<Job> jobList;
+    private List<JobPost> jobPostList;
 
-    public JobListAdapter(Context mContext, List<Job> jobList) {
+    public JobListAdapter(Context mContext, List<JobPost> jobPostList) {
         this.mContext = mContext;
-        this.jobList = jobList;
+        this.jobPostList = jobPostList;
     }
 
     @Override
@@ -43,14 +43,14 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.JobListV
     @Override
     public void onBindViewHolder(JobListViewHolder jobListViewHolder, int i) {
 
-        final Job job = jobList.get(i);
+        final JobPost jobPost = jobPostList.get(i);
         String companyImg = getCompanyImage(i);
 
-        jobListViewHolder.title.setText(job.getTitle());
+        jobListViewHolder.title.setText(jobPost.getTitle());
         jobListViewHolder.companyName.setText("Connect Dots >");
-        jobListViewHolder.workplace.setText(job.getWorkplace());
+//        jobListViewHolder.workplace.setText(jobPost.getWorkplace());
         jobListViewHolder.workingDate.setText("30 July 2018");
-        jobListViewHolder.wages.setText(String.format(Locale.getDefault(), "RM %.2f", job.getWages()));
+        jobListViewHolder.wages.setText(String.format(Locale.getDefault(), "RM %.2f", jobPost.getWages()));
 
         byte[] decodedString = Base64.decode(companyImg, Base64.DEFAULT);
         Bitmap decodedByte = BitmapFactory
@@ -63,7 +63,7 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.JobListV
             public void onClick(View v) {
 
                 Intent intent = new Intent(mContext, JobDetailActivity.class);
-                intent.putExtra("JOB", job);
+                intent.putExtra("JOB", jobPost);
                 mContext.startActivity(intent);
             }
         });
@@ -71,7 +71,7 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.JobListV
 
     @Override
     public int getItemCount() {
-        return jobList.size();
+        return jobPostList.size();
     }
 
     private String getCompanyImage(int i) {

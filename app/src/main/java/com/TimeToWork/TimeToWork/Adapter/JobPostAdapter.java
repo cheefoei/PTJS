@@ -12,10 +12,10 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.TimeToWork.TimeToWork.Database.Entity.JobPost;
 import com.TimeToWork.TimeToWork.JobDetailActivity;
 import com.TimeToWork.TimeToWork.R;
-import com.TimeToWork.TimeToWork.activity.company.UpdateJobPostActivity;
-import com.TimeToWork.TimeToWork.Database.Entity.Job;
+import com.TimeToWork.TimeToWork.Company.UpdateJobPostActivity;
 
 import java.util.List;
 import java.util.Locale;
@@ -23,11 +23,11 @@ import java.util.Locale;
 public class JobPostAdapter extends RecyclerView.Adapter<JobPostAdapter.JobPostViewHolder> {
 
     private Context mContext;
-    private List<Job> jobList;
+    private List<JobPost> jobPostList;
 
-    public JobPostAdapter(Context mContext, List<Job> jobList) {
+    public JobPostAdapter(Context mContext, List<JobPost> jobPostList) {
         this.mContext = mContext;
-        this.jobList = jobList;
+        this.jobPostList = jobPostList;
     }
 
     @Override
@@ -41,12 +41,12 @@ public class JobPostAdapter extends RecyclerView.Adapter<JobPostAdapter.JobPostV
     @Override
     public void onBindViewHolder(JobPostViewHolder jobPostViewHolder, int i) {
 
-        final Job job = jobList.get(i);
+        final JobPost jobPost = jobPostList.get(i);
 
-        jobPostViewHolder.title.setText(job.getTitle());
-        jobPostViewHolder.workplace.setText(job.getWorkplace());
+        jobPostViewHolder.title.setText(jobPost.getTitle());
+//        jobPostViewHolder.workplace.setText(jobPost.getWorkplace());
         jobPostViewHolder.workingDate.setText("30 July 2018");
-        jobPostViewHolder.wages.setText(String.format(Locale.getDefault(), "RM %.2f", job.getWages()));
+        jobPostViewHolder.wages.setText(String.format(Locale.getDefault(), "RM %.2f", jobPost.getWages()));
 
         jobPostViewHolder.layoutJob.setOnClickListener(new View.OnClickListener() {
 
@@ -54,7 +54,7 @@ public class JobPostAdapter extends RecyclerView.Adapter<JobPostAdapter.JobPostV
             public void onClick(View v) {
 
                 Intent intent = new Intent(mContext, JobDetailActivity.class);
-                intent.putExtra("JOB", job);
+                intent.putExtra("JOB", jobPost);
                 mContext.startActivity(intent);
             }
         });
@@ -65,7 +65,7 @@ public class JobPostAdapter extends RecyclerView.Adapter<JobPostAdapter.JobPostV
             public void onClick(View v) {
 
                 Intent intent = new Intent(mContext, UpdateJobPostActivity.class);
-                intent.putExtra("JOB", job);
+                intent.putExtra("JOB", jobPost);
                 mContext.startActivity(intent);
             }
         });
@@ -78,7 +78,7 @@ public class JobPostAdapter extends RecyclerView.Adapter<JobPostAdapter.JobPostV
                 AlertDialog.Builder builder
                         = new AlertDialog.Builder(mContext, R.style.DialogStyle)
                         .setTitle("Confirmation")
-                        .setMessage("Delete this job post? You cannot undo this action. ")
+                        .setMessage("Delete this jobPost post? You cannot undo this action. ")
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
                             @Override
@@ -94,7 +94,7 @@ public class JobPostAdapter extends RecyclerView.Adapter<JobPostAdapter.JobPostV
 
     @Override
     public int getItemCount() {
-        return jobList.size();
+        return jobPostList.size();
     }
 
     class JobPostViewHolder extends RecyclerView.ViewHolder {

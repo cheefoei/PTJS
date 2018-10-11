@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">TimeToWork</string>
+    <string name="activity_login">Login</string>
+    <string name="activity_forgot_password">Forgot Password</string>
     <string name="activity_job_detail">Job Detail</string>
     <string name="activity_add_job_post">New Job Post</string>
     <string name="activity_update_job_post">Update Job Post</string>
@@ -10,6 +12,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="fragment_home">Home</string>
+    <string name="fragment_profile">Profile</string>
     <string name="fragment_my_job">My Job</string>
 
     <!-- TODO: Dialog messages -->
@@ -29,6 +32,7 @@
     <string name="btn_make_payment">Make Payment</string>
     <string name="btn_rate_this">Rate This</string>
 
+    <!-- TODO: Examples/Placeholders -->
     <string name="example_company_name">[Company Name]</string>
     <string name="example_job_distance">##.## KM</string>
     <string name="example_rate_value">4.3</string>
@@ -62,12 +66,13 @@
     <!-- TODO: Login and Register activity Strings -->
     <string name="string_login">login</string>
     <string name="string_register">register</string>
+    <string name="string_continue_forgot">Continue</string>
     <string name="string_back">back</string>
     <string name="string_full_name">Full Name</string>
     <string name="string_email">Email</string>
     <string name="string_password">Password</string>
     <string name="string_confirm_password">Confirm Password</string>
-    <string name="tv_forgot_password">I forgot password</string>
+    <string name="tv_forgot_password">Forgot?</string>
 
     <!-- TODO: Payment -->
     <string name="string_card_type">Card type</string>
@@ -106,8 +111,9 @@
     </string-array>
 
     <!-- TODO: Urls -->
-    <string name="url_login">https&#58;&#47;&#47;timetowork.azurewebsites.net&#47;TimeToWork&#47;JobseekerLogin.php</string>
-    <string name="url_recover_password">https://timetowork-function.azurewebsites.net/api/RecoverPassword?code=oqwrUG7kXuj/D2eicZ1kNFzg0LldCvau5AkOH/NbUEAYqiqddlGYwA==</string>
-    <string name="url_sign_up">http&#58;&#47;&#47;34.223.245.46&#47;SignUp</string>
+    <string name="url_root">https://timetowork.azurewebsites.net/TimeToWork/view/</string>
+    <string name="url_jobseeker_login">jobseeker/JobseekerLogin.php</string>
+    <string name="url_company_login">company/CompanyLogin.php</string>
+    <string name="url_recover_password">JobseekerLogin.php</string>
 
 </resources>

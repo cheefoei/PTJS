@@ -1,4 +1,4 @@
-package com.TimeToWork.TimeToWork.NaviFragment;
+package com.TimeToWork.TimeToWork.NavigationFragment;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -9,9 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.TimeToWork.TimeToWork.Database.Entity.JobPost;
 import com.TimeToWork.TimeToWork.R;
 import com.TimeToWork.TimeToWork.Adapter.AppliedJobAdapter;
-import com.TimeToWork.TimeToWork.Database.Entity.Job;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,7 +22,7 @@ public class AppliedJobFragment extends Fragment {
     private ProgressDialog mProgressDialog;
 
     private AppliedJobAdapter adapter;
-    private List<Job> jobList;
+    private List<JobPost> jobPostList;
 
     public AppliedJobFragment() {
         // Required empty public constructor
@@ -38,8 +38,8 @@ public class AppliedJobFragment extends Fragment {
         mProgressDialog = new ProgressDialog(getActivity());
         mProgressDialog.setCancelable(false);
 
-        jobList = new ArrayList<>();
-        adapter = new AppliedJobAdapter(getContext(), jobList);
+        jobPostList = new ArrayList<>();
+        adapter = new AppliedJobAdapter(getContext(), jobPostList);
 
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -59,9 +59,9 @@ public class AppliedJobFragment extends Fragment {
         mProgressDialog.setMessage("Getting your data ...");
         mProgressDialog.show();
 
-        Job job2 = new Job("2", "UPSR Teacher (Homeroom, English & Add-Math) ", "C2", "7, Jalan Malinja 2, Taman Bunga Raya, 53000 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur", new Date(), 80, "", "", "");
-
-        jobList.add(job2);
+//        JobPost jobPost2 = new JobPost("2", "UPSR Teacher (Homeroom, English & Add-Math) ", "C2", "7, Jalan Malinja 2, Taman Bunga Raya, 53000 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur", new Date(), 80, "", "", "");
+//
+//        jobPostList.add(jobPost2);
         adapter.notifyDataSetChanged();
 
         mProgressDialog.dismiss();

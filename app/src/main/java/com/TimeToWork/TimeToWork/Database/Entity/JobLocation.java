@@ -1,16 +1,17 @@
 package com.TimeToWork.TimeToWork.Database.Entity;
 
-public class Company {
+import java.io.Serializable;
+
+public class JobLocation implements Serializable {
 
     private String id;
     private String name;
     private String address;
-    private String phone_number;
-    private String email;
+    private double latitude;
+    private double longitude;
     private double rating;
-    private String img;
 
-    public Company() {
+    public JobLocation() {
     }
 
     public String getId() {
@@ -37,20 +38,20 @@ public class Company {
         this.address = address;
     }
 
-    public String getPhone_number() {
-        return phone_number;
+    public double getLatitude() {
+        return latitude;
     }
 
-    public void setPhone_number(String phone_number) {
-        this.phone_number = phone_number;
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
 
-    public String getEmail() {
-        return email;
+    public double getLongitude() {
+        return longitude;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     public double getRating() {
@@ -59,13 +60,5 @@ public class Company {
 
     public void setRating(double rating) {
         this.rating = rating;
-    }
-
-    public String getImg() {
-        return img;
-    }
-
-    public void setImg(String img) {
-        this.img = img;
     }
 }

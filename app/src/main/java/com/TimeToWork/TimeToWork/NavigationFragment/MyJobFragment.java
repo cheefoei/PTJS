@@ -1,4 +1,4 @@
-package com.TimeToWork.TimeToWork.NaviFragment;
+package com.TimeToWork.TimeToWork.NavigationFragment;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
