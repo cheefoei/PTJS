@@ -4,11 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
-    tools:context="com.TimeToWork.TimeToWork.Jobseeker.ViewJobDetailActivity">
+    tools:context="com.TimeToWork.TimeToWork.Company.CompanyJobDetailActivity">
 
     <Button
         android:id="@+id/btn_apply_job"
-        style="@style/ButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_alignParentBottom="true"
@@ -79,8 +78,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin"
-                android:text="@string/example_posted_on"
                 android:fontFamily="@string/font_family_light"
+                android:text="Posted on 25 July 2018"
                 android:textSize="13sp" />
 
             <LinearLayout
@@ -104,27 +103,16 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/tv_workplace_name"
+                android:id="@+id/tv_workplace"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
+                android:layout_marginBottom="@dimen/margin"
                 android:layout_marginEnd="16dp"
                 android:drawablePadding="6dp"
                 android:drawableStart="@drawable/round_place_black_18"
                 android:fontFamily="@string/font_family_light"
                 android:text="@string/example_location"
                 android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/tv_workplace_address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="24dp"
-                android:fontFamily="@string/font_family_light"
-                android:text="@string/example_location"
-                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/tv_working_date"

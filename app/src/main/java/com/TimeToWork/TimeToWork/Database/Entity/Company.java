@@ -1,6 +1,8 @@
 package com.TimeToWork.TimeToWork.Database.Entity;
 
-public class Company {
+import java.io.Serializable;
+
+public class Company implements Serializable {
 
     private String id;
     private String name;

@@ -20,6 +20,7 @@ import com.TimeToWork.TimeToWork.NavigationFragment.HomeFragment;
 import com.TimeToWork.TimeToWork.NavigationFragment.MyJobFragment;
 
 import static com.TimeToWork.TimeToWork.MainApplication.clearAppData;
+import static com.TimeToWork.TimeToWork.MainApplication.userId;
 import static com.TimeToWork.TimeToWork.MainApplication.userType;
 
 public class MainActivity extends AppCompatActivity
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
         mFragment = new HomeFragment();
         mFragmentTransaction = fragmentManager.beginTransaction();
-        mFragmentTransaction.add(R.id.content_frame, mFragment);
+        mFragmentTransaction.add(R.id.content_frame, mFragment, currentFragment);
         mFragmentTransaction.commit();
 
         MainApplication.root = getString(R.string.url_root);
@@ -96,13 +97,21 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.navigation_home && !currentFragment.equals("HOME")) {
 
             navigation.getMenu().getItem(0).setChecked(true);
-            mFragment = new HomeFragment();
             currentFragment = "HOME";
+
+            mFragment = getSupportFragmentManager().findFragmentByTag(currentFragment);
+            if (mFragment == null) {
+                mFragment = new HomeFragment();
+            }
         } else if (id == R.id.navigation_my_job && !currentFragment.equals("MYJOB")) {
 
-            navigation.getMenu().getItem(1).setChecked(true);
             mFragment = new MyJobFragment();
             currentFragment = "MYJOB";
+
+            mFragment = getSupportFragmentManager().findFragmentByTag(currentFragment);
+            if (mFragment == null) {
+                mFragment = new MyJobFragment();
+            }
         } else if (id == R.id.navigation_profile && !currentFragment.equals("PROFILE")) {
 
             clearAppData(MainActivity.this);
@@ -110,7 +119,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         mFragmentTransaction = getSupportFragmentManager().beginTransaction();
-        mFragmentTransaction.replace(R.id.content_frame, mFragment);
+        mFragmentTransaction.replace(R.id.content_frame, mFragment, currentFragment);
         mFragmentTransaction.commit();
 
         return false;
@@ -146,6 +155,7 @@ public class MainActivity extends AppCompatActivity
 //                tvUsername.setText(jobseeker.getName());
                 navigation.inflateMenu(R.menu.menu_navigation_jobseeker);
                 userType = "Jobseeker";
+                userId = jobseeker.getId();
             } else {
 //                if (company.getImg() != null && !company.getImg().equals("")) {
 //                    byte[] decodedString = Base64.decode(company.getImg(), Base64.DEFAULT);
@@ -156,6 +166,7 @@ public class MainActivity extends AppCompatActivity
 //                tvUsername.setText(company.getName());
                 navigation.inflateMenu(R.menu.menu_navigation_company);
                 userType = "Company";
+                userId = company.getId();
             }
         }
     }

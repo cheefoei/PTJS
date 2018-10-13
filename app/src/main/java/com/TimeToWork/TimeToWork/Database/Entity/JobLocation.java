@@ -10,6 +10,7 @@ public class JobLocation implements Serializable {
     private double latitude;
     private double longitude;
     private double rating;
+    private String distance;
 
     public JobLocation() {
     }
@@ -60,5 +61,13 @@ public class JobLocation implements Serializable {
 
     public void setRating(double rating) {
         this.rating = rating;
+    }
+
+    public String getDistance() {
+        return distance;
+    }
+
+    public void setDistance(String distance) {
+        this.distance = distance;
     }
 }

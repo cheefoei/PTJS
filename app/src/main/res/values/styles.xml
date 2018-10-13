@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:fontFamily">@string/font_family_medium</item>
         <item name="android:textColor">@color/colorTextPrimary</item>
+        <item name="actionOverflowMenuStyle">@style/OverflowMenu</item>
         <item name="editTextStyle">@style/EditTextStyle</item>
         <item name="alertDialogTheme">@style/DialogStyle</item>
         <item name="ratingBarStyle">@style/RatingBarTheme</item>
@@ -25,6 +26,12 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="OverflowMenu" parent="Widget.AppCompat.PopupMenu.Overflow">
+        <item name="android:windowDisablePreview">true</item>
+        <item name="overlapAnchor">false</item>
+        <item name="android:dropDownVerticalOffset">5.0dp</item>
+    </style>
 
     <style name="ButtonStyle" parent="@style/Widget.AppCompat.Button.Borderless">
         <item name="android:textColor">@color/colorWhite</item>

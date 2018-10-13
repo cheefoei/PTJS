@@ -1,4 +1,4 @@
-package com.TimeToWork.TimeToWork;
+package com.TimeToWork.TimeToWork.Company;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -7,18 +7,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.TimeToWork.TimeToWork.Company.ApplicantListActivity;
 import com.TimeToWork.TimeToWork.Database.Entity.JobPost;
+import com.TimeToWork.TimeToWork.R;
 
 import java.util.Locale;
 
-public class JobDetailActivity extends AppCompatActivity {
+public class CompanyJobDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_job_detail);
+        setContentView(R.layout.activity_company_job_detail);
 
         JobPost jobPost = (JobPost) getIntent().getSerializableExtra("JOB");
 
@@ -50,7 +50,7 @@ public class JobDetailActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        getMenuInflater().inflate(R.menu.menu_job_detail, menu);
+        getMenuInflater().inflate(R.menu.menu_view_job_detail, menu);
         return super.onCreateOptionsMenu(menu);
     }
 

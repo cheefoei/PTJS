@@ -45,7 +45,7 @@ public class ApplicantListAdapter extends RecyclerView.Adapter<ApplicantListAdap
             @Override
             public void onClick(View v) {
 
-//                Intent intent = new Intent(mContext, JobDetailActivity.class);
+//                Intent intent = new Intent(mContext, ViewJobDetailActivity.class);
 //                mContext.startActivity(intent);
             }
         });

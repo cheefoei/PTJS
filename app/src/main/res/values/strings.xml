@@ -18,14 +18,13 @@
     <!-- TODO: Dialog messages -->
     <string name="progress_loading">Loading …</string>
     <string name="progress_logging_in">Logging in …</string>
+    <string name="progress_applying_job">Applying job …</string>
 
     <string name="string_img_company">Company Image</string>
     <string name="string_requirements">Requirements</string>
     <string name="string_description">Description</string>
     <string name="string_note">Note</string>
 
-    <string name="btn_share">Share</string>
-    <string name="btn_wishlist">Wishlist</string>
     <string name="btn_apply_now">Apply Now</string>
     <string name="btn_post_new_job">Post Job</string>
     <string name="btn_update_job_post">Update Job</string>
@@ -34,15 +33,19 @@
 
     <!-- TODO: Examples/Placeholders -->
     <string name="example_company_name">[Company Name]</string>
-    <string name="example_job_distance">##.## KM</string>
+    <string name="example_job_distance">0.00KM</string>
     <string name="example_rate_value">4.3</string>
     <string name="example_job_title">[Job Title]</string>
     <string name="example_location">[Location]</string>
+    <string name="example_posted_on">Posted on </string>
     <string name="example_date">[Date]</string>
     <string name="example_wage">[RM 000.00]</string>
     <string name="example_job_requirement">[Job Requirement]</string>
     <string name="example_job_description">[Job Description]</string>
     <string name="example_job_note">[Job Note]</string>
+
+    <!-- TODO: Notice empty content -->
+    <string name="empty_job_post">Empty job post</string>
 
     <string-array name="array_payment_term">
         <item>7 days</item>
@@ -113,7 +116,13 @@
     <!-- TODO: Urls -->
     <string name="url_root">https://timetowork.azurewebsites.net/TimeToWork/view/</string>
     <string name="url_jobseeker_login">jobseeker/JobseekerLogin.php</string>
+    <string name="url_jobseeker_recovery">jobseeker/JobseekerRecovery.php</string>
     <string name="url_company_login">company/CompanyLogin.php</string>
-    <string name="url_recover_password">JobseekerLogin.php</string>
+    <string name="url_company_recovery">company/</string>
+    <string name="url_fetch_job_post">jobseeker/GetJobPostForJobseeker.php</string>
+    <string name="url_apply_job">jobseeker/SubmitNewJobApplication.php</string>
+    <string name="url_get_job_application_for_jobseeker">jobseeker/GetJobApplicationForJobseeker.php</string>
+    <string name="string_empty_job_application">No job application found</string>
+    <string name="btn_review_this">Review this</string>
 
 </resources>

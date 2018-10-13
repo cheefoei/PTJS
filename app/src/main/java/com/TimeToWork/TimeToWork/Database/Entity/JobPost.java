@@ -18,7 +18,9 @@ public class JobPost implements Serializable {
     private String note;
     private double wages;
     private int paymentTerm;
+    private int positionNumber;
     private char preferGender;
+    private boolean isAds;
 
     public JobPost() {
     }
@@ -127,11 +129,27 @@ public class JobPost implements Serializable {
         this.paymentTerm = paymentTerm;
     }
 
+    public int getPositionNumber() {
+        return positionNumber;
+    }
+
+    public void setPositionNumber(int positionNumber) {
+        this.positionNumber = positionNumber;
+    }
+
     public char getPreferGender() {
         return preferGender;
     }
 
     public void setPreferGender(char preferGender) {
         this.preferGender = preferGender;
+    }
+
+    public boolean isAds() {
+        return isAds;
+    }
+
+    public void setAds(boolean ads) {
+        isAds = ads;
     }
 }

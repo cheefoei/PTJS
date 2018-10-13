@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.TimeToWork.TimeToWork.Jobseeker.JobApplicationFragment;
 import com.TimeToWork.TimeToWork.R;
 
 import java.util.ArrayList;
@@ -34,13 +35,22 @@ public class MyJobFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_my_job, container, false);
 
+        Fragment sentJobFragment = new JobApplicationFragment();
+        Fragment approvedJobFragment = new JobApplicationFragment();
+        Fragment rejectedJobFragment = new JobApplicationFragment();
+        Fragment completedJobFragment = new JobApplicationFragment();
+        Fragment cancelledJobFragment = new JobApplicationFragment();
+
         ViewPagerAdapter viewPagerAdapter
-                = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
-        viewPagerAdapter.addFragment(new AppliedJobFragment(), "Applied");
-        viewPagerAdapter.addFragment(new AppliedJobFragment(), "Approve");
-        viewPagerAdapter.addFragment(new AppliedJobFragment(), "Completed");
+                = new ViewPagerAdapter(getChildFragmentManager()); //**
+        viewPagerAdapter.addFragment(sentJobFragment, "Sent");
+        viewPagerAdapter.addFragment(approvedJobFragment, "Approved");
+        viewPagerAdapter.addFragment(completedJobFragment, "Completed");
+        viewPagerAdapter.addFragment(rejectedJobFragment, "Rejected");
+        viewPagerAdapter.addFragment(cancelledJobFragment, "Cancelled");
 
         ViewPager mViewPager = (ViewPager) view.findViewById(R.id.viewpager_my_job);
+        mViewPager.setOffscreenPageLimit(4);
         mViewPager.setAdapter(viewPagerAdapter);
 
         TabLayout mTabLayout = (TabLayout) view.findViewById(R.id.tab_job_status);
@@ -65,7 +75,12 @@ public class MyJobFragment extends Fragment {
 
         @Override
         public Fragment getItem(int position) {
-            return mFragmentList.get(position);
+
+            Bundle bundle = new Bundle();
+            bundle.putString("STATUS", getPageTitle(position).toString());
+            Fragment fragment = mFragmentList.get(position);
+            fragment.setArguments(bundle);
+            return fragment;
         }
 
         @Override

@@ -1,16 +1,22 @@
 package com.TimeToWork.TimeToWork;
 
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.TimeToWork.TimeToWork.CustomClass.CustomProgressDialog;
 import com.TimeToWork.TimeToWork.CustomClass.CustomVolleyErrorListener;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -62,16 +68,48 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(String response) {
-                mProgressDialog.toggleProgressDialog();
-                Toast.makeText(ForgotPasswordActivity.this, response, Toast.LENGTH_LONG).show();
+                Log.e("JSON", response);
+
+                try {
+                    JSONObject jsonResponse = new JSONObject(response);
+
+
+                    //If failed, then show alert dialog
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ForgotPasswordActivity.this);
+                    builder.setMessage(jsonResponse.getString("message"))
+                            .setPositiveButton("OK", null)
+                            .create()
+                            .show();
+
+                    //To close progress dialog
+                    mProgressDialog.toggleProgressDialog();
+
+                } catch (JSONException e) {
+
+                    e.printStackTrace();
+                    //To close progress dialog
+                    mProgressDialog.toggleProgressDialog();
+                    //If exception, then show alert dialog
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ForgotPasswordActivity.this);
+                    builder.setMessage(e.getMessage())
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    ForgotPasswordActivity.this.finish();
+                                }
+                            })
+                            .create()
+                            .show();
+                }
             }
         };
 
         String url = null;
         if (userType.equals("Company")) {
-            url = getString(R.string.url_jobseeker_login);
+            url = getString(R.string.url_company_recovery);
         } else if (userType.equals("Jobseeker")) {
-            url = getString(R.string.url_jobseeker_login);
+            url = getString(R.string.url_jobseeker_recovery);
         }
 
         CustomVolleyErrorListener errorListener
@@ -83,6 +121,10 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 responseListener,
                 errorListener
         );
+        recoverPasswordRequest.setRetryPolicy(new DefaultRetryPolicy(
+                30000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         mRequestQueue.add(recoverPasswordRequest);
     }
 
@@ -94,9 +136,9 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                                String url,
                                Response.Listener<String> listener,
                                Response.ErrorListener errorListener) {
-            super(Method.GET, url, listener, errorListener);
+            super(Method.POST, url, listener, errorListener);
             params = new HashMap<>();
-            params.put("forgotEmail", forgotEmail);
+            params.put("email", forgotEmail);
         }
 
         public Map<String, String> getParams() {

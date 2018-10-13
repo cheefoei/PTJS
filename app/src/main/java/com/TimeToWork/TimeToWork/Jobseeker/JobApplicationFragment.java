@@ -1,39 +1,26 @@
-package com.TimeToWork.TimeToWork.NavigationFragment;
+package com.TimeToWork.TimeToWork.Jobseeker;
 
-import android.Manifest;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.TimeToWork.TimeToWork.Company.CompanyMainActivity;
-import com.TimeToWork.TimeToWork.Adapter.JobListAdapter;
 import com.TimeToWork.TimeToWork.CustomClass.CustomProgressDialog;
 import com.TimeToWork.TimeToWork.CustomClass.CustomVolleyErrorListener;
 import com.TimeToWork.TimeToWork.Database.Entity.Company;
+import com.TimeToWork.TimeToWork.Database.Entity.JobApplication;
 import com.TimeToWork.TimeToWork.Database.Entity.JobLocation;
 import com.TimeToWork.TimeToWork.Database.Entity.JobPost;
-import com.TimeToWork.TimeToWork.Database.Entity.Jobseeker;
-import com.TimeToWork.TimeToWork.Database.JobseekerDA;
 import com.TimeToWork.TimeToWork.R;
+import com.TimeToWork.TimeToWork.Adapter.JobApplicationAdapter;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 
@@ -53,47 +40,44 @@ import static com.TimeToWork.TimeToWork.MainApplication.mRequestQueue;
 import static com.TimeToWork.TimeToWork.MainApplication.root;
 import static com.TimeToWork.TimeToWork.MainApplication.userId;
 
-public class HomeFragment extends Fragment {
+public class JobApplicationFragment extends Fragment {
 
     private CustomProgressDialog mProgressDialog;
     private SwipeRefreshLayout swipeContainer;
     private TextView tvEmpty;
 
-    private LocationManager mLocationManager;
-    private Jobseeker jobseeker;
-
-    private JobListAdapter adapter;
+    private JobApplicationAdapter adapter;
     private List<JobPost> jobPostList;
     private List<JobLocation> jobLocationList;
     private List<Company> companyList;
+    private List<JobApplication> jobApplicationList;
 
-    public HomeFragment() {
+    private String status;
+
+    public JobApplicationFragment() {
         // Required empty public constructor
     }
 
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-        getActivity().setTitle(getString(R.string.fragment_home));
-
-        // Enable menu in toolbar
-        setHasOptionsMenu(true);
+    public View onCreateView(LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_job_application, container, false);
 
-        mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        status = getArguments().getString("STATUS");
 
         mProgressDialog = new CustomProgressDialog(getActivity());
-        tvEmpty = (TextView) view.findViewById(R.id.tv_empty_job_post);
+        tvEmpty = (TextView) view.findViewById(R.id.tv_empty_job_application);
 
         swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 
             @Override
             public void onRefresh() {
-                setupJobPostList();
+                setupSentApplication();
             }
         });
         swipeContainer.setColorSchemeResources(R.color.colorAccent);
@@ -101,96 +85,28 @@ public class HomeFragment extends Fragment {
         jobPostList = new ArrayList<>();
         jobLocationList = new ArrayList<>();
         companyList = new ArrayList<>();
-        adapter = new JobListAdapter(getContext(), jobPostList, jobLocationList, companyList);
+        jobApplicationList = new ArrayList<>();
+        adapter = JobApplicationAdapter.getAdapter(
+                getContext(), jobPostList, jobLocationList, companyList, jobApplicationList);
 
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
 
-        RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_job_list);
+        RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_applied_job);
         mRecyclerView.setLayoutManager(llm);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(adapter);
 
-        // Show progress dialog at the beginning
-        mProgressDialog.setMessage("Getting your data ...");
-        mProgressDialog.show();
-        // Get current location
-        getCurrentLocation();
-        //Get jobseeker data from local database
-        JobseekerDA jobseekerDA = new JobseekerDA(getActivity());
-        jobseeker = jobseekerDA.getJobseekerData();
-        jobseekerDA.close();
-        // Show job posts in list
-        setupJobPostList();
+        setupSentApplication();
 
         return view;
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    private void setupSentApplication() {
 
-        inflater.inflate(R.menu.menu_home, menu);
-
-        SearchView searchView = ((SearchView) menu.findItem(R.id.search).getActionView());
-        searchView.setMaxWidth(Integer.MAX_VALUE);
-        searchView.setQueryHint("Search job");
-
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-
-        if (id == R.id.notification) {
-            Intent i = new Intent(getActivity(), CompanyMainActivity.class);
-            startActivity(i);
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case 1:
-                getCurrentLocation();
-                break;
-        }
-    }
-
-    private void getCurrentLocation() {
-
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(getActivity(),
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-        } else {
-
-            Location location = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-
-            if (location != null) {
-                adapter.setLatitude(location.getLatitude());
-                adapter.setLongitude(location.getLongitude());
-            } else {
-                adapter.setLatitude(Double.NaN);
-                adapter.setLongitude(Double.NaN);
-            }
-        }
-
-    }
-
-    private void setupJobPostList() {
-
-        String option = "{}";
+        // Show progress dialog
+        mProgressDialog.setMessage("Getting your application ...");
+        mProgressDialog.toggleProgressDialog();
 
         final Response.Listener<String> responseListener = new Response.Listener<String>() {
 
@@ -210,7 +126,7 @@ public class HomeFragment extends Fragment {
                         if (total != 0) {
 
                             // Convert job post list to json array
-                            JSONArray jobPostArray = jsonResponse.getJSONArray("JOBPOST");
+                            JSONArray jobPostArray = jsonResponse.getJSONArray("JOBAPPLICATION");
 
                             for (int i = 0; i < jobPostArray.length(); i++) {
 
@@ -250,9 +166,17 @@ public class HomeFragment extends Fragment {
                                 company.setRating(Double.parseDouble(jsonobject.getString("company_rating")));
                                 company.setImg(jsonobject.getString("company_img"));
 
+                                JobApplication jobApplication = new JobApplication();
+                                jobApplication.setId(jsonobject.getString("job_application_id"));
+                                jobApplication.setDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH)
+                                        .parse(jsonobject.getString("job_application_date")));
+                                jobApplication.setStatus(status);
+                                jobApplication.setRejectReason(jsonobject.getString("job_application_reject_reason"));
+
                                 jobPostList.add(jobPost);
                                 jobLocationList.add(jobLocation);
                                 companyList.add(company);
+                                jobApplicationList.add(jobApplication);
 
                                 tvEmpty.setVisibility(View.GONE);
                             }
@@ -261,6 +185,8 @@ public class HomeFragment extends Fragment {
                         }
                         adapter.notifyDataSetChanged();
                         swipeContainer.setRefreshing(false);
+                        //To close progress dialog
+                        mProgressDialog.dismiss();
 
                     } else {
                         //If failed, then show alert dialog
@@ -299,32 +225,30 @@ public class HomeFragment extends Fragment {
 
         CustomVolleyErrorListener errorListener
                 = new CustomVolleyErrorListener(getActivity(), mProgressDialog, mRequestQueue);
-        HomeFragment.FetchJobPostRequest fetchJobPostRequest = new HomeFragment.FetchJobPostRequest(
-                option,
-                Character.toString(jobseeker.getGender()),
-                root + getString(R.string.url_fetch_job_post),
+        JobApplicationFragment.FetchJobApplicationRequest fetchJobApplicationRequest
+                = new JobApplicationFragment.FetchJobApplicationRequest(
+                status,
+                root + getString(R.string.url_get_job_application_for_jobseeker),
                 responseListener,
                 errorListener
         );
-        mRequestQueue.add(fetchJobPostRequest);
+        mRequestQueue.add(fetchJobApplicationRequest);
     }
 
-    private class FetchJobPostRequest extends StringRequest {
+    private class FetchJobApplicationRequest extends StringRequest {
 
         private Map<String, String> params;
 
-        FetchJobPostRequest(
-                String option,
-                String gender,
+        FetchJobApplicationRequest(
+                String status,
                 String url,
                 Response.Listener<String> listener,
                 Response.ErrorListener errorListener) {
             super(Method.POST, url, listener, errorListener);
 
             params = new HashMap<>();
-            params.put("option", option);
             params.put("jobseeker_id", userId);
-            params.put("jobseeker_gender", gender);
+            params.put("status", status);
         }
 
         public Map<String, String> getParams() {

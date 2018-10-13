@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.TimeToWork.TimeToWork.Database.Entity.JobPost;
-import com.TimeToWork.TimeToWork.JobDetailActivity;
+import com.TimeToWork.TimeToWork.Jobseeker.ViewJobDetailActivity;
 import com.TimeToWork.TimeToWork.R;
 import com.TimeToWork.TimeToWork.Company.UpdateJobPostActivity;
 
@@ -53,7 +53,7 @@ public class JobPostAdapter extends RecyclerView.Adapter<JobPostAdapter.JobPostV
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(mContext, JobDetailActivity.class);
+                Intent intent = new Intent(mContext, ViewJobDetailActivity.class);
                 intent.putExtra("JOB", jobPost);
                 mContext.startActivity(intent);
             }
