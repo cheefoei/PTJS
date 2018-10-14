@@ -6,19 +6,36 @@
     android:background="@color/colorWhite"
     tools:context="com.TimeToWork.TimeToWork.Jobseeker.ViewJobDetailActivity">
 
-    <Button
-        android:id="@+id/btn_apply_job"
-        style="@style/ButtonStyle"
+    <LinearLayout
+        android:id="@+id/layout_btn"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/colorButtonGreen"
-        android:text="@string/btn_apply_now" />
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btn_apply_job"
+            style="@style/ButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/colorButtonGreen"
+            android:text="@string/btn_apply_now" />
+
+        <Button
+            android:id="@+id/btn_cancel_job"
+            style="@style/ButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/colorButtonRed"
+            android:text="@string/btn_cancel_job"
+            android:visibility="gone" />
+
+    </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/btn_apply_job"
+        android:layout_above="@id/layout_btn"
         android:layout_alignParentTop="true"
         android:scrollbars="none">
 
@@ -79,8 +96,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin"
-                android:text="@string/example_posted_on"
                 android:fontFamily="@string/font_family_light"
+                android:text="@string/example_posted_on"
                 android:textSize="13sp" />
 
             <LinearLayout
@@ -92,7 +109,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/job_type_label"
+                    android:background="@drawable/bg_label_tag"
                     android:fontFamily="@string/font_family_light"
                     android:gravity="center"
                     android:minHeight="24dp"

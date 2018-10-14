@@ -112,7 +112,7 @@ public class HomeFragment extends Fragment {
         mRecyclerView.setAdapter(adapter);
 
         // Show progress dialog at the beginning
-        mProgressDialog.setMessage("Getting your data ...");
+        mProgressDialog.setMessage("Loading job post ...");
         mProgressDialog.show();
         // Get current location
         getCurrentLocation();

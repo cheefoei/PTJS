@@ -162,6 +162,7 @@ public class JobApplicationFragment extends Fragment {
                                 jobLocation.setLongitude(Double.parseDouble(jsonobject.getString("job_location_long")));
 
                                 Company company = new Company();
+                                company.setId(jsonobject.getString("company_id"));
                                 company.setName(jsonobject.getString("company_name"));
                                 company.setRating(Double.parseDouble(jsonobject.getString("company_rating")));
                                 company.setImg(jsonobject.getString("company_img"));

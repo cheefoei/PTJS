@@ -11,7 +11,7 @@
         <item name="actionOverflowMenuStyle">@style/OverflowMenu</item>
         <item name="editTextStyle">@style/EditTextStyle</item>
         <item name="alertDialogTheme">@style/DialogStyle</item>
-        <item name="ratingBarStyle">@style/RatingBarTheme</item>
+        <item name="ratingBarStyle">@style/SmallRatingBarTheme</item>
     </style>
 
     <style name="AppTheme.WhiteStatusBar" parent="AppTheme">
@@ -61,9 +61,12 @@
         <item name="android:background">?selectableItemBackgroundBorderless</item>
     </style>
 
-    <style name="RatingBarTheme" parent="Widget.AppCompat.RatingBar.Small">
-        <item name="android:colorControlNormal">#f9a825</item>
-        <item name="android:colorControlActivated">#f9a825</item>
+    <style name="SmallRatingBarTheme" parent="Widget.AppCompat.RatingBar.Small">
+        <item name="android:progressTint">@color/colorAccent</item>
+    </style>
+
+    <style name="RatingBarTheme" parent="Widget.AppCompat.RatingBar">
+        <item name="android:progressTint">@color/colorAccent</item>
     </style>
 
 </resources>

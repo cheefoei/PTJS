@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.TimeToWork.TimeToWork.CustomClass.CustomProgressDialog;
 import com.TimeToWork.TimeToWork.CustomClass.CustomVolleyErrorListener;
 import com.TimeToWork.TimeToWork.Database.Entity.Company;
+import com.TimeToWork.TimeToWork.Database.Entity.JobApplication;
 import com.TimeToWork.TimeToWork.Database.Entity.JobLocation;
 import com.TimeToWork.TimeToWork.Database.Entity.JobPost;
 import com.TimeToWork.TimeToWork.R;
@@ -37,6 +38,7 @@ import static com.TimeToWork.TimeToWork.MainApplication.userId;
 public class ViewJobDetailActivity extends AppCompatActivity {
 
     private JobPost jobPost;
+    private JobApplication jobApplication;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,6 +133,35 @@ public class ViewJobDetailActivity extends AppCompatActivity {
         if (!apply) {
             btnApply.setVisibility(View.GONE);
         }
+
+        boolean cancel = getIntent().getBooleanExtra("CANCEL", false);
+        if (cancel) {
+
+            jobApplication = (JobApplication) getIntent().getSerializableExtra("JOBAPPLICATION");
+
+            Button btnCancel = (Button) findViewById(R.id.btn_cancel_job);
+            btnCancel.setVisibility(View.VISIBLE);
+            btnCancel.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ViewJobDetailActivity.this);
+                    builder.setTitle("Confirmation")
+                            .setMessage("Confirm to cancel this job? You cannot apply this job again after performed this action.")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    cancelJob();
+                                }
+                            })
+                            .setNegativeButton("No", null)
+                            .create()
+                            .show();
+                }
+            });
+        }
     }
 
     @Override
@@ -219,6 +250,74 @@ public class ViewJobDetailActivity extends AppCompatActivity {
         mRequestQueue.add(loginRequest);
     }
 
+    private void cancelJob() {
+
+        //Show progress dialog
+        final CustomProgressDialog mProgressDialog = new CustomProgressDialog(ViewJobDetailActivity.this);
+        mProgressDialog.setMessage(getString(R.string.progress_cancel_job));
+        mProgressDialog.toggleProgressDialog();
+
+        final Response.Listener<String> responseListener = new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    JSONObject jsonResponse = new JSONObject(response);
+                    boolean success = jsonResponse.getBoolean("success");
+                    String title;
+
+                    if (success) {
+                        title = "Success";
+                    } else {
+                        title = "Failed";
+                    }
+
+                    //To close progress dialog
+                    mProgressDialog.toggleProgressDialog();
+                    //To show message from server
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ViewJobDetailActivity.this);
+                    builder.setMessage(jsonResponse.getString("msg"))
+                            .setTitle(title)
+                            .setPositiveButton("OK", null)
+                            .create()
+                            .show();
+
+                } catch (JSONException e) {
+
+                    e.printStackTrace();
+                    //To close progress dialog
+                    mProgressDialog.toggleProgressDialog();
+                    //If exception, then show alert dialog
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ViewJobDetailActivity.this);
+                    builder.setMessage(e.getMessage())
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    ViewJobDetailActivity.this.finish();
+                                }
+                            })
+                            .create()
+                            .show();
+                }
+            }
+        };
+
+        CustomVolleyErrorListener errorListener
+                = new CustomVolleyErrorListener(ViewJobDetailActivity.this, mProgressDialog, mRequestQueue);
+        ViewJobDetailActivity.CancelJobRequest cancelJobRequest
+                = new ViewJobDetailActivity.CancelJobRequest(
+                jobApplication.getId(),
+                jobPost.getId(),
+                userId,
+                root + getString(R.string.url_cancel_job),
+                responseListener,
+                errorListener
+        );
+        mRequestQueue.add(cancelJobRequest);
+    }
+
     private class ApplyJobRequest extends StringRequest {
 
         private Map<String, String> params;
@@ -232,6 +331,30 @@ public class ViewJobDetailActivity extends AppCompatActivity {
             super(Method.POST, url, listener, errorListener);
 
             params = new HashMap<>();
+            params.put("job_post_id", jobPostId);
+            params.put("jobseeker_id", jobseekerId);
+        }
+
+        public Map<String, String> getParams() {
+            return params;
+        }
+    }
+
+    private class CancelJobRequest extends StringRequest {
+
+        private Map<String, String> params;
+
+        CancelJobRequest(String jobApplicationId,
+                         String jobPostId,
+                         String jobseekerId,
+                         String url,
+                         Response.Listener<String> listener,
+                         Response.ErrorListener errorListener) {
+
+            super(Method.POST, url, listener, errorListener);
+
+            params = new HashMap<>();
+            params.put("job_application_id", jobApplicationId);
             params.put("job_post_id", jobPostId);
             params.put("jobseeker_id", jobseekerId);
         }

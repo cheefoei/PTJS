@@ -3,6 +3,8 @@
     <string name="activity_login">Login</string>
     <string name="activity_forgot_password">Forgot Password</string>
     <string name="activity_job_detail">Job Detail</string>
+    <string name="activity_new_review">New Job Review</string>
+    <string name="activity_view_review">Job Review</string>
     <string name="activity_add_job_post">New Job Post</string>
     <string name="activity_update_job_post">Update Job Post</string>
     <string name="activity_payment">Payment</string>
@@ -19,6 +21,7 @@
     <string name="progress_loading">Loading …</string>
     <string name="progress_logging_in">Logging in …</string>
     <string name="progress_applying_job">Applying job …</string>
+    <string name="progress_cancel_job">Canceling job …</string>
 
     <string name="string_img_company">Company Image</string>
     <string name="string_requirements">Requirements</string>
@@ -30,6 +33,8 @@
     <string name="btn_update_job_post">Update Job</string>
     <string name="btn_make_payment">Make Payment</string>
     <string name="btn_rate_this">Rate This</string>
+    <string name="btn_review_this">Review</string>
+    <string name="btn_cancel_job">Cancel Job</string>
 
     <!-- TODO: Examples/Placeholders -->
     <string name="example_company_name">[Company Name]</string>
@@ -37,7 +42,7 @@
     <string name="example_rate_value">4.3</string>
     <string name="example_job_title">[Job Title]</string>
     <string name="example_location">[Location]</string>
-    <string name="example_posted_on">Posted on </string>
+    <string name="example_posted_on">Posted on &#160;</string>
     <string name="example_date">[Date]</string>
     <string name="example_wage">[RM 000.00]</string>
     <string name="example_job_requirement">[Job Requirement]</string>
@@ -46,14 +51,7 @@
 
     <!-- TODO: Notice empty content -->
     <string name="empty_job_post">Empty job post</string>
-
-    <string-array name="array_payment_term">
-        <item>7 days</item>
-        <item>14 days</item>
-        <item>30 days</item>
-        <item>45 days</item>
-        <item>60 days</item>
-    </string-array>
+    <string name="string_empty_job_application">No job application found</string>
 
     <!-- TODO: Error messages -->
     <string name="error_required_field">This field is required</string>
@@ -84,6 +82,25 @@
     <string name="string_cvv">CVV</string>
     <string name="string_exp_date">Expiration Date</string>
 
+    <string-array name="array_payment_term">
+        <item>7 days</item>
+        <item>14 days</item>
+        <item>30 days</item>
+        <item>45 days</item>
+        <item>60 days</item>
+    </string-array>
+    <string-array name="array_review_tag_jobseeker">
+        <item>good company</item>
+        <item>high wages</item>
+        <item>training provided</item>
+        <item>helpful</item>
+    </string-array>
+    <string-array name="array_review_tag_company">
+        <item>hardworking</item>
+        <item>punctual</item>
+        <item>open-mind</item>
+        <item>satisfied</item>
+    </string-array>
     <string-array name="month">
         <item>January</item>
         <item>February</item>
@@ -98,7 +115,6 @@
         <item>November</item>
         <item>December</item>
     </string-array>
-
     <string-array name="year">
         <item>2018</item>
         <item>2019</item>
@@ -122,7 +138,15 @@
     <string name="url_fetch_job_post">jobseeker/GetJobPostForJobseeker.php</string>
     <string name="url_apply_job">jobseeker/SubmitNewJobApplication.php</string>
     <string name="url_get_job_application_for_jobseeker">jobseeker/GetJobApplicationForJobseeker.php</string>
-    <string name="string_empty_job_application">No job application found</string>
-    <string name="btn_review_this">Review this</string>
+    <string name="url_cancel_job">jobseeker/CancelJobApplication.php</string>
+    <string name="url_submit_review_by_jobseeker">jobseeker/ProvideReviewByJobseeker.php</string>
+    <string name="url_update_review_by_jobseeker">jobseeker/UpdateReviewByJobseeker.php</string>
+    <string name="url_delete_review_by_jobseeker">jobseeker/DeleteReviewByJobseeker.php</string>
+    <string name="url_get_review_of_company">company/GetReviewOfCompany.php</string>
+
+
+    <string name="btn_submit_review">Submit Review</string>
+    <string name="btn_update_review">Update Review</string>
+
 
 </resources>
