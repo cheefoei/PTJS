@@ -17,7 +17,7 @@ public class UpdateJobPostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_job_post);
 
-        JobPost jobPost = (JobPost) getIntent().getSerializableExtra("JOB");
+        JobPost jobPost = (JobPost) getIntent().getSerializableExtra("JOBPOST");
 
         EditText etJobTitle = (EditText) findViewById(R.id.et_job_title);
         EditText etLocation = (EditText) findViewById(R.id.et_job_location);

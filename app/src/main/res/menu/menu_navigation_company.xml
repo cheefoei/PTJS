@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/navigation_home"
+        android:id="@+id/navigation_company_home"
         android:icon="@drawable/baseline_home_white_24"
         android:title="@string/fragment_home"
         app:showAsAction="ifRoom" />

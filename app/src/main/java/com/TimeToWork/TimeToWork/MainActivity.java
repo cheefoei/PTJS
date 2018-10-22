@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,7 +15,8 @@ import com.TimeToWork.TimeToWork.Database.CompanyDA;
 import com.TimeToWork.TimeToWork.Database.Entity.Company;
 import com.TimeToWork.TimeToWork.Database.Entity.Jobseeker;
 import com.TimeToWork.TimeToWork.Database.JobseekerDA;
-import com.TimeToWork.TimeToWork.NavigationFragment.HomeFragment;
+import com.TimeToWork.TimeToWork.NavigationFragment.CompanyHomeFragment;
+import com.TimeToWork.TimeToWork.NavigationFragment.JobseekerHomeFragment;
 import com.TimeToWork.TimeToWork.NavigationFragment.MyJobFragment;
 
 import static com.TimeToWork.TimeToWork.MainApplication.clearAppData;
@@ -39,16 +39,6 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        navigation = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-        navigation.setOnNavigationItemSelectedListener(this);
-
-        // Adding home fragment into frame as default
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        mFragment = new HomeFragment();
-        mFragmentTransaction = fragmentManager.beginTransaction();
-        mFragmentTransaction.add(R.id.content_frame, mFragment, currentFragment);
-        mFragmentTransaction.commit();
-
         MainApplication.root = getString(R.string.url_root);
         mProgressDialog = new CustomProgressDialog(MainActivity.this);
 
@@ -56,25 +46,50 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             protected void onPreExecute() {
+
                 super.onPreExecute();
+
+                navigation = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+                navigation.setOnNavigationItemSelectedListener(MainActivity.this);
+
                 //Show progress dialog
                 mProgressDialog.setMessage("Loading ...");
                 mProgressDialog.show();
             }
 
             @Override
-            protected String doInBackground(String... params) {
+            protected Boolean doInBackground(String... params) {
 
                 MainApplication.setRequestQueue(MainActivity.this);
                 readUserData();
+
                 return null;
             }
 
             @Override
-            protected void onPostExecute(String s) {
-                super.onPostExecute(s);
+            protected void onPostExecute(Boolean b) {
+
+                super.onPostExecute(b);
                 //Close progress dialog
                 mProgressDialog.dismiss();
+
+                if (userId != null) {
+
+                    if (userType.equals("Jobseeker")) {
+                        // Setup navigation menu for different users
+                        navigation.inflateMenu(R.menu.menu_navigation_jobseeker);
+                        // Adding home fragment into frame as default
+                        mFragment = new JobseekerHomeFragment();
+                    } else if (userType.equals("Company")) {
+                        // Setup navigation menu for different users
+                        navigation.inflateMenu(R.menu.menu_navigation_company);
+                        // Adding home fragment into frame as default
+                        mFragment = new CompanyHomeFragment();
+                    }
+                    mFragmentTransaction = getSupportFragmentManager().beginTransaction();
+                    mFragmentTransaction.replace(R.id.content_frame, mFragment, currentFragment);
+                    mFragmentTransaction.commitAllowingStateLoss();
+                }
             }
         }.execute();
 
@@ -94,14 +109,23 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         item.setChecked(true);
 
-        if (id == R.id.navigation_home && !currentFragment.equals("HOME")) {
+        if (id == R.id.navigation_jobseeker_home && !currentFragment.equals("HOME")) {
 
             navigation.getMenu().getItem(0).setChecked(true);
             currentFragment = "HOME";
 
             mFragment = getSupportFragmentManager().findFragmentByTag(currentFragment);
             if (mFragment == null) {
-                mFragment = new HomeFragment();
+                mFragment = new JobseekerHomeFragment();
+            }
+        } else if (id == R.id.navigation_company_home && !currentFragment.equals("HOME")) {
+
+            navigation.getMenu().getItem(0).setChecked(true);
+            currentFragment = "HOME";
+
+            mFragment = getSupportFragmentManager().findFragmentByTag(currentFragment);
+            if (mFragment == null) {
+                mFragment = new CompanyHomeFragment();
             }
         } else if (id == R.id.navigation_my_job && !currentFragment.equals("MYJOB")) {
 
@@ -115,7 +139,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.navigation_profile && !currentFragment.equals("PROFILE")) {
 
             clearAppData(MainActivity.this);
-            currentFragment = "PROFILE";
+//            currentFragment = "PROFILE";
         }
 
         mFragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -126,6 +150,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void readUserData() {
+
+        mProgressDialog.setMessage("Loading ...");
+        mProgressDialog.show();
 
         //Reading jobseeker data
         JobseekerDA jobseekerDA = new JobseekerDA(this);
@@ -140,38 +167,26 @@ public class MainActivity extends AppCompatActivity
         companyDA.close();
 
         if (jobseeker == null && company == null) {
+            // Close progress dialog
+            mProgressDialog.dismiss();
             //If not yet log in, navigate to LoginActivity
             Intent intent = new Intent(this, LoginOptionActivity.class);
             startActivity(intent);
             finish();
         } else {
             if (jobseeker != null) {
-//                if (jobseeker.getImg() != null && !jobseeker.getImg().equals("")) {
-//                    byte[] decodedString = Base64.decode(jobseeker.getImg(), Base64.DEFAULT);
-//                    Bitmap decodedByte = BitmapFactory
-//                            .decodeByteArray(decodedString, 0, decodedString.length);
-//                    imgProfile.setImageBitmap(decodedByte);
-//                }
-//                tvUsername.setText(jobseeker.getName());
-                navigation.inflateMenu(R.menu.menu_navigation_jobseeker);
                 userType = "Jobseeker";
                 userId = jobseeker.getId();
             } else {
-//                if (company.getImg() != null && !company.getImg().equals("")) {
-//                    byte[] decodedString = Base64.decode(company.getImg(), Base64.DEFAULT);
-//                    Bitmap decodedByte = BitmapFactory
-//                            .decodeByteArray(decodedString, 0, decodedString.length);
-//                    imgProfile.setImageBitmap(decodedByte);
-//                }
-//                tvUsername.setText(company.getName());
-                navigation.inflateMenu(R.menu.menu_navigation_company);
                 userType = "Company";
                 userId = company.getId();
             }
         }
+        // Close progress dialog
+        mProgressDialog.dismiss();
     }
 
-    private abstract class ActivityAsyncTask extends AsyncTask<String, String, String> {
+    private abstract class ActivityAsyncTask extends AsyncTask<String, Boolean, Boolean> {
 
         private ActivityAsyncTask() {
         }

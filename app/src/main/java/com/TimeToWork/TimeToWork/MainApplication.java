@@ -24,8 +24,11 @@ public class MainApplication extends Application {
     }
 
     public static void clearAppData(Context context) {
+
         //Removing app data
         context.deleteDatabase(DatabaseHelper.DATABASE_NAME);
+        //Reset all user static variable
+        userType = userId = null;
     }
 
     public static boolean isConnected(Context context) {

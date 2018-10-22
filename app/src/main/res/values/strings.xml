@@ -35,6 +35,13 @@
     <string name="btn_rate_this">Rate This</string>
     <string name="btn_review_this">Review</string>
     <string name="btn_cancel_job">Cancel Job</string>
+    <string name="btn_submit_review">Submit Review</string>
+    <string name="btn_update_review">Update Review</string>
+    <string name="btn_sort_by">Sort by</string>
+    <string name="btn_filter">Filter</string>
+    <string name="btn_sort">Sort</string>
+    <string name="btn_update">Update</string>
+    <string name="btn_remove">Remove</string>
 
     <!-- TODO: Examples/Placeholders -->
     <string name="example_company_name">[Company Name]</string>
@@ -48,10 +55,11 @@
     <string name="example_job_requirement">[Job Requirement]</string>
     <string name="example_job_description">[Job Description]</string>
     <string name="example_job_note">[Job Note]</string>
+    <string name="example_job_position">0/0</string>
 
     <!-- TODO: Notice empty content -->
     <string name="empty_job_post">Empty job post</string>
-    <string name="string_empty_job_application">No job application found</string>
+    <string name="empty_job_application">No job application found</string>
 
     <!-- TODO: Error messages -->
     <string name="error_required_field">This field is required</string>
@@ -75,6 +83,8 @@
     <string name="string_confirm_password">Confirm Password</string>
     <string name="tv_forgot_password">Forgot?</string>
 
+    <string name="string_applicant">Applicant</string>
+
     <!-- TODO: Payment -->
     <string name="string_card_type">Card type</string>
     <string name="string_card_name">Card Holders Name</string>
@@ -83,6 +93,7 @@
     <string name="string_exp_date">Expiration Date</string>
 
     <string-array name="array_payment_term">
+        <item>On-the-spot</item>
         <item>7 days</item>
         <item>14 days</item>
         <item>30 days</item>
@@ -133,20 +144,26 @@
     <string name="url_root">https://timetowork.azurewebsites.net/TimeToWork/view/</string>
     <string name="url_jobseeker_login">jobseeker/JobseekerLogin.php</string>
     <string name="url_jobseeker_recovery">jobseeker/JobseekerRecovery.php</string>
-    <string name="url_company_login">company/CompanyLogin.php</string>
-    <string name="url_company_recovery">company/</string>
-    <string name="url_fetch_job_post">jobseeker/GetJobPostForJobseeker.php</string>
-    <string name="url_apply_job">jobseeker/SubmitNewJobApplication.php</string>
+    <string name="url_get_job_post_for_jobseeker">jobseeker/GetJobPostForJobseeker.php</string>
+    <string name="url_submit_new_job_application">jobseeker/SubmitNewJobApplication.php</string>
     <string name="url_get_job_application_for_jobseeker">jobseeker/GetJobApplicationForJobseeker.php</string>
-    <string name="url_cancel_job">jobseeker/CancelJobApplication.php</string>
+    <string name="url_cancel_job_application">jobseeker/CancelJobApplication.php</string>
     <string name="url_submit_review_by_jobseeker">jobseeker/ProvideReviewByJobseeker.php</string>
     <string name="url_update_review_by_jobseeker">jobseeker/UpdateReviewByJobseeker.php</string>
     <string name="url_delete_review_by_jobseeker">jobseeker/DeleteReviewByJobseeker.php</string>
     <string name="url_get_review_of_company">company/GetReviewOfCompany.php</string>
 
+    <string name="url_company_login">company/CompanyLogin.php</string>
+    <string name="url_company_recovery">company/</string>
+    <string name="url_get_job_post_summary">company/GetJobPostSummary.php</string>
+    <string name="url_get_job_application_for_company">company/GetJobPostForCompany.php</string>
 
-    <string name="btn_submit_review">Submit Review</string>
-    <string name="btn_update_review">Update Review</string>
+    <string name="sort_the_nearest_distance">The nearest distance</string>
+    <string name="sort_the_highest_wages">The highest wages</string>
+    <string name="sort_the_highest_rating_of_company">The highest rating of company</string>
+    <string name="string_position">Position</string>
+    <string name="string_available_job_post">Available Job Post</string>
+    <string name="string_advertisement_post">Advertisement Post</string>
 
 
 </resources>

@@ -72,7 +72,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         //Drop the tables
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_JOBSEEKER);
-        db.execSQL("DROP TABLE IF EXISTS " + SQL_CREATE_TABLE_COMPANY);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_COMPANY);
         //Recreate the tables
         onCreate(db);
     }

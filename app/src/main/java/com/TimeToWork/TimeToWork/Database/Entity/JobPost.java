@@ -1,9 +1,11 @@
 package com.TimeToWork.TimeToWork.Database.Entity;
 
+import android.support.annotation.NonNull;
+
 import java.io.Serializable;
 import java.util.Date;
 
-public class JobPost implements Serializable {
+public class JobPost implements Serializable, Comparable {
 
     private String id;
     private String companyId;
@@ -151,5 +153,13 @@ public class JobPost implements Serializable {
 
     public void setAds(boolean ads) {
         isAds = ads;
+    }
+
+    @Override
+    public int compareTo(@NonNull Object o) {
+
+        double compareWages = ((JobPost) o).getWages();
+        return (int) (compareWages - this.getWages());
+
     }
 }

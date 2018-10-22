@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:orientation="vertical"
+    android:padding="@dimen/padding">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:fontFamily="@string/font_family_light"
+            android:text="Wages"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_wages_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:fontFamily="@string/font_family_light"
+            android:text="minimum RM 0"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
+
+    <SeekBar
+        android:id="@+id/seekbar_wages"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:max="500" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin"
+        android:fontFamily="@string/font_family_light"
+        android:text="Payment Terms"
+        android:textSize="18sp" />
+
+    <Spinner
+        android:id="@+id/spinner_payment_term"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:entries="@array/array_payment_term"
+        android:fontFamily="@string/font_family_light"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/btn_submit_filter"
+        style="@style/ButtonStyle"
+        android:layout_width="108dp"
+        android:layout_height="42dp"
+        android:layout_gravity="end"
+        android:layout_marginTop="24dp"
+        android:background="@color/colorButtonBlue"
+        android:text="@string/btn_sort"
+        android:textSize="16sp" />
+
+</LinearLayout>

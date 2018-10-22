@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:fontFamily="@string/font_family_light"
-        android:text="@string/string_empty_job_application"
+        android:text="@string/empty_job_application"
         android:textSize="18sp" />
 
     <android.support.v4.widget.SwipeRefreshLayout

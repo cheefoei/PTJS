@@ -49,13 +49,9 @@
             android:label="@string/activity_view_review"
             android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".Company.CompanyMainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".Company.PostNewJobActivity"
             android:label="@string/activity_add_job_post"
-            android:parentActivityName=".Company.CompanyMainActivity" />
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".Company.UpdateJobPostActivity"
             android:label="@string/activity_update_job_post"

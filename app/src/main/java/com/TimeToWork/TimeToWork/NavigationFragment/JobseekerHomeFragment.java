@@ -3,14 +3,17 @@ package com.TimeToWork.TimeToWork.NavigationFragment;
 import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,9 +25,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.TimeToWork.TimeToWork.Company.CompanyMainActivity;
 import com.TimeToWork.TimeToWork.Adapter.JobListAdapter;
 import com.TimeToWork.TimeToWork.CustomClass.CustomProgressDialog;
 import com.TimeToWork.TimeToWork.CustomClass.CustomVolleyErrorListener;
@@ -53,11 +61,17 @@ import static com.TimeToWork.TimeToWork.MainApplication.mRequestQueue;
 import static com.TimeToWork.TimeToWork.MainApplication.root;
 import static com.TimeToWork.TimeToWork.MainApplication.userId;
 
-public class HomeFragment extends Fragment {
+public class JobseekerHomeFragment extends Fragment {
 
     private CustomProgressDialog mProgressDialog;
+    private DrawerLayout mDrawerLayout;
+    private NavigationView navigationView;
+    private LinearLayout layoutSort;
     private SwipeRefreshLayout swipeContainer;
     private TextView tvEmpty;
+
+    private Spinner spinnerPaymentTerm;
+    private SeekBar seekBarWages;
 
     private LocationManager mLocationManager;
     private Jobseeker jobseeker;
@@ -67,7 +81,10 @@ public class HomeFragment extends Fragment {
     private List<JobLocation> jobLocationList;
     private List<Company> companyList;
 
-    public HomeFragment() {
+    private JSONObject optionJSON = new JSONObject();
+    private TextView currentSort;
+
+    public JobseekerHomeFragment() {
         // Required empty public constructor
     }
 
@@ -81,11 +98,16 @@ public class HomeFragment extends Fragment {
         setHasOptionsMenu(true);
 
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_home_jobseeker, container, false);
+
+        mDrawerLayout = (DrawerLayout) view.findViewById(R.id.layout_filter);
+//        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        navigationView = (NavigationView) view.findViewById(R.id.nav_view_filter);
 
         mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-
         mProgressDialog = new CustomProgressDialog(getActivity());
+
+        layoutSort = (LinearLayout) view.findViewById(R.id.layout_sort);
         tvEmpty = (TextView) view.findViewById(R.id.tv_empty_job_post);
 
         swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
@@ -123,6 +145,42 @@ public class HomeFragment extends Fragment {
         // Show job posts in list
         setupJobPostList();
 
+        Button btnSortBy = (Button) view.findViewById(R.id.btn_sort);
+        btnSortBy.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                if (layoutSort.getVisibility() == View.GONE) {
+                    expandSortLayout();
+                } else {
+                    collapseSortLayout();
+                }
+            }
+        });
+
+        TextView tvNearest = (TextView) view.findViewById(R.id.tv_nearest_distance);
+        TextView tvHighestWages = (TextView) view.findViewById(R.id.tv_highest_wages);
+        TextView tvHighestRating = (TextView) view.findViewById(R.id.tv_highest_rating);
+
+        tvNearest.setOnClickListener(new SortOnClickListener("distance"));
+        tvHighestWages.setOnClickListener(new SortOnClickListener("wages"));
+        tvHighestRating.setOnClickListener(new SortOnClickListener("rating"));
+
+        Button btnFilter = (Button) view.findViewById(R.id.btn_filter);
+        btnFilter.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                if (layoutSort.getVisibility() != View.GONE) {
+                    collapseSortLayout();
+                }
+                mDrawerLayout.openDrawer(GravityCompat.END);
+            }
+        });
+        setupFilterView();
+
         return view;
     }
 
@@ -141,12 +199,11 @@ public class HomeFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        int id = item.getItemId();
-
-        if (id == R.id.notification) {
-            Intent i = new Intent(getActivity(), CompanyMainActivity.class);
-            startActivity(i);
-        }
+//        int id = item.getItemId();
+//
+//        if (id == R.id.notification) {
+//            startActivity(i);
+//        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -162,6 +219,122 @@ public class HomeFragment extends Fragment {
                 getCurrentLocation();
                 break;
         }
+    }
+
+    private void setupFilterView() {
+
+        final TextView tvWagesValue = (TextView) navigationView.findViewById(R.id.tv_wages_value);
+
+        seekBarWages = (SeekBar) navigationView.findViewById(R.id.seekbar_wages);
+        seekBarWages.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                tvWagesValue.setText(String.format(Locale.ENGLISH, "minimum RM %d", progress));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
+
+        spinnerPaymentTerm = (Spinner) navigationView.findViewById(R.id.spinner_payment_term);
+
+        Button btnSubmitFilter = (Button) navigationView.findViewById(R.id.btn_submit_filter);
+        btnSubmitFilter.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                try {
+                    if (seekBarWages.getProgress() > 0) {
+                        optionJSON.put("wages", String.format(Locale.ENGLISH, "%d", seekBarWages.getProgress()));
+                    }
+
+                    String paymentTerm = "0";
+                    if (spinnerPaymentTerm.getSelectedItemPosition() != 0) {
+                        paymentTerm = spinnerPaymentTerm.getSelectedItem().toString().substring(0, 2);
+                    }
+                    optionJSON.put("paymentTerm", paymentTerm);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                String option = optionJSON.toString();
+                if (!option.equals("{}")) {
+                    mProgressDialog.setMessage("Filtering job post ...");
+                    mProgressDialog.show();
+                    setupJobPostList();
+                }
+                mDrawerLayout.closeDrawer(GravityCompat.END);
+            }
+        });
+    }
+
+    private void expandSortLayout() {
+
+        layoutSort.measure(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        final int targetHeight = layoutSort.getMeasuredHeight();
+
+        // Older versions of android (pre API 21) cancel animations for views with a height of 0.
+        layoutSort.getLayoutParams().height = 1;
+        layoutSort.setVisibility(View.VISIBLE);
+
+        Animation a = new Animation() {
+
+            @Override
+            protected void applyTransformation(float interpolatedTime, Transformation t) {
+
+                layoutSort.getLayoutParams().height = interpolatedTime == 1
+                        ? LinearLayout.LayoutParams.WRAP_CONTENT
+                        : (int) (targetHeight * interpolatedTime);
+                layoutSort.requestLayout();
+            }
+
+            @Override
+            public boolean willChangeBounds() {
+                return true;
+            }
+        };
+
+        // 1dp/ms
+        a.setDuration((int) (targetHeight / layoutSort.getContext().getResources().getDisplayMetrics().density));
+        layoutSort.startAnimation(a);
+    }
+
+    private void collapseSortLayout() {
+
+        final int initialHeight = layoutSort.getMeasuredHeight();
+
+        Animation a = new Animation() {
+
+            @Override
+            protected void applyTransformation(float interpolatedTime, Transformation t) {
+
+                if (interpolatedTime == 1) {
+                    layoutSort.setVisibility(View.GONE);
+                } else {
+                    layoutSort.getLayoutParams().height =
+                            initialHeight - (int) (initialHeight * interpolatedTime);
+                    layoutSort.requestLayout();
+                }
+            }
+
+            @Override
+            public boolean willChangeBounds() {
+                return true;
+            }
+        };
+
+        // 1dp/ms
+        a.setDuration((int) (initialHeight / layoutSort.getContext().getResources().getDisplayMetrics().density));
+        layoutSort.startAnimation(a);
     }
 
     private void getCurrentLocation() {
@@ -189,8 +362,6 @@ public class HomeFragment extends Fragment {
     }
 
     private void setupJobPostList() {
-
-        String option = "{}";
 
         final Response.Listener<String> responseListener = new Response.Listener<String>() {
 
@@ -299,10 +470,10 @@ public class HomeFragment extends Fragment {
 
         CustomVolleyErrorListener errorListener
                 = new CustomVolleyErrorListener(getActivity(), mProgressDialog, mRequestQueue);
-        HomeFragment.FetchJobPostRequest fetchJobPostRequest = new HomeFragment.FetchJobPostRequest(
-                option,
+        JobseekerHomeFragment.FetchJobPostRequest fetchJobPostRequest = new JobseekerHomeFragment.FetchJobPostRequest(
+                optionJSON.toString(),
                 Character.toString(jobseeker.getGender()),
-                root + getString(R.string.url_fetch_job_post),
+                root + getString(R.string.url_get_job_post_for_jobseeker),
                 responseListener,
                 errorListener
         );
@@ -332,4 +503,27 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    private class SortOnClickListener implements View.OnClickListener {
+
+        private String sortType;
+
+        SortOnClickListener(String sortType) {
+            this.sortType = sortType;
+        }
+
+        @Override
+        public void onClick(View v) {
+
+            ((TextView) v).setTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+            if (currentSort != null) {
+                currentSort.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextPrimary));
+            }
+            currentSort = ((TextView) v);
+            sort();
+        }
+
+        private void sort() {
+
+        }
+    }
 }

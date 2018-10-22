@@ -243,7 +243,7 @@ public class ViewJobDetailActivity extends AppCompatActivity {
         ViewJobDetailActivity.ApplyJobRequest loginRequest = new ViewJobDetailActivity.ApplyJobRequest(
                 jobPost.getId(),
                 userId,
-                root + getString(R.string.url_apply_job),
+                root + getString(R.string.url_submit_new_job_application),
                 responseListener,
                 errorListener
         );
@@ -311,7 +311,7 @@ public class ViewJobDetailActivity extends AppCompatActivity {
                 jobApplication.getId(),
                 jobPost.getId(),
                 userId,
-                root + getString(R.string.url_cancel_job),
+                root + getString(R.string.url_cancel_job_application),
                 responseListener,
                 errorListener
         );
