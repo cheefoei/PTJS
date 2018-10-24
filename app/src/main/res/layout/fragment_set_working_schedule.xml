@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    tools:context="com.TimeToWork.TimeToWork.Company.SetWorkingScheduleFragment">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <Button
+            android:id="@+id/btn_done_schedule"
+            style="@style/ButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorButtonGreen"
+            android:text="@string/btn_done" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/btn_done_location"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="@dimen/margin"
+            android:background="@color/colorWhite"
+            android:orientation="vertical"
+            android:padding="@dimen/padding">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@string/font_family_regular"
+                android:text="@string/string_working_time"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="18dp"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <EditText
+                    android:id="@+id/et_start_working_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/edit_text_height"
+                    android:layout_weight="0.4"
+                    android:background="@drawable/edit_text_bg"
+                    android:focusable="false"
+                    android:hint="@string/hint_start_time"
+                    android:inputType="time"
+                    android:labelFor="@+id/et_start_working_time"
+                    android:textColor="@color/colorTextPrimary" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.2"
+                    android:fontFamily="@string/font_family_regular"
+                    android:gravity="center"
+                    android:text="@string/string_until"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/et_end_working_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/edit_text_height"
+                    android:layout_weight="0.4"
+                    android:background="@drawable/edit_text_bg"
+                    android:focusable="false"
+                    android:hint="@string/hint_end_time"
+                    android:inputType="time"
+                    android:labelFor="@+id/et_end_working_time"
+                    android:textColor="@color/colorTextPrimary" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@string/font_family_regular"
+                android:text="@string/string_break_time"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="18dp"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <EditText
+                    android:id="@+id/et_start_break_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/edit_text_height"
+                    android:layout_weight="0.4"
+                    android:background="@drawable/edit_text_bg"
+                    android:focusable="false"
+                    android:hint="@string/hint_start_time"
+                    android:inputType="time"
+                    android:labelFor="@+id/et_start_break_time"
+                    android:textColor="@color/colorTextPrimary" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.2"
+                    android:fontFamily="@string/font_family_regular"
+                    android:gravity="center"
+                    android:text="@string/string_until"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/et_end_break_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/edit_text_height"
+                    android:layout_weight="0.4"
+                    android:background="@drawable/edit_text_bg"
+                    android:focusable="false"
+                    android:hint="@string/hint_end_time"
+                    android:inputType="time"
+                    android:labelFor="@+id/et_end_break_time"
+                    android:textColor="@color/colorTextPrimary" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@string/font_family_regular"
+                    android:text="@string/string_working_date"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/btn_add_date"
+                    style="@style/ButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="24dp"
+                    android:layout_gravity="end"
+                    android:layout_marginStart="16dp"
+                    android:background="@color/colorButtonBlue"
+                    android:text="@string/btn_add"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_working_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin"
+                android:scrollbars="none" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>

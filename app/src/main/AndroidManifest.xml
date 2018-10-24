@@ -49,13 +49,17 @@
             android:label="@string/activity_view_review"
             android:parentActivityName=".MainActivity" />
         <activity
+            android:name=".Company.CompanyJobDetailActivity"
+            android:label="@string/activity_your_job_detail"
+            android:parentActivityName=".MainActivity" />
+        <activity
             android:name=".Company.PostNewJobActivity"
             android:label="@string/activity_add_job_post"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".Company.UpdateJobPostActivity"
             android:label="@string/activity_update_job_post"
-            android:parentActivityName=".Company.CompanyMainActivity" />
+            android:parentActivityName=".Company.CompanyJobDetailActivity" />
         <activity
             android:name=".Company.PaymentActivity"
             android:label="@string/activity_payment"
@@ -63,8 +67,11 @@
         <activity
             android:name=".Company.ApplicantListActivity"
             android:label="@string/activity_applicant"
-            android:parentActivityName=".Jobseeker.ViewJobDetailActivity" />
-        <activity android:name=".Company.CompanyJobDetailActivity" />
+            android:parentActivityName=".Company.CompanyJobDetailActivity" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyC1s0dTxpTAQ9ke5Oaqnu7K2k4GV-wEVVY" />
     </application>
 
 </manifest>

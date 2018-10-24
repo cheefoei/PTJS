@@ -5,168 +5,144 @@
     android:layout_height="wrap_content">
 
     <android.support.v7.widget.CardView
+        android:id="@+id/card_view_job_post"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         android:layout_marginTop="4dp"
         app:cardBackgroundColor="@color/colorWhite"
         app:cardElevation="2dp"
-        app:contentPaddingBottom="8dp"
-        app:contentPaddingLeft="@dimen/padding"
-        app:contentPaddingRight="@dimen/padding"
-        app:contentPaddingTop="@dimen/padding">
+        app:contentPadding="@dimen/padding">
 
         <LinearLayout
+            android:id="@+id/layout_job"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="?selectableItemBackgroundBorderless"
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/layout_job"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <HorizontalScrollView
-                        android:layout_width="240dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="4dp"
-                        android:layout_marginEnd="@dimen/margin"
-                        android:scrollbars="none">
-
-                        <TextView
-                            android:id="@+id/tv_job_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@string/font_family_condensed"
-                            android:maxLines="2"
-                            android:scrollHorizontally="true"
-                            android:text="@string/example_job_title"
-                            android:textSize="20sp" />
-
-                    </HorizontalScrollView>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:layout_marginStart="@dimen/margin"
-                        android:gravity="end"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@string/font_family_light"
-                            android:text="@string/string_position"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:id="@+id/tv_job_position"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@string/font_family_black"
-                            android:text="@string/example_job_position"
-                            android:textSize="16sp" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
+                android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/tv_post_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:fontFamily="@string/font_family_light"
-                    android:textSize="13sp" />
-
-                <TextView
-                    android:id="@+id/tv_workplace_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginEnd="@dimen/margin"
-                    android:drawablePadding="6dp"
-                    android:drawableStart="@drawable/round_place_black_18"
-                    android:fontFamily="@string/font_family_light"
-                    android:text="@string/example_location"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/tv_workplace_address"
+                    android:id="@+id/tv_is_ads"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin"
-                    android:layout_marginEnd="@dimen/margin"
-                    android:layout_marginStart="24dp"
+                    android:background="@drawable/bg_label_tag"
                     android:fontFamily="@string/font_family_light"
-                    android:text="@string/example_location"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/tv_working_date"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin"
-                    android:layout_marginEnd="@dimen/margin"
-                    android:drawablePadding="4dp"
-                    android:drawableStart="@drawable/round_date_range_black_18"
-                    android:fontFamily="@string/font_family_light"
-                    android:text="@string/example_date"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/tv_wages"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawablePadding="4dp"
-                    android:drawableStart="@drawable/round_attach_money_black_18"
-                    android:fontFamily="@string/font_family_light"
-                    android:text="@string/example_wage"
-                    android:textSize="16sp" />
-
+                    android:minHeight="24dp"
+                    android:minWidth="64dp"
+                    android:text="@string/string_advertisement"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="end"
                 android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/btn_update_job_post"
-                    style="@style/Widget.AppCompat.Button"
-                    android:layout_width="wrap_content"
+                <HorizontalScrollView
+                    android:layout_width="240dp"
                     android:layout_height="wrap_content"
-                    android:background="?selectableItemBackground"
-                    android:fontFamily="@string/font_family_medium"
-                    android:text="@string/btn_update"
-                    android:textAllCaps="true"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="16sp" />
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginEnd="@dimen/margin"
+                    android:scrollbars="none">
 
-                <Button
-                    android:id="@+id/btn_remove_job_post"
-                    style="@style/Widget.AppCompat.Button"
+                    <TextView
+                        android:id="@+id/tv_job_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@string/font_family_condensed"
+                        android:maxLines="2"
+                        android:scrollHorizontally="true"
+                        android:text="@string/example_job_title"
+                        android:textSize="20sp" />
+
+                </HorizontalScrollView>
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="end"
                     android:layout_marginStart="@dimen/margin"
-                    android:background="?selectableItemBackground"
-                    android:fontFamily="@string/font_family_medium"
-                    android:text="@string/btn_remove"
-                    android:textAllCaps="true"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="16sp" />
+                    android:gravity="end"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@string/font_family_light"
+                        android:text="@string/string_position"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tv_job_position"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@string/font_family_black"
+                        android:text="@string/example_job_position"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
 
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_post_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:fontFamily="@string/font_family_light"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/tv_workplace_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginEnd="@dimen/margin"
+                android:drawablePadding="6dp"
+                android:drawableStart="@drawable/round_place_black_18"
+                android:fontFamily="@string/font_family_light"
+                android:text="@string/example_location"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_workplace_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin"
+                android:layout_marginEnd="@dimen/margin"
+                android:layout_marginStart="24dp"
+                android:fontFamily="@string/font_family_light"
+                android:text="@string/example_location"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_working_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin"
+                android:layout_marginEnd="@dimen/margin"
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/round_date_range_black_18"
+                android:fontFamily="@string/font_family_light"
+                android:text="@string/example_date"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_wages"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/round_attach_money_black_18"
+                android:fontFamily="@string/font_family_light"
+                android:text="@string/example_wage"
+                android:textSize="16sp" />
 
         </LinearLayout>
 

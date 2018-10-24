@@ -21,7 +21,7 @@ public class JobPost implements Serializable, Comparable {
     private double wages;
     private int paymentTerm;
     private int positionNumber;
-    private char preferGender;
+    private String preferGender;
     private boolean isAds;
 
     public JobPost() {
@@ -139,11 +139,11 @@ public class JobPost implements Serializable, Comparable {
         this.positionNumber = positionNumber;
     }
 
-    public char getPreferGender() {
+    public String getPreferGender() {
         return preferGender;
     }
 
-    public void setPreferGender(char preferGender) {
+    public void setPreferGender(String preferGender) {
         this.preferGender = preferGender;
     }
 

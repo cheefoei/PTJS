@@ -5,6 +5,7 @@
     <string name="activity_job_detail">Job Detail</string>
     <string name="activity_new_review">New Job Review</string>
     <string name="activity_view_review">Job Review</string>
+    <string name="activity_your_job_detail">Your Job Detail</string>
     <string name="activity_add_job_post">New Job Post</string>
     <string name="activity_update_job_post">Update Job Post</string>
     <string name="activity_payment">Payment</string>
@@ -42,6 +43,7 @@
     <string name="btn_sort">Sort</string>
     <string name="btn_update">Update</string>
     <string name="btn_remove">Remove</string>
+    <string name="btn_set_date">Set Now</string>
 
     <!-- TODO: Examples/Placeholders -->
     <string name="example_company_name">[Company Name]</string>
@@ -71,6 +73,7 @@
     <string name="error_no_connection">Cannot connect to Internet. Please check your connection</string>
     <string name="error_server_connection">The server could not be found. Please try again later</string>
     <string name="error_no_internet">No Internet Connections</string>
+    <string name="error_end_time">End time cannot before start time</string>
 
     <!-- TODO: Login and Register activity Strings -->
     <string name="string_login">login</string>
@@ -84,6 +87,21 @@
     <string name="tv_forgot_password">Forgot?</string>
 
     <string name="string_applicant">Applicant</string>
+    <string name="string_position">Position</string>
+    <string name="string_available_job_post">Available Job Post</string>
+    <string name="string_advertisement_post">Advertisement Post</string>
+    <string name="string_advertisement">Advertisement</string>
+
+    <string name="string_job_title">Job Title</string>
+    <string name="string_location">Location</string>
+    <string name="string_working_date">Working Date</string>
+    <string name="string_wages">Wages</string>
+    <string name="string_payment_term">Payment Term</string>
+    <string name="string_use_my_location"><u>Use my location</u></string>
+    <string name="string_working_schedule">Working Schedule</string>
+    <string name="string_position_number">Position Number</string>
+    <string name="string_prefer_gender">Prefer gender</string>
+    <string name="string_category">Category</string>
 
     <!-- TODO: Payment -->
     <string name="string_card_type">Card type</string>
@@ -92,6 +110,15 @@
     <string name="string_cvv">CVV</string>
     <string name="string_exp_date">Expiration Date</string>
 
+    <string-array name="array_category">
+        <item>Ambassador</item>
+        <item>Driver</item>
+        <item>Event Crew</item>
+        <item>Promoter</item>
+        <item>Tutor</item>
+        <item>Waiter/Waitress</item>
+        <item>Other</item>
+    </string-array>
     <string-array name="array_payment_term">
         <item>On-the-spot</item>
         <item>7 days</item>
@@ -99,6 +126,11 @@
         <item>30 days</item>
         <item>45 days</item>
         <item>60 days</item>
+    </string-array>
+    <string-array name="array_prefer_gender">
+        <item>None</item>
+        <item>Male</item>
+        <item>Female</item>
     </string-array>
     <string-array name="array_review_tag_jobseeker">
         <item>good company</item>
@@ -156,14 +188,24 @@
     <string name="url_company_login">company/CompanyLogin.php</string>
     <string name="url_company_recovery">company/</string>
     <string name="url_get_job_post_summary">company/GetJobPostSummary.php</string>
-    <string name="url_get_job_application_for_company">company/GetJobPostForCompany.php</string>
+    <string name="url_get_job_post_for_company">company/GetJobPostForCompany.php</string>
+    <string name="url_get_job_application_for_company">company/GetJobApplicationForCompany.php</string>
+    <string name="url_check_job_location_exists">company/CheckJobLocationExists.php</string>
+    <string name="url_create_job_post">company/CreateJobPost.php</string>
 
     <string name="sort_the_nearest_distance">The nearest distance</string>
     <string name="sort_the_highest_wages">The highest wages</string>
     <string name="sort_the_highest_rating_of_company">The highest rating of company</string>
-    <string name="string_position">Position</string>
-    <string name="string_available_job_post">Available Job Post</string>
-    <string name="string_advertisement_post">Advertisement Post</string>
-
+    <string name="btn_done">Done</string>
+    <string name="string_location_name">Location Name</string>
+    <string name="string_address">Address</string>
+    <string name="hint_optional">Optional</string>
+    <string name="hint_start_time">Start Time</string>
+    <string name="hint_end_time">End Time</string>
+    <string name="string_until">until</string>
+    <string name="string_working_time">Working Time</string>
+    <string name="string_break_time">Break Time</string>
+    <string name="btn_add">Add</string>
+    <string name="string_change">Change</string>
 
 </resources>

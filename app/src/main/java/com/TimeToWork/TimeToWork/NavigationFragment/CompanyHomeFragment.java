@@ -1,7 +1,10 @@
 package com.TimeToWork.TimeToWork.NavigationFragment;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
@@ -18,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.TimeToWork.TimeToWork.Adapter.JobPostAdapter;
+import com.TimeToWork.TimeToWork.Company.PostNewJobActivity;
 import com.TimeToWork.TimeToWork.CustomClass.CustomProgressDialog;
 import com.TimeToWork.TimeToWork.CustomClass.CustomVolleyErrorListener;
 import com.TimeToWork.TimeToWork.Database.Entity.JobLocation;
@@ -50,6 +54,7 @@ public class CompanyHomeFragment extends Fragment {
 
     private LinearLayout layoutTop;
     private TextView tvJobPostTotal, tvAdsTotal;
+    private FloatingActionButton fabAddJob;
 
     private JobPostAdapter adapter;
     private List<JobPost> jobPostList;
@@ -106,17 +111,30 @@ public class CompanyHomeFragment extends Fragment {
 
             @Override
             void onHide() {
+
                 layoutTop.animate().translationY(-layoutTop.getHeight())
                         .setInterpolator(new AccelerateInterpolator(2));
-//                FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mFabButton.getLayoutParams();
-//                int fabBottomMargin = lp.bottomMargin;
-//                mFabButton.animate().translationY(mFabButton.getHeight()+fabBottomMargin).setInterpolator(new AccelerateInterpolator(2)).start();
+                CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) fabAddJob.getLayoutParams();
+                int fabBottomMargin = lp.bottomMargin;
+                fabAddJob.animate().translationY(fabAddJob.getHeight()+fabBottomMargin).setInterpolator(new AccelerateInterpolator(2)).start();
             }
 
             @Override
             void onShow() {
+
                 layoutTop.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2));
-//                mFabButton.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
+                fabAddJob.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
+            }
+        });
+
+        fabAddJob = (FloatingActionButton) view.findViewById(R.id.fab_add_job);
+        fabAddJob.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(getContext(), PostNewJobActivity.class);
+                getActivity().startActivity(intent);
             }
         });
 
@@ -263,7 +281,7 @@ public class CompanyHomeFragment extends Fragment {
                                 jobPost.setAds(jsonobject.getInt("job_post_isAds") == 1);
 
                                 if (jsonobject.getString("job_post_prefer_gender").length() > 0) {
-                                    jobPost.setPreferGender(jsonobject.getString("job_post_prefer_gender").charAt(0));
+                                    jobPost.setPreferGender(jsonobject.getString("job_post_prefer_gender"));
                                 }
 
                                 JobLocation jobLocation = new JobLocation();
@@ -330,7 +348,7 @@ public class CompanyHomeFragment extends Fragment {
                 = new CustomVolleyErrorListener(getActivity(), mProgressDialog, mRequestQueue);
         CompanyHomeFragment.FetchJobPostRequest fetchJobPostRequest = new CompanyHomeFragment.FetchJobPostRequest(
                 optionJSON.toString(),
-                root + getString(R.string.url_get_job_application_for_company),
+                root + getString(R.string.url_get_job_post_for_company),
                 responseListener,
                 errorListener
         );

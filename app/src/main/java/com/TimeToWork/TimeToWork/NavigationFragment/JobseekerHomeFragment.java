@@ -406,7 +406,7 @@ public class JobseekerHomeFragment extends Fragment {
                                 jobPost.setAds(jsonobject.getInt("job_post_isAds") == 1);
 
                                 if (jsonobject.getString("job_post_prefer_gender").length() > 0) {
-                                    jobPost.setPreferGender(jsonobject.getString("job_post_prefer_gender").charAt(0));
+                                    jobPost.setPreferGender(jsonobject.getString("job_post_prefer_gender"));
                                 }
 
                                 JobLocation jobLocation = new JobLocation();

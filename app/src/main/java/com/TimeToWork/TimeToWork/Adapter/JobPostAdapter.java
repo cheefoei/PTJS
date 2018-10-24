@@ -1,23 +1,20 @@
 package com.TimeToWork.TimeToWork.Adapter;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.TimeToWork.TimeToWork.Company.CompanyJobDetailActivity;
 import com.TimeToWork.TimeToWork.Database.Entity.JobLocation;
 import com.TimeToWork.TimeToWork.Database.Entity.JobPost;
-import com.TimeToWork.TimeToWork.Jobseeker.ViewJobDetailActivity;
 import com.TimeToWork.TimeToWork.R;
-import com.TimeToWork.TimeToWork.Company.UpdateJobPostActivity;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 
@@ -40,6 +37,7 @@ public class JobPostAdapter extends RecyclerView.Adapter<JobPostAdapter.JobPostV
     private Context mContext;
     private List<JobPost> jobPostList;
     private List<JobLocation> jobLocationList;
+    private int position = 0;
 
     public JobPostAdapter(Context mContext,
                           List<JobPost> jobPostList,
@@ -95,46 +93,19 @@ public class JobPostAdapter extends RecyclerView.Adapter<JobPostAdapter.JobPostV
         jobPostViewHolder.workplaceAddress.setText(jobLocation.getAddress());
         jobPostViewHolder.wages.setText(String.format(Locale.getDefault(), "RM %.2f /day", jobPost.getWages()));
 
+        if (!jobPost.isAds()) {
+            jobPostViewHolder.ads.setVisibility(View.GONE);
+        }
+
         jobPostViewHolder.layoutJob.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(mContext, ViewJobDetailActivity.class);
-                intent.putExtra("JOB", jobPost);
-                mContext.startActivity(intent);
-            }
-        });
-
-        jobPostViewHolder.btnUpdate.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(mContext, UpdateJobPostActivity.class);
+                Intent intent = new Intent(mContext, CompanyJobDetailActivity.class);
                 intent.putExtra("JOBPOST", jobPost);
+                intent.putExtra("JOBLOCATION", jobLocation);
                 mContext.startActivity(intent);
-            }
-        });
-
-        jobPostViewHolder.btnRemove.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                AlertDialog.Builder builder
-                        = new AlertDialog.Builder(mContext, R.style.DialogStyle)
-                        .setTitle("Confirmation")
-                        .setMessage("Delete this jobPost post? You cannot undo this action. ")
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                            }
-                        })
-                        .setNegativeButton("Cancel", null);
-                builder.show();
             }
         });
 
@@ -162,14 +133,14 @@ public class JobPostAdapter extends RecyclerView.Adapter<JobPostAdapter.JobPostV
             public void onResponse(String response) {
 
                 try {
-
                     JSONObject jsonResponse = new JSONObject(response);
-                    int position = jsonResponse.getInt("POSITION");
-                    jobPosition.setText(String.format(
-                            Locale.ENGLISH, "%d/%d", position, jobPost.getPositionNumber()));
-
+                    boolean success = jsonResponse.getBoolean("success");
+                    if (success) {
+                        position = jsonResponse.getInt("total");
+                        jobPosition.setText(String.format(
+                                Locale.ENGLISH, "%d/%d", position, jobPost.getPositionNumber()));
+                    }
                 } catch (JSONException e) {
-
                     e.printStackTrace();
                     jobPosition.setText(null);
                 }
@@ -179,7 +150,7 @@ public class JobPostAdapter extends RecyclerView.Adapter<JobPostAdapter.JobPostV
         JobPostAdapter.CalculatePositionRequest calculatePositionRequest
                 = new JobPostAdapter.CalculatePositionRequest(
                 jobPost.getId(),
-                root,
+                root + mContext.getString(R.string.url_get_job_application_for_company),
                 responseListener,
                 null
         );
@@ -195,15 +166,17 @@ public class JobPostAdapter extends RecyclerView.Adapter<JobPostAdapter.JobPostV
 
     class JobPostViewHolder extends RecyclerView.ViewHolder {
 
+        CardView cardViewJobPost;
         LinearLayout layoutJob;
-        TextView title, jobPosition, postedDate, workplaceName,
+        TextView ads, title, jobPosition, postedDate, workplaceName,
                 workplaceAddress, workingDate, wages;
-        Button btnUpdate, btnRemove;
 
         JobPostViewHolder(View view) {
 
             super(view);
+            cardViewJobPost = (CardView) view.findViewById(R.id.card_view_job_post);
             layoutJob = (LinearLayout) view.findViewById(R.id.layout_job);
+            ads = (TextView) view.findViewById(R.id.tv_is_ads);
             title = (TextView) view.findViewById(R.id.tv_job_title);
             jobPosition = (TextView) view.findViewById(R.id.tv_job_position);
             postedDate = (TextView) view.findViewById(R.id.tv_post_date);
@@ -211,8 +184,6 @@ public class JobPostAdapter extends RecyclerView.Adapter<JobPostAdapter.JobPostV
             workplaceAddress = (TextView) view.findViewById(R.id.tv_workplace_address);
             workingDate = (TextView) view.findViewById(R.id.tv_working_date);
             wages = (TextView) view.findViewById(R.id.tv_wages);
-            btnUpdate = (Button) view.findViewById(R.id.btn_update_job_post);
-            btnRemove = (Button) view.findViewById(R.id.btn_remove_job_post);
         }
     }
 
@@ -229,6 +200,7 @@ public class JobPostAdapter extends RecyclerView.Adapter<JobPostAdapter.JobPostV
 
             params = new HashMap<>();
             params.put("job_post_id", jobPostId);
+            params.put("status", "Approved");
         }
 
         public Map<String, String> getParams() {
