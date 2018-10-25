@@ -9,6 +9,11 @@
         app:showAsAction="ifRoom" />
 
     <item
+        android:id="@+id/job_post_ads"
+        android:title="Make Advertisement"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/job_post_update"
         android:title="Update Job Post"
         app:showAsAction="never" />

@@ -65,6 +65,8 @@ public class MonthYearPickerDialog extends DialogFragment {
     }
 
     public void setTitle(String title) {
-        builder.setTitle(title);
+
+        if (builder != null)
+            builder.setTitle(title);
     }
 }

@@ -108,14 +108,16 @@ public class PaymentHistoryFragment extends Fragment {
                     public void onDateSet(DatePicker view, int selectedYear,
                                           int monthOfYear, int dayOfMonth) {
 
-                        month = monthOfYear;
-                        year = selectedYear;
+                        if (month != monthOfYear || year != selectedYear) {
+                            month = monthOfYear;
+                            year = selectedYear;
 
-                        // Show progress dialog at the beginning
-                        mProgressDialog.setMessage("Filtering payment record ...");
-                        mProgressDialog.show();
+                            // Show progress dialog at the beginning
+                            mProgressDialog.setMessage("Filtering payment record ...");
+                            mProgressDialog.show();
 
-                        setupPaymentHistory();
+                            setupPaymentHistory();
+                        }
                     }
                 });
         monthYearPickerDialog.setTitle("Filter Payment History");

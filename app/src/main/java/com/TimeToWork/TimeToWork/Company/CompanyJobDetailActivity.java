@@ -145,6 +145,13 @@ public class CompanyJobDetailActivity extends AppCompatActivity {
             intent.putExtra("JOBPOST", jobPost);
             startActivity(intent);
 
+        } else if (id == R.id.job_post_ads) {
+
+            Intent intent = new Intent(CompanyJobDetailActivity.this, PaymentActivity.class);
+            intent.putExtra("JOBPOST", jobPost);
+            startActivity(intent);
+            finish();
+
         } else if (id == R.id.job_post_update) {
 
             Intent intent = new Intent(CompanyJobDetailActivity.this, UpdateJobPostActivity.class);
