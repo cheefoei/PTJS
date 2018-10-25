@@ -189,9 +189,14 @@
     <string name="url_company_recovery">company/</string>
     <string name="url_get_job_post_summary">company/GetJobPostSummary.php</string>
     <string name="url_get_job_post_for_company">company/GetJobPostForCompany.php</string>
-    <string name="url_get_job_application_for_company">company/GetJobApplicationForCompany.php</string>
     <string name="url_check_job_location_exists">company/CheckJobLocationExists.php</string>
     <string name="url_create_job_post">company/CreateJobPost.php</string>
+    <string name="url_update_job_post">company/UpdateJobPost.php</string>
+    <string name="url_delete_job_post">company/DeleteJobPost.php</string>
+    <string name="url_get_job_application_for_company">company/GetJobApplicationForCompany.php</string>
+    <string name="url_approve_job_application">company/ApproveJobApplication.php</string>
+    <string name="url_reject_job_application">company/RejectJobApplication.php</string>
+
 
     <string name="sort_the_nearest_distance">The nearest distance</string>
     <string name="sort_the_highest_wages">The highest wages</string>
@@ -207,5 +212,8 @@
     <string name="string_break_time">Break Time</string>
     <string name="btn_add">Add</string>
     <string name="string_change">Change</string>
+    <string name="empty_applicant">Nobody to apply this job yet</string>
+    <string name="string_reason">Reason:</string>
+    <string name="string_reject_reason">Reject Reason</string>
 
 </resources>

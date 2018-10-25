@@ -239,7 +239,7 @@ public class PostNewJobActivity extends AppCompatActivity implements
     private void checkLocationExists() {
 
         // Show progress dialog
-        mProgressDialog.setMessage("Verifying job location ...");
+        mProgressDialog.setMessage("Verifying job location …");
         mProgressDialog.toggleProgressDialog();
 
         final Response.Listener<String> responseListener = new Response.Listener<String>() {
@@ -303,7 +303,7 @@ public class PostNewJobActivity extends AppCompatActivity implements
     private void createNewJobPost(String locationId) {
 
         // Show progress dialog
-        mProgressDialog.setMessage("Posting new job ...");
+        mProgressDialog.setMessage("Posting new job …");
         mProgressDialog.toggleProgressDialog();
 
         final Response.Listener<String> responseListener = new Response.Listener<String>() {

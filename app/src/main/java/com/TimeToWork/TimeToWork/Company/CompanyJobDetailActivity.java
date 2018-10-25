@@ -10,9 +10,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.TimeToWork.TimeToWork.CustomClass.CustomProgressDialog;
 import com.TimeToWork.TimeToWork.Database.Entity.JobLocation;
 import com.TimeToWork.TimeToWork.Database.Entity.JobPost;
 import com.TimeToWork.TimeToWork.R;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 
@@ -31,6 +33,8 @@ import static com.TimeToWork.TimeToWork.MainApplication.root;
 
 public class CompanyJobDetailActivity extends AppCompatActivity {
 
+    private CustomProgressDialog mProgressDialog;
+
     private JobPost jobPost;
     private JobLocation jobLocation;
 
@@ -39,6 +43,10 @@ public class CompanyJobDetailActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_company_job_detail);
+
+        mProgressDialog = new CustomProgressDialog(CompanyJobDetailActivity.this);
+        mProgressDialog.setMessage("Loading …");
+//        mProgressDialog.toggleProgressDialog();
 
         jobPost = (JobPost) getIntent().getSerializableExtra("JOBPOST");
         jobLocation = (JobLocation) getIntent().getSerializableExtra("JOBLOCATION");
@@ -125,26 +133,31 @@ public class CompanyJobDetailActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.applicant) {
+
             Intent intent = new Intent(CompanyJobDetailActivity.this, ApplicantListActivity.class);
             intent.putExtra("JOBPOST", jobPost);
             startActivity(intent);
+
         } else if (id == R.id.job_post_update) {
 
             Intent intent = new Intent(CompanyJobDetailActivity.this, UpdateJobPostActivity.class);
             intent.putExtra("JOBPOST", jobPost);
             intent.putExtra("JOBLOCATION", jobLocation);
             startActivity(intent);
+            finish();
+
         } else if (id == R.id.job_post_delete) {
 
             AlertDialog.Builder builder
                     = new AlertDialog.Builder(CompanyJobDetailActivity.this, R.style.DialogStyle)
                     .setTitle("Confirmation")
-                    .setMessage("Delete this jobPost post? You cannot undo this action. ")
+                    .setMessage("Delete this job post? All the job application for this job will be removed automatically.\n" +
+                            "You cannot undo this action.")
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-
+                            deleteJobPost();
                         }
                     })
                     .setNegativeButton("Cancel", null);
@@ -170,9 +183,11 @@ public class CompanyJobDetailActivity extends AppCompatActivity {
                         tvPosition.setText(String.format(
                                 Locale.ENGLISH, "%d/%d", position, jobPost.getPositionNumber()));
                     }
+//                    mProgressDialog.toggleProgressDialog();
                 } catch (JSONException e) {
                     e.printStackTrace();
                     tvPosition.setText(null);
+//                    mProgressDialog.toggleProgressDialog();
                 }
             }
         };
@@ -185,6 +200,73 @@ public class CompanyJobDetailActivity extends AppCompatActivity {
                 null
         );
         mRequestQueue.add(calculatePositionRequest);
+    }
+
+    private void deleteJobPost() {
+
+        // Show progress dialog
+        mProgressDialog.setMessage("Deleting your job post...");
+        mProgressDialog.toggleProgressDialog();
+
+        final Response.Listener<String> responseListener = new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    JSONObject jsonResponse = new JSONObject(response);
+                    boolean success = jsonResponse.getBoolean("success");
+                    String title;
+
+                    if (success) {
+                        title = "Success";
+                    } else {
+                        title = "Failed";
+                    }
+                    //To close progress dialog
+                    mProgressDialog.toggleProgressDialog();
+                    //show message from server
+                    AlertDialog.Builder builder = new AlertDialog.Builder(CompanyJobDetailActivity.this);
+                    builder.setTitle(title)
+                            .setMessage(jsonResponse.getString("msg"))
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                }
+                            })
+                            .create()
+                            .show();
+
+                } catch (JSONException e) {
+
+                    e.printStackTrace();
+                    //To close progress dialog
+                    mProgressDialog.toggleProgressDialog();
+                    //If exception, then show alert dialog
+                    AlertDialog.Builder builder = new AlertDialog.Builder(CompanyJobDetailActivity.this);
+                    builder.setMessage(e.getMessage())
+                            .setPositiveButton("OK", null)
+                            .create()
+                            .show();
+                }
+            }
+        };
+
+        CompanyJobDetailActivity.DeleteJobPostRequest deleteJobPostRequest
+                = new CompanyJobDetailActivity.DeleteJobPostRequest(
+                jobPost.getId(),
+                root + getString(R.string.url_delete_job_post),
+                responseListener,
+                null
+        );
+        deleteJobPostRequest.setRetryPolicy(new DefaultRetryPolicy(
+                0,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        mRequestQueue.add(deleteJobPostRequest);
     }
 
     private class CalculatePositionRequest extends StringRequest {
@@ -201,6 +283,26 @@ public class CompanyJobDetailActivity extends AppCompatActivity {
             params = new HashMap<>();
             params.put("job_post_id", jobPostId);
             params.put("status", "Approved");
+        }
+
+        public Map<String, String> getParams() {
+            return params;
+        }
+    }
+
+    private class DeleteJobPostRequest extends StringRequest {
+
+        private Map<String, String> params;
+
+        DeleteJobPostRequest(
+                String jobPostId,
+                String url,
+                Response.Listener<String> listener,
+                Response.ErrorListener errorListener) {
+            super(Method.POST, url, listener, errorListener);
+
+            params = new HashMap<>();
+            params.put("job_post_id", jobPostId);
         }
 
         public Map<String, String> getParams() {

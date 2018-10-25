@@ -17,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.TimeToWork.TimeToWork.Adapter.JobPostAdapter;
@@ -52,7 +51,7 @@ public class CompanyHomeFragment extends Fragment {
     private SwipeRefreshLayout swipeContainer;
     private TextView tvEmpty;
 
-    private LinearLayout layoutTop;
+//    private LinearLayout layoutTop;
     private TextView tvJobPostTotal, tvAdsTotal;
     private FloatingActionButton fabAddJob;
 
@@ -78,7 +77,7 @@ public class CompanyHomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_company, container, false);
 
-        layoutTop = (LinearLayout) view.findViewById(R.id.layout_top);
+//        layoutTop = (LinearLayout) view.findViewById(R.id.layout_top);
         tvJobPostTotal = (TextView) view.findViewById(R.id.tv_job_post_total);
         tvAdsTotal = (TextView) view.findViewById(R.id.tv_ads_total);
 
@@ -112,8 +111,8 @@ public class CompanyHomeFragment extends Fragment {
             @Override
             void onHide() {
 
-                layoutTop.animate().translationY(-layoutTop.getHeight())
-                        .setInterpolator(new AccelerateInterpolator(2));
+//                layoutTop.animate().translationY(-layoutTop.getHeight())
+//                        .setInterpolator(new AccelerateInterpolator(2));
                 CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) fabAddJob.getLayoutParams();
                 int fabBottomMargin = lp.bottomMargin;
                 fabAddJob.animate().translationY(fabAddJob.getHeight()+fabBottomMargin).setInterpolator(new AccelerateInterpolator(2)).start();
@@ -122,7 +121,7 @@ public class CompanyHomeFragment extends Fragment {
             @Override
             void onShow() {
 
-                layoutTop.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2));
+//                layoutTop.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2));
                 fabAddJob.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
             }
         });
@@ -160,6 +159,20 @@ public class CompanyHomeFragment extends Fragment {
 //
 //        super.onCreateOptionsMenu(menu, inflater);
 //    }
+
+
+    @Override
+    public void onResume() {
+
+        super.onResume();
+        // Show progress dialog at the beginning
+        mProgressDialog.setMessage("Loading your job post ...");
+        mProgressDialog.show();
+        // Show job post summary
+        showJobPostSummary();
+        // Show job posts in list
+        setupCurrentJobPostList();
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

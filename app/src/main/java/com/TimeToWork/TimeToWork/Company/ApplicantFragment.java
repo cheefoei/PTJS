@@ -1,4 +1,4 @@
-package com.TimeToWork.TimeToWork.Jobseeker;
+package com.TimeToWork.TimeToWork.Company;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -13,14 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.TimeToWork.TimeToWork.Adapter.ApplicantListAdapter;
 import com.TimeToWork.TimeToWork.CustomClass.CustomProgressDialog;
 import com.TimeToWork.TimeToWork.CustomClass.CustomVolleyErrorListener;
-import com.TimeToWork.TimeToWork.Database.Entity.Company;
 import com.TimeToWork.TimeToWork.Database.Entity.JobApplication;
-import com.TimeToWork.TimeToWork.Database.Entity.JobLocation;
 import com.TimeToWork.TimeToWork.Database.Entity.JobPost;
+import com.TimeToWork.TimeToWork.Database.Entity.Jobseeker;
 import com.TimeToWork.TimeToWork.R;
-import com.TimeToWork.TimeToWork.Adapter.JobApplicationAdapter;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 
@@ -38,23 +37,22 @@ import java.util.Map;
 
 import static com.TimeToWork.TimeToWork.MainApplication.mRequestQueue;
 import static com.TimeToWork.TimeToWork.MainApplication.root;
-import static com.TimeToWork.TimeToWork.MainApplication.userId;
 
-public class JobApplicationFragment extends Fragment {
+public class ApplicantFragment extends Fragment
+        implements ApplicantListAdapter.OnJobApplicationStatusChangeListener {
 
     private CustomProgressDialog mProgressDialog;
     private SwipeRefreshLayout swipeContainer;
     private TextView tvEmpty;
 
-    private JobApplicationAdapter adapter;
-    private List<JobPost> jobPostList;
-    private List<JobLocation> jobLocationList;
-    private List<Company> companyList;
+    private ApplicantListAdapter adapter;
     private List<JobApplication> jobApplicationList;
+    private List<Jobseeker> jobseekerList;
 
+    private JobPost jobPost;
     private String status;
 
-    public JobApplicationFragment() {
+    public ApplicantFragment() {
         // Required empty public constructor
     }
 
@@ -65,47 +63,51 @@ public class JobApplicationFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_job_application, container, false);
+        View view = inflater.inflate(R.layout.fragment_applicant, container, false);
 
+        jobPost = (JobPost) getArguments().getSerializable("JOBPOST");
         status = getArguments().getString("STATUS");
 
         mProgressDialog = new CustomProgressDialog(getActivity());
-        tvEmpty = (TextView) view.findViewById(R.id.tv_empty_job_application);
+        tvEmpty = (TextView) view.findViewById(R.id.tv_empty_applicant);
 
         swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 
             @Override
             public void onRefresh() {
-                setupSentApplication();
+                getApplicantList();
             }
         });
         swipeContainer.setColorSchemeResources(R.color.colorAccent);
 
-        jobPostList = new ArrayList<>();
-        jobLocationList = new ArrayList<>();
-        companyList = new ArrayList<>();
         jobApplicationList = new ArrayList<>();
-        adapter = JobApplicationAdapter.getAdapter(
-                getContext(), jobPostList, jobLocationList, companyList, jobApplicationList);
+        jobseekerList = new ArrayList<>();
+        adapter = new ApplicantListAdapter(
+                getActivity(), jobApplicationList, jobseekerList, this);
 
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
 
-        RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_applied_job);
+        RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_applicant_list);
         mRecyclerView.setLayoutManager(llm);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(adapter);
 
-        setupSentApplication();
+        getApplicantList();
 
         return view;
     }
 
-    private void setupSentApplication() {
+    @Override
+    public void OnJobApplicationStatusChange() {
+        getActivity().recreate();
+    }
+
+    private void getApplicantList() {
 
         // Show progress dialog
-        mProgressDialog.setMessage("Getting your application …");
+        mProgressDialog.setMessage("Getting all applicants …");
         mProgressDialog.toggleProgressDialog();
 
         final Response.Listener<String> responseListener = new Response.Listener<String>() {
@@ -132,52 +134,22 @@ public class JobApplicationFragment extends Fragment {
 
                                 JSONObject jsonobject = jobPostArray.getJSONObject(i);
 
-                                JobPost jobPost = new JobPost();
-                                jobPost.setId(jsonobject.getString("job_post_id"));
-                                jobPost.setCompanyId(jsonobject.getString("company_id"));
-                                jobPost.setLocation_id(jsonobject.getString("job_location_id"));
-                                jobPost.setTitle(jsonobject.getString("job_post_title"));
-                                jobPost.setPostedDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH)
-                                        .parse(jsonobject.getString("job_post_posted_date")));
-                                jobPost.setWorkingDate(jsonobject.getString("job_post_working_date"));
-                                jobPost.setWorkingTime(jsonobject.getString("job_post_working_timetable"));
-                                jobPost.setCategory(jsonobject.getString("job_post_category"));
-                                jobPost.setRequirement(jsonobject.getString("job_post_requirement"));
-                                jobPost.setDescription(jsonobject.getString("job_post_description"));
-                                jobPost.setNote(jsonobject.getString("job_post_note"));
-                                jobPost.setWages(jsonobject.getDouble("job_post_wages"));
-                                jobPost.setPaymentTerm(jsonobject.getInt("job_post_payment_term"));
-                                jobPost.setPositionNumber(jsonobject.getInt("job_post_position_num"));
-                                jobPost.setAds(jsonobject.getInt("job_post_isAds") == 1);
-
-                                if (jsonobject.getString("job_post_prefer_gender").length() > 0) {
-                                    jobPost.setPreferGender(jsonobject.getString("job_post_prefer_gender"));
-                                }
-
-                                JobLocation jobLocation = new JobLocation();
-                                jobLocation.setId(jsonobject.getString("job_location_id"));
-                                jobLocation.setName(jsonobject.getString("job_location_name"));
-                                jobLocation.setAddress(jsonobject.getString("job_location_address"));
-                                jobLocation.setLatitude(Double.parseDouble(jsonobject.getString("job_location_lat")));
-                                jobLocation.setLongitude(Double.parseDouble(jsonobject.getString("job_location_long")));
-
-                                Company company = new Company();
-                                company.setId(jsonobject.getString("company_id"));
-                                company.setName(jsonobject.getString("company_name"));
-                                company.setRating(Double.parseDouble(jsonobject.getString("company_rating")));
-                                company.setImg(jsonobject.getString("company_img"));
-
                                 JobApplication jobApplication = new JobApplication();
                                 jobApplication.setId(jsonobject.getString("job_application_id"));
+                                jobApplication.setJobPostId(jsonobject.getString("job_post_id"));
                                 jobApplication.setDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH)
                                         .parse(jsonobject.getString("job_application_date")));
-                                jobApplication.setStatus(status);
+                                jobApplication.setStatus(jsonobject.getString("job_application_status"));
                                 jobApplication.setRejectReason(jsonobject.getString("job_application_reject_reason"));
 
-                                jobPostList.add(jobPost);
-                                jobLocationList.add(jobLocation);
-                                companyList.add(company);
+                                Jobseeker jobseeker = new Jobseeker();
+                                jobseeker.setId(jsonobject.getString("jobseeker_id"));
+                                jobseeker.setName(jsonobject.getString("jobseeker_name"));
+                                jobseeker.setImg(jsonobject.getString("jobseeker_img"));
+                                jobseeker.setRating(jsonobject.getDouble("jobseeker_rating"));
+
                                 jobApplicationList.add(jobApplication);
+                                jobseekerList.add(jobseeker);
 
                                 tvEmpty.setVisibility(View.GONE);
                             }
@@ -226,14 +198,17 @@ public class JobApplicationFragment extends Fragment {
 
         CustomVolleyErrorListener errorListener
                 = new CustomVolleyErrorListener(getActivity(), mProgressDialog, mRequestQueue);
-        JobApplicationFragment.FetchJobApplicationRequest fetchJobApplicationRequest
-                = new JobApplicationFragment.FetchJobApplicationRequest(
+        ApplicantFragment.FetchJobApplicationRequest fetchJobApplicationRequest
+                = new ApplicantFragment.FetchJobApplicationRequest(
+                jobPost,
                 status,
-                root + getString(R.string.url_get_job_application_for_jobseeker),
+                root + getString(R.string.url_get_job_application_for_company),
                 responseListener,
                 errorListener
         );
         mRequestQueue.add(fetchJobApplicationRequest);
+
+        adapter.notifyDataSetChanged();
     }
 
     private class FetchJobApplicationRequest extends StringRequest {
@@ -241,6 +216,7 @@ public class JobApplicationFragment extends Fragment {
         private Map<String, String> params;
 
         FetchJobApplicationRequest(
+                JobPost jobPost,
                 String status,
                 String url,
                 Response.Listener<String> listener,
@@ -248,7 +224,7 @@ public class JobApplicationFragment extends Fragment {
             super(Method.POST, url, listener, errorListener);
 
             params = new HashMap<>();
-            params.put("jobseeker_id", userId);
+            params.put("job_post_id", jobPost.getId());
             params.put("status", status);
         }
 
@@ -256,5 +232,4 @@ public class JobApplicationFragment extends Fragment {
             return params;
         }
     }
-
 }

@@ -304,7 +304,7 @@ public class JobseekerViewReviewActivity extends AppCompatActivity {
     private void removeReview() {
 
         // Show progress dialog
-        mProgressDialog.setMessage("Removing your review ...");
+        mProgressDialog.setMessage("Removing your review …");
         mProgressDialog.toggleProgressDialog();
 
         final Response.Listener<String> responseListener = new Response.Listener<String>() {

@@ -6,6 +6,7 @@ import java.util.Date;
 public class JobApplication implements Serializable {
 
     private String id;
+    private String jobPostId;
     private Date date;
     private String status;
     private String rejectReason;
@@ -19,6 +20,14 @@ public class JobApplication implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getJobPostId() {
+        return jobPostId;
+    }
+
+    public void setJobPostId(String jobPostId) {
+        this.jobPostId = jobPostId;
     }
 
     public Date getDate() {

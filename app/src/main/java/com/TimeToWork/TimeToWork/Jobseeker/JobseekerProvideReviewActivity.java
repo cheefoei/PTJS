@@ -121,7 +121,7 @@ public class JobseekerProvideReviewActivity extends AppCompatActivity {
     private void submitNewReview() {
 
         // Show progress dialog
-        mProgressDialog.setMessage("Submitting your review ...");
+        mProgressDialog.setMessage("Submitting your review …");
         mProgressDialog.toggleProgressDialog();
 
         final Response.Listener<String> responseListener = new Response.Listener<String>() {
