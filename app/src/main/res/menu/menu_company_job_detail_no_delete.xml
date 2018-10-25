@@ -10,11 +10,7 @@
 
     <item
         android:id="@+id/job_post_update"
+        android:icon="@drawable/baseline_edit_white_24"
         android:title="Update Job Post"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/job_post_delete"
-        android:title="Delete Job Post"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom" />
 </menu>

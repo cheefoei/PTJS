@@ -17,6 +17,8 @@
     <string name="fragment_home">Home</string>
     <string name="fragment_profile">Profile</string>
     <string name="fragment_my_job">My Job</string>
+    <string name="fragment_posted_job">Posted Job</string>
+    <string name="fragment_payment_history">Payment History</string>
 
     <!-- TODO: Dialog messages -->
     <string name="progress_loading">Loading …</string>
@@ -44,6 +46,8 @@
     <string name="btn_update">Update</string>
     <string name="btn_remove">Remove</string>
     <string name="btn_set_date">Set Now</string>
+    <string name="btn_done">Done</string>
+    <string name="btn_add">Add</string>
 
     <!-- TODO: Examples/Placeholders -->
     <string name="example_company_name">[Company Name]</string>
@@ -62,6 +66,8 @@
     <!-- TODO: Notice empty content -->
     <string name="empty_job_post">Empty job post</string>
     <string name="empty_job_application">No job application found</string>
+    <string name="empty_applicant">Nobody to apply this job yet</string>
+    <string name="empty_payment_record">No payment record found</string>
 
     <!-- TODO: Error messages -->
     <string name="error_required_field">This field is required</string>
@@ -196,24 +202,24 @@
     <string name="url_get_job_application_for_company">company/GetJobApplicationForCompany.php</string>
     <string name="url_approve_job_application">company/ApproveJobApplication.php</string>
     <string name="url_reject_job_application">company/RejectJobApplication.php</string>
-
+    <string name="url_get_payment_history">company/GetPaymentHistory.php</string>
 
     <string name="sort_the_nearest_distance">The nearest distance</string>
     <string name="sort_the_highest_wages">The highest wages</string>
     <string name="sort_the_highest_rating_of_company">The highest rating of company</string>
-    <string name="btn_done">Done</string>
+
     <string name="string_location_name">Location Name</string>
     <string name="string_address">Address</string>
-    <string name="hint_optional">Optional</string>
-    <string name="hint_start_time">Start Time</string>
-    <string name="hint_end_time">End Time</string>
     <string name="string_until">until</string>
     <string name="string_working_time">Working Time</string>
     <string name="string_break_time">Break Time</string>
-    <string name="btn_add">Add</string>
-    <string name="string_change">Change</string>
-    <string name="empty_applicant">Nobody to apply this job yet</string>
     <string name="string_reason">Reason:</string>
     <string name="string_reject_reason">Reject Reason</string>
+    <string name="string_change">Change</string>
+
+    <string name="hint_optional">Optional</string>
+    <string name="hint_start_time">Start Time</string>
+    <string name="hint_end_time">End Time</string>
+    <string name="btn_view_job_post">View Job Post</string>
 
 </resources>

@@ -61,13 +61,13 @@
             android:label="@string/activity_update_job_post"
             android:parentActivityName=".Company.CompanyJobDetailActivity" />
         <activity
-            android:name=".Company.PaymentActivity"
-            android:label="@string/activity_payment"
-            android:parentActivityName=".Company.PostNewJobActivity" />
-        <activity
             android:name=".Company.ApplicantListActivity"
             android:label="@string/activity_applicant"
             android:parentActivityName=".Company.CompanyJobDetailActivity" />
+        <activity
+            android:name=".Company.PaymentActivity"
+            android:label="@string/activity_payment"
+            android:parentActivityName=".MainActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

@@ -38,6 +38,8 @@ public class CompanyJobDetailActivity extends AppCompatActivity {
     private JobPost jobPost;
     private JobLocation jobLocation;
 
+    private boolean isRemovable = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -50,6 +52,7 @@ public class CompanyJobDetailActivity extends AppCompatActivity {
 
         jobPost = (JobPost) getIntent().getSerializableExtra("JOBPOST");
         jobLocation = (JobLocation) getIntent().getSerializableExtra("JOBLOCATION");
+        isRemovable = getIntent().getBooleanExtra("REMOVE", true);
 
         SimpleDateFormat newDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
         String workingDate = "";
@@ -123,7 +126,11 @@ public class CompanyJobDetailActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        getMenuInflater().inflate(R.menu.menu_company_job_detail, menu);
+        if (isRemovable) {
+            getMenuInflater().inflate(R.menu.menu_company_job_detail, menu);
+        } else {
+            getMenuInflater().inflate(R.menu.menu_company_job_detail_no_delete, menu);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 

@@ -18,6 +18,7 @@ import com.TimeToWork.TimeToWork.Database.JobseekerDA;
 import com.TimeToWork.TimeToWork.NavigationFragment.CompanyHomeFragment;
 import com.TimeToWork.TimeToWork.NavigationFragment.JobseekerHomeFragment;
 import com.TimeToWork.TimeToWork.NavigationFragment.MyJobFragment;
+import com.TimeToWork.TimeToWork.NavigationFragment.PaymentHistoryFragment;
 
 import static com.TimeToWork.TimeToWork.MainApplication.clearAppData;
 import static com.TimeToWork.TimeToWork.MainApplication.userId;
@@ -135,6 +136,15 @@ public class MainActivity extends AppCompatActivity
             mFragment = getSupportFragmentManager().findFragmentByTag(currentFragment);
             if (mFragment == null) {
                 mFragment = new MyJobFragment();
+            }
+        } else if (id == R.id.navigation_payment_history && !currentFragment.equals("PAYMENT")) {
+
+            mFragment = new PaymentHistoryFragment();
+            currentFragment = "PAYMENT";
+
+            mFragment = getSupportFragmentManager().findFragmentByTag(currentFragment);
+            if (mFragment == null) {
+                mFragment = new PaymentHistoryFragment();
             }
         } else if (id == R.id.navigation_profile && !currentFragment.equals("PROFILE")) {
 
