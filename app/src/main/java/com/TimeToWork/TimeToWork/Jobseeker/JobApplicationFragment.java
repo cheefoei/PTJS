@@ -48,8 +48,6 @@ public class JobApplicationFragment extends Fragment {
 
     private JobApplicationAdapter adapter;
     private List<JobPost> jobPostList;
-    private List<JobLocation> jobLocationList;
-    private List<Company> companyList;
     private List<JobApplication> jobApplicationList;
 
     private String status;
@@ -83,11 +81,8 @@ public class JobApplicationFragment extends Fragment {
         swipeContainer.setColorSchemeResources(R.color.colorAccent);
 
         jobPostList = new ArrayList<>();
-        jobLocationList = new ArrayList<>();
-        companyList = new ArrayList<>();
         jobApplicationList = new ArrayList<>();
-        adapter = JobApplicationAdapter.getAdapter(
-                getContext(), jobPostList, jobLocationList, companyList, jobApplicationList);
+        adapter = JobApplicationAdapter.getAdapter(getContext(), jobPostList, jobApplicationList);
 
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -132,10 +127,23 @@ public class JobApplicationFragment extends Fragment {
 
                                 JSONObject jsonobject = jobPostArray.getJSONObject(i);
 
+                                Company company = new Company();
+                                company.setId(jsonobject.getString("company_id"));
+                                company.setName(jsonobject.getString("company_name"));
+                                company.setRating(Double.parseDouble(jsonobject.getString("company_rating")));
+                                company.setImg(jsonobject.getString("company_img"));
+
+                                JobLocation jobLocation = new JobLocation();
+                                jobLocation.setId(jsonobject.getString("job_location_id"));
+                                jobLocation.setName(jsonobject.getString("job_location_name"));
+                                jobLocation.setAddress(jsonobject.getString("job_location_address"));
+                                jobLocation.setLatitude(Double.parseDouble(jsonobject.getString("job_location_lat")));
+                                jobLocation.setLongitude(Double.parseDouble(jsonobject.getString("job_location_long")));
+
                                 JobPost jobPost = new JobPost();
                                 jobPost.setId(jsonobject.getString("job_post_id"));
-                                jobPost.setCompanyId(jsonobject.getString("company_id"));
-                                jobPost.setLocation_id(jsonobject.getString("job_location_id"));
+                                jobPost.setCompany(company);
+                                jobPost.setJobLocation(jobLocation);
                                 jobPost.setTitle(jsonobject.getString("job_post_title"));
                                 jobPost.setPostedDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH)
                                         .parse(jsonobject.getString("job_post_posted_date")));
@@ -154,19 +162,6 @@ public class JobApplicationFragment extends Fragment {
                                     jobPost.setPreferGender(jsonobject.getString("job_post_prefer_gender"));
                                 }
 
-                                JobLocation jobLocation = new JobLocation();
-                                jobLocation.setId(jsonobject.getString("job_location_id"));
-                                jobLocation.setName(jsonobject.getString("job_location_name"));
-                                jobLocation.setAddress(jsonobject.getString("job_location_address"));
-                                jobLocation.setLatitude(Double.parseDouble(jsonobject.getString("job_location_lat")));
-                                jobLocation.setLongitude(Double.parseDouble(jsonobject.getString("job_location_long")));
-
-                                Company company = new Company();
-                                company.setId(jsonobject.getString("company_id"));
-                                company.setName(jsonobject.getString("company_name"));
-                                company.setRating(Double.parseDouble(jsonobject.getString("company_rating")));
-                                company.setImg(jsonobject.getString("company_img"));
-
                                 JobApplication jobApplication = new JobApplication();
                                 jobApplication.setId(jsonobject.getString("job_application_id"));
                                 jobApplication.setDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH)
@@ -175,8 +170,6 @@ public class JobApplicationFragment extends Fragment {
                                 jobApplication.setRejectReason(jsonobject.getString("job_application_reject_reason"));
 
                                 jobPostList.add(jobPost);
-                                jobLocationList.add(jobLocation);
-                                companyList.add(company);
                                 jobApplicationList.add(jobApplication);
 
                                 tvEmpty.setVisibility(View.GONE);

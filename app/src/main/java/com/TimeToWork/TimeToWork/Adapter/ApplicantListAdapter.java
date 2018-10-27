@@ -2,6 +2,7 @@ package com.TimeToWork.TimeToWork.Adapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.AlertDialog;
@@ -14,25 +15,34 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.TimeToWork.TimeToWork.Company.CompanyProvideReviewActivity;
+import com.TimeToWork.TimeToWork.Company.CompanyViewReviewActivity;
 import com.TimeToWork.TimeToWork.CustomClass.CustomProgressDialog;
 import com.TimeToWork.TimeToWork.CustomClass.CustomVolleyErrorListener;
 import com.TimeToWork.TimeToWork.Database.Entity.JobApplication;
 import com.TimeToWork.TimeToWork.Database.Entity.Jobseeker;
+import com.TimeToWork.TimeToWork.Database.Entity.Review;
 import com.TimeToWork.TimeToWork.R;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -72,7 +82,7 @@ public class ApplicantListAdapter extends RecyclerView.Adapter<ApplicantListAdap
 
         final int index = i;
         final JobApplication jobApplication = jobApplicationList.get(i);
-        Jobseeker jobseeker = jobseekerList.get(i);
+        final Jobseeker jobseeker = jobseekerList.get(i);
 
         if (jobseeker.getImg() != null) {
             byte[] decodedString = Base64.decode(jobseeker.getImg(), Base64.DEFAULT);
@@ -95,27 +105,44 @@ public class ApplicantListAdapter extends RecyclerView.Adapter<ApplicantListAdap
             }
         });
 
-        applicantListViewHolder.btnOption.setOnClickListener(new View.OnClickListener() {
+        if (jobApplication.getStatus().equals("Completed")) {
 
-            @Override
-            public void onClick(View view) {
+            applicantListViewHolder.btnOption.setVisibility(View.GONE);
+            applicantListViewHolder.btnRate.setVisibility(View.VISIBLE);
+            applicantListViewHolder.btnRate.setOnClickListener(new View.OnClickListener() {
 
-                // inflate menu
-                PopupMenu popup = new PopupMenu(view.getContext(), view);
-                MenuInflater inflater = popup.getMenuInflater();
-
-                if (jobApplication.getStatus().equals("Sent")) {
-                    inflater.inflate(R.menu.menu_popup_applicant_sent, popup.getMenu());
-                } else if (jobApplication.getStatus().equals("Approved")) {
-                    inflater.inflate(R.menu.menu_popup_applicant_approved, popup.getMenu());
+                @Override
+                public void onClick(View v) {
+                    checkReviewExist(jobApplication, jobseeker);
                 }
-                if (jobApplication.getStatus().equals("Rejected")) {
-                    inflater.inflate(R.menu.menu_popup_applicant_rejected, popup.getMenu());
+            });
+        } else {
+
+            applicantListViewHolder.btnOption.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+
+                    // inflate menu
+                    PopupMenu popup = new PopupMenu(view.getContext(), view);
+                    MenuInflater inflater = popup.getMenuInflater();
+
+                    switch (jobApplication.getStatus()) {
+                        case "Sent":
+                            inflater.inflate(R.menu.menu_popup_applicant_sent, popup.getMenu());
+                            break;
+                        case "Approved":
+                            inflater.inflate(R.menu.menu_popup_applicant_approved, popup.getMenu());
+                            break;
+                        case "Rejected":
+                            inflater.inflate(R.menu.menu_popup_applicant_rejected, popup.getMenu());
+                            break;
+                    }
+                    popup.setOnMenuItemClickListener(new MenuItemClickListener(index));
+                    popup.show();
                 }
-                popup.setOnMenuItemClickListener(new MenuItemClickListener(index));
-                popup.show();
-            }
-        });
+            });
+        }
 
         if (jobApplication.getStatus().equals("Rejected")) {
             applicantListViewHolder.rejectReason.setText(jobApplication.getRejectReason());
@@ -136,6 +163,98 @@ public class ApplicantListAdapter extends RecyclerView.Adapter<ApplicantListAdap
         notifyItemRangeRemoved(0, size);
     }
 
+    private void checkReviewExist(final JobApplication jobApplication, Jobseeker jobseeker) {
+
+        // Show progress dialog
+        final CustomProgressDialog mProgressDialog = new CustomProgressDialog(mContext);
+        mProgressDialog.setMessage("Checking your review ...");
+        mProgressDialog.toggleProgressDialog();
+
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    JSONObject jsonResponse = new JSONObject(response);
+                    boolean success = jsonResponse.getBoolean("success");
+                    int total = jsonResponse.getInt("total");
+
+                    if (success) {
+
+                        if (total != 0) {
+
+                            // Convert review list to json array
+                            JSONArray reviewArray = jsonResponse.getJSONArray("REVIEW");
+
+                            if (reviewArray.length() != 0) {
+
+                                JSONObject reviewObject = reviewArray.getJSONObject(0);
+
+                                Review review = new Review();
+                                review.setId(reviewObject.getString("review_id"));
+                                review.setDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH)
+                                        .parse(reviewObject.getString("review_date")));
+                                review.setComment(reviewObject.getString("review_comment"));
+                                review.setTag(reviewObject.getString("review_tag"));
+                                review.setStarValue(reviewObject.getDouble("review_star_value"));
+
+                                Intent intent = new Intent(mContext, CompanyViewReviewActivity.class);
+                                intent.putExtra("REVIEW", review);
+                                mContext.startActivity(intent);
+                            } else {
+
+                                Intent intent = new Intent(mContext, CompanyProvideReviewActivity.class);
+                                intent.putExtra("JOBAPPLICATION", jobApplication);
+                                mContext.startActivity(intent);
+                            }
+                        } else {
+
+                            Intent intent = new Intent(mContext, CompanyProvideReviewActivity.class);
+                            intent.putExtra("JOBAPPLICATION", jobApplication);
+                            mContext.startActivity(intent);
+                        }
+                    } else {
+
+                        //If failed, then show alert dialog
+                        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                        builder.setMessage(jsonResponse.getString("msg"))
+                                .setPositiveButton("OK", null)
+                                .create()
+                                .show();
+                    }
+                    //To close progress dialog
+                    mProgressDialog.toggleProgressDialog();
+
+                } catch (JSONException e) {
+
+                    e.printStackTrace();
+                    //To close progress dialog
+                    mProgressDialog.toggleProgressDialog();
+                    //If exception, then show alert dialog
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                    builder.setMessage(e.getMessage())
+                            .setPositiveButton("OK", null)
+                            .create()
+                            .show();
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        ApplicantListAdapter.CheckReviewRequest checkReviewRequest = new ApplicantListAdapter.CheckReviewRequest(
+                jobApplication.getId(),
+                jobseeker.getId(),
+                root + mContext.getString(R.string.url_get_review_of_jobseeker),
+                responseListener,
+                null
+        );
+
+        mRequestQueue.add(checkReviewRequest);
+    }
+
     class ApplicantListViewHolder extends RecyclerView.ViewHolder {
 
         LinearLayout layoutJobseeker, layoutReject;
@@ -143,6 +262,7 @@ public class ApplicantListAdapter extends RecyclerView.Adapter<ApplicantListAdap
         TextView jobseekerName, jobseekerRating, rejectReason;
         RatingBar ratingBar;
         ImageButton btnOption;
+        Button btnRate;
 
         ApplicantListViewHolder(View view) {
 
@@ -155,6 +275,7 @@ public class ApplicantListAdapter extends RecyclerView.Adapter<ApplicantListAdap
             rejectReason = (TextView) view.findViewById(R.id.tv_reject_reason);
             ratingBar = (RatingBar) view.findViewById(R.id.rate_bar_jobseeker);
             btnOption = (ImageButton) view.findViewById(R.id.btn_option);
+            btnRate = (Button) view.findViewById(R.id.btn_rate_jobseeker);
         }
     }
 
@@ -226,6 +347,11 @@ public class ApplicantListAdapter extends RecyclerView.Adapter<ApplicantListAdap
                         responseListener,
                         errorListener
                 );
+                jobApplicationRequest.setRetryPolicy(new DefaultRetryPolicy(
+                        0,
+                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
                 mRequestQueue.add(jobApplicationRequest);
 
             } else if (id == R.id.reject) {
@@ -246,13 +372,24 @@ public class ApplicantListAdapter extends RecyclerView.Adapter<ApplicantListAdap
 
                                 EditText etReason = (EditText) dialogView.findViewById(R.id.et_reject_reason);
 
+                                String reason;
+                                if (etReason.getText().toString().equals("")) {
+                                    reason = "(The company did not provide any reason.)";
+                                } else {
+                                    reason = etReason.getText().toString();
+                                }
                                 jobApplicationRequest = new ApplicantListAdapter.RejectJobApplicationRequest(
-                                        jobApplication.getId(),
-                                        etReason.getText().toString(),
+                                        jobApplication,
+                                        reason,
                                         root + mContext.getString(R.string.url_reject_job_application),
                                         responseListener,
                                         errorListener
                                 );
+                                jobApplicationRequest.setRetryPolicy(new DefaultRetryPolicy(
+                                        0,
+                                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
                                 mRequestQueue.add(jobApplicationRequest);
                             }
                         })
@@ -291,7 +428,7 @@ public class ApplicantListAdapter extends RecyclerView.Adapter<ApplicantListAdap
         private Map<String, String> params;
 
         RejectJobApplicationRequest(
-                String jobApplicationId,
+                JobApplication jobApplication,
                 String reason,
                 String url,
                 Response.Listener<String> listener,
@@ -299,8 +436,31 @@ public class ApplicantListAdapter extends RecyclerView.Adapter<ApplicantListAdap
             super(Method.POST, url, listener, errorListener);
 
             params = new HashMap<>();
-            params.put("job_application_id", jobApplicationId);
+            params.put("job_application_id", jobApplication.getId());
+            params.put("job_post_id", jobApplication.getJobPostId());
             params.put("reason", reason);
+        }
+
+        public Map<String, String> getParams() {
+            return params;
+        }
+    }
+
+    private class CheckReviewRequest extends StringRequest {
+
+        private Map<String, String> params;
+
+        CheckReviewRequest(
+                String jobApplicationId,
+                String jobseekerId,
+                String url,
+                Response.Listener<String> listener,
+                Response.ErrorListener errorListener) {
+            super(Method.POST, url, listener, errorListener);
+
+            params = new HashMap<>();
+            params.put("job_application_id", jobApplicationId);
+            params.put("jobseeker_id", jobseekerId);
         }
 
         public Map<String, String> getParams() {

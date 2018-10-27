@@ -17,9 +17,9 @@ import com.TimeToWork.TimeToWork.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyJobFragment extends Fragment {
+public class MyAppliedJobFragment extends Fragment {
 
-    public MyJobFragment() {
+    public MyAppliedJobFragment() {
         // Required empty public constructor
     }
 
@@ -33,7 +33,7 @@ public class MyJobFragment extends Fragment {
         setHasOptionsMenu(true);
 
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_my_job, container, false);
+        View view = inflater.inflate(R.layout.fragment_my_applied_job, container, false);
 
         Fragment sentJobFragment = new JobApplicationFragment();
         Fragment approvedJobFragment = new JobApplicationFragment();

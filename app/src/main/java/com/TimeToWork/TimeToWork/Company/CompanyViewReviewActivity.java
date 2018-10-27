@@ -1,10 +1,10 @@
-package com.TimeToWork.TimeToWork.Jobseeker;
+package com.TimeToWork.TimeToWork.Company;
 
 import android.content.DialogInterface;
-import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,7 +38,7 @@ import java.util.Map;
 import static com.TimeToWork.TimeToWork.MainApplication.mRequestQueue;
 import static com.TimeToWork.TimeToWork.MainApplication.root;
 
-public class JobseekerViewReviewActivity extends AppCompatActivity {
+public class CompanyViewReviewActivity extends AppCompatActivity {
 
     private CustomProgressDialog mProgressDialog;
     private Review review;
@@ -63,14 +63,14 @@ public class JobseekerViewReviewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_jobseeker_view_review);
+        setContentView(R.layout.activity_company_view_review);
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
-        mProgressDialog = new CustomProgressDialog(JobseekerViewReviewActivity.this);
+        mProgressDialog = new CustomProgressDialog(CompanyViewReviewActivity.this);
         review = (Review) getIntent().getSerializableExtra("REVIEW");
 
-        tagStrings = Arrays.asList(getResources().getStringArray(R.array.array_review_tag_jobseeker));
+        tagStrings = Arrays.asList(getResources().getStringArray(R.array.array_review_tag_company));
 
         TextView tvTag1 = (TextView) findViewById(R.id.tv_review_tag_1);
         TextView tvTag2 = (TextView) findViewById(R.id.tv_review_tag_2);
@@ -146,7 +146,7 @@ public class JobseekerViewReviewActivity extends AppCompatActivity {
             setupEditableUI();
         } else if (id == R.id.review_delete) {
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(JobseekerViewReviewActivity.this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(CompanyViewReviewActivity.this);
             builder.setTitle("Confirmation")
                     .setMessage("Confirm to remove this review? You cannot recover this review after performed this action.")
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -169,20 +169,20 @@ public class JobseekerViewReviewActivity extends AppCompatActivity {
             if (currentSelectedTag >= 0) {
                 tags.get(currentSelectedTag).setBackground(getDrawable(R.drawable.bg_review_tag_null));
                 tags.get(currentSelectedTag).setTextColor(
-                        ContextCompat.getColor(JobseekerViewReviewActivity.this, R.color.colorTextPrimary));
+                        ContextCompat.getColor(CompanyViewReviewActivity.this, R.color.colorTextPrimary));
                 tags.get(index).setBackground(getDrawable(R.drawable.bg_review_tag_accent));
                 tags.get(index).setTextColor(
-                        ContextCompat.getColor(JobseekerViewReviewActivity.this, R.color.colorWhite));
+                        ContextCompat.getColor(CompanyViewReviewActivity.this, R.color.colorWhite));
             } else {
                 tags.get(index).setBackground(getDrawable(R.drawable.bg_review_tag_accent));
                 tags.get(index).setTextColor(
-                        ContextCompat.getColor(JobseekerViewReviewActivity.this, R.color.colorWhite));
+                        ContextCompat.getColor(CompanyViewReviewActivity.this, R.color.colorWhite));
             }
             currentSelectedTag = index;
         } else {
             tags.get(currentSelectedTag).setBackground(getDrawable(R.drawable.bg_review_tag_null));
             tags.get(currentSelectedTag).setTextColor(
-                    ContextCompat.getColor(JobseekerViewReviewActivity.this, R.color.colorTextPrimary));
+                    ContextCompat.getColor(CompanyViewReviewActivity.this, R.color.colorTextPrimary));
             currentSelectedTag = -1;
         }
     }
@@ -258,7 +258,7 @@ public class JobseekerViewReviewActivity extends AppCompatActivity {
                     //To close progress dialog
                     mProgressDialog.toggleProgressDialog();
                     //show message from server
-                    AlertDialog.Builder builder = new AlertDialog.Builder(JobseekerViewReviewActivity.this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(CompanyViewReviewActivity.this);
                     builder.setTitle(title)
                             .setMessage(jsonResponse.getString("msg"))
                             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -281,7 +281,7 @@ public class JobseekerViewReviewActivity extends AppCompatActivity {
                     //To close progress dialog
                     mProgressDialog.toggleProgressDialog();
                     //If exception, then show alert dialog
-                    AlertDialog.Builder builder = new AlertDialog.Builder(JobseekerViewReviewActivity.this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(CompanyViewReviewActivity.this);
                     builder.setMessage(e.getMessage())
                             .setPositiveButton("OK", null)
                             .create()
@@ -296,13 +296,13 @@ public class JobseekerViewReviewActivity extends AppCompatActivity {
         }
 
         CustomVolleyErrorListener errorListener
-                = new CustomVolleyErrorListener(JobseekerViewReviewActivity.this, mProgressDialog, mRequestQueue);
+                = new CustomVolleyErrorListener(CompanyViewReviewActivity.this, mProgressDialog, mRequestQueue);
 
-        JobseekerViewReviewActivity.UpdateReviewRequest updateReviewRequest = new JobseekerViewReviewActivity.UpdateReviewRequest(
+        CompanyViewReviewActivity.UpdateReviewRequest updateReviewRequest = new CompanyViewReviewActivity.UpdateReviewRequest(
                 etReview.getText().toString(),
                 tag,
                 Float.toString(ratingBar.getRating()),
-                root + getString(R.string.url_update_review_by_jobseeker),
+                root + getString(R.string.url_update_review_by_company),
                 responseListener,
                 errorListener
         );
@@ -320,7 +320,7 @@ public class JobseekerViewReviewActivity extends AppCompatActivity {
         mProgressDialog.setMessage("Removing your review …");
         mProgressDialog.toggleProgressDialog();
 
-        Response.Listener<String> responseListener = new Response.Listener<String>() {
+        final Response.Listener<String> responseListener = new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -339,7 +339,7 @@ public class JobseekerViewReviewActivity extends AppCompatActivity {
                     //To close progress dialog
                     mProgressDialog.toggleProgressDialog();
                     //show message from server
-                    AlertDialog.Builder builder = new AlertDialog.Builder(JobseekerViewReviewActivity.this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(CompanyViewReviewActivity.this);
                     builder.setTitle(title)
                             .setMessage(jsonResponse.getString("msg"))
                             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -358,7 +358,7 @@ public class JobseekerViewReviewActivity extends AppCompatActivity {
                     //To close progress dialog
                     mProgressDialog.toggleProgressDialog();
                     //If exception, then show alert dialog
-                    AlertDialog.Builder builder = new AlertDialog.Builder(JobseekerViewReviewActivity.this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(CompanyViewReviewActivity.this);
                     builder.setMessage(e.getMessage())
                             .setPositiveButton("OK", null)
                             .create()
@@ -368,10 +368,10 @@ public class JobseekerViewReviewActivity extends AppCompatActivity {
         };
 
         CustomVolleyErrorListener errorListener
-                = new CustomVolleyErrorListener(JobseekerViewReviewActivity.this, mProgressDialog, mRequestQueue);
+                = new CustomVolleyErrorListener(this, mProgressDialog, mRequestQueue);
 
-        JobseekerViewReviewActivity.DeleteReviewRequest deleteReviewRequest = new JobseekerViewReviewActivity.DeleteReviewRequest(
-                root + getString(R.string.url_delete_review_by_jobseeker),
+        CompanyViewReviewActivity.DeleteReviewRequest deleteReviewRequest = new CompanyViewReviewActivity.DeleteReviewRequest(
+                root + getString(R.string.url_delete_review_by_company),
                 responseListener,
                 errorListener
         );

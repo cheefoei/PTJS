@@ -74,7 +74,7 @@
             android:id="@+id/tv_is_ads"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_label_tag"
+            android:background="@drawable/bg_label_tag_light_yellow"
             android:fontFamily="@string/font_family_light"
             android:minHeight="24dp"
             android:minWidth="64dp"

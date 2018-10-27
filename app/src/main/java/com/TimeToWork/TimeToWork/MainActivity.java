@@ -17,8 +17,9 @@ import com.TimeToWork.TimeToWork.Database.Entity.Jobseeker;
 import com.TimeToWork.TimeToWork.Database.JobseekerDA;
 import com.TimeToWork.TimeToWork.NavigationFragment.CompanyHomeFragment;
 import com.TimeToWork.TimeToWork.NavigationFragment.JobseekerHomeFragment;
-import com.TimeToWork.TimeToWork.NavigationFragment.MyJobFragment;
+import com.TimeToWork.TimeToWork.NavigationFragment.MyAppliedJobFragment;
 import com.TimeToWork.TimeToWork.NavigationFragment.PaymentHistoryFragment;
+import com.TimeToWork.TimeToWork.NavigationFragment.MyPostedJobFragment;
 
 import static com.TimeToWork.TimeToWork.MainApplication.clearAppData;
 import static com.TimeToWork.TimeToWork.MainApplication.userId;
@@ -130,12 +131,21 @@ public class MainActivity extends AppCompatActivity
             }
         } else if (id == R.id.navigation_my_job && !currentFragment.equals("MYJOB")) {
 
-            mFragment = new MyJobFragment();
+            mFragment = new MyAppliedJobFragment();
             currentFragment = "MYJOB";
 
             mFragment = getSupportFragmentManager().findFragmentByTag(currentFragment);
             if (mFragment == null) {
-                mFragment = new MyJobFragment();
+                mFragment = new MyAppliedJobFragment();
+            }
+        } else if (id == R.id.navigation_posted_job && !currentFragment.equals("POSTEDJOB")) {
+
+            mFragment = new MyPostedJobFragment();
+            currentFragment = "POSTEDJOB";
+
+            mFragment = getSupportFragmentManager().findFragmentByTag(currentFragment);
+            if (mFragment == null) {
+                mFragment = new MyPostedJobFragment();
             }
         } else if (id == R.id.navigation_payment_history && !currentFragment.equals("PAYMENT")) {
 

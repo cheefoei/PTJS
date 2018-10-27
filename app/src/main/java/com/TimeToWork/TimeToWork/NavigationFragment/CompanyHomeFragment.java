@@ -10,7 +10,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -51,13 +50,12 @@ public class CompanyHomeFragment extends Fragment {
     private SwipeRefreshLayout swipeContainer;
     private TextView tvEmpty;
 
-//    private LinearLayout layoutTop;
+    //    private LinearLayout layoutTop;
     private TextView tvJobPostTotal, tvAdsTotal;
     private FloatingActionButton fabAddJob;
 
     private JobPostAdapter adapter;
     private List<JobPost> jobPostList;
-    private List<JobLocation> jobLocationList;
 
     private JSONObject optionJSON = new JSONObject();
 
@@ -96,8 +94,7 @@ public class CompanyHomeFragment extends Fragment {
         swipeContainer.setColorSchemeResources(R.color.colorAccent);
 
         jobPostList = new ArrayList<>();
-        jobLocationList = new ArrayList<>();
-        adapter = new JobPostAdapter(getContext(), jobPostList, jobLocationList);
+        adapter = new JobPostAdapter(getContext(), jobPostList, true);
 
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -115,7 +112,7 @@ public class CompanyHomeFragment extends Fragment {
 //                        .setInterpolator(new AccelerateInterpolator(2));
                 CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) fabAddJob.getLayoutParams();
                 int fabBottomMargin = lp.bottomMargin;
-                fabAddJob.animate().translationY(fabAddJob.getHeight()+fabBottomMargin).setInterpolator(new AccelerateInterpolator(2)).start();
+                fabAddJob.animate().translationY(fabAddJob.getHeight() + fabBottomMargin).setInterpolator(new AccelerateInterpolator(2)).start();
             }
 
             @Override
@@ -250,12 +247,10 @@ public class CompanyHomeFragment extends Fragment {
 
     private void setupCurrentJobPostList() {
 
-        final Response.Listener<String> responseListener = new Response.Listener<String>() {
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
-
-                Log.e("res", response);
 
                 try {
                     JSONObject jsonResponse = new JSONObject(response);
@@ -276,9 +271,16 @@ public class CompanyHomeFragment extends Fragment {
 
                                 JSONObject jsonobject = jobPostArray.getJSONObject(i);
 
+                                JobLocation jobLocation = new JobLocation();
+                                jobLocation.setId(jsonobject.getString("job_location_id"));
+                                jobLocation.setName(jsonobject.getString("job_location_name"));
+                                jobLocation.setAddress(jsonobject.getString("job_location_address"));
+                                jobLocation.setLatitude(Double.parseDouble(jsonobject.getString("job_location_lat")));
+                                jobLocation.setLongitude(Double.parseDouble(jsonobject.getString("job_location_long")));
+
                                 JobPost jobPost = new JobPost();
                                 jobPost.setId(jsonobject.getString("job_post_id"));
-                                jobPost.setLocation_id(jsonobject.getString("job_location_id"));
+                                jobPost.setJobLocation(jobLocation);
                                 jobPost.setTitle(jsonobject.getString("job_post_title"));
                                 jobPost.setPostedDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH)
                                         .parse(jsonobject.getString("job_post_posted_date")));
@@ -292,21 +294,13 @@ public class CompanyHomeFragment extends Fragment {
                                 jobPost.setPaymentTerm(jsonobject.getInt("job_post_payment_term"));
                                 jobPost.setPositionNumber(jsonobject.getInt("job_post_position_num"));
                                 jobPost.setAds(jsonobject.getInt("job_post_isAds") == 1);
+                                jobPost.setStatus(jsonobject.getString("job_post_status"));
 
                                 if (jsonobject.getString("job_post_prefer_gender").length() > 0) {
                                     jobPost.setPreferGender(jsonobject.getString("job_post_prefer_gender"));
                                 }
 
-                                JobLocation jobLocation = new JobLocation();
-                                jobLocation.setId(jsonobject.getString("job_location_id"));
-                                jobLocation.setName(jsonobject.getString("job_location_name"));
-                                jobLocation.setAddress(jsonobject.getString("job_location_address"));
-                                jobLocation.setLatitude(Double.parseDouble(jsonobject.getString("job_location_lat")));
-                                jobLocation.setLongitude(Double.parseDouble(jsonobject.getString("job_location_long")));
-
                                 jobPostList.add(jobPost);
-                                jobLocationList.add(jobLocation);
-
                                 tvEmpty.setVisibility(View.GONE);
                             }
                         } else {
@@ -351,8 +345,8 @@ public class CompanyHomeFragment extends Fragment {
         };
 
         try {
-            optionJSON.put("onlyAvailable", true);
             optionJSON.put("companyID", userId);
+            optionJSON.put("status", "Available");
         } catch (JSONException e) {
             e.printStackTrace();
         }

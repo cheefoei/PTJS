@@ -3,16 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <group android:id="@+id/grp1">
+
         <item
             android:id="@+id/applicant"
             android:icon="@drawable/baseline_list_alt_white_24"
             android:title="@string/menu_applicant"
-            app:showAsAction="ifRoom" />
-
-        <item
-            android:id="@+id/job_post_ads"
-            android:icon="@drawable/baseline_payment_white_24"
-            android:title="@string/menu_make_advertisement"
             app:showAsAction="ifRoom" />
     </group>
 

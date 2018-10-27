@@ -132,7 +132,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="end"
         android:background="@color/colorWhite"
-        android:paddingTop="72dp">
+        android:paddingTop="0dp">
 
         <include layout="@layout/navigation_view_filter" />
 

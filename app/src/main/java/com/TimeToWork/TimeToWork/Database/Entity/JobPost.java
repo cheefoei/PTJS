@@ -8,8 +8,8 @@ import java.util.Date;
 public class JobPost implements Serializable, Comparable {
 
     private String id;
-    private String companyId;
-    private String location_id;
+    private Company company;
+    private JobLocation jobLocation;
     private String title;
     private Date postedDate;
     private String workingDate;
@@ -23,6 +23,7 @@ public class JobPost implements Serializable, Comparable {
     private int positionNumber;
     private String preferGender;
     private boolean isAds;
+    private String status;
 
     public JobPost() {
     }
@@ -35,20 +36,20 @@ public class JobPost implements Serializable, Comparable {
         this.id = id;
     }
 
-    public String getCompanyId() {
-        return companyId;
+    public Company getCompany() {
+        return company;
     }
 
-    public void setCompanyId(String companyId) {
-        this.companyId = companyId;
+    public void setCompany(Company company) {
+        this.company = company;
     }
 
-    public String getLocation_id() {
-        return location_id;
+    public JobLocation getJobLocation() {
+        return jobLocation;
     }
 
-    public void setLocation_id(String location_id) {
-        this.location_id = location_id;
+    public void setJobLocation(JobLocation jobLocation) {
+        this.jobLocation = jobLocation;
     }
 
     public String getTitle() {
@@ -153,6 +154,14 @@ public class JobPost implements Serializable, Comparable {
 
     public void setAds(boolean ads) {
         isAds = ads;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     @Override

@@ -31,6 +31,8 @@
         <item name="android:windowDisablePreview">true</item>
         <item name="overlapAnchor">false</item>
         <item name="android:dropDownVerticalOffset">5.0dp</item>
+        <item name="android:divider">@color/colorTextSecondary</item>
+        <item name="android:dividerHeight">1dp</item>
     </style>
 
     <style name="ButtonStyle" parent="@style/Widget.AppCompat.Button.Borderless">

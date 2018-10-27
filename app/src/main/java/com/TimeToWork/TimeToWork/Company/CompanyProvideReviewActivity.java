@@ -1,4 +1,4 @@
-package com.TimeToWork.TimeToWork.Jobseeker;
+package com.TimeToWork.TimeToWork.Company;
 
 import android.content.DialogInterface;
 import android.support.v4.content.ContextCompat;
@@ -33,7 +33,7 @@ import static com.TimeToWork.TimeToWork.MainApplication.mRequestQueue;
 import static com.TimeToWork.TimeToWork.MainApplication.root;
 import static com.TimeToWork.TimeToWork.MainApplication.userId;
 
-public class JobseekerProvideReviewActivity extends AppCompatActivity {
+public class CompanyProvideReviewActivity extends AppCompatActivity {
 
     private CustomProgressDialog mProgressDialog;
     private JobApplication jobApplication;
@@ -49,14 +49,14 @@ public class JobseekerProvideReviewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_jobseeker_provide_review);
+        setContentView(R.layout.activity_company_provide_review);
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
-        mProgressDialog = new CustomProgressDialog(JobseekerProvideReviewActivity.this);
+        mProgressDialog = new CustomProgressDialog(CompanyProvideReviewActivity.this);
         jobApplication = (JobApplication) getIntent().getSerializableExtra("JOBAPPLICATION");
 
-        tagStrings = Arrays.asList(getResources().getStringArray(R.array.array_review_tag_jobseeker));
+        tagStrings = Arrays.asList(getResources().getStringArray(R.array.array_review_tag_company));
 
         TextView tvTag1 = (TextView) findViewById(R.id.tv_review_tag_1);
         TextView tvTag2 = (TextView) findViewById(R.id.tv_review_tag_2);
@@ -108,20 +108,20 @@ public class JobseekerProvideReviewActivity extends AppCompatActivity {
             if (currentSelectedTag >= 0) {
                 tags.get(currentSelectedTag).setBackground(getDrawable(R.drawable.bg_review_tag_null));
                 tags.get(currentSelectedTag).setTextColor(
-                        ContextCompat.getColor(JobseekerProvideReviewActivity.this, R.color.colorTextPrimary));
+                        ContextCompat.getColor(CompanyProvideReviewActivity.this, R.color.colorTextPrimary));
                 tags.get(index).setBackground(getDrawable(R.drawable.bg_review_tag_accent));
                 tags.get(index).setTextColor(
-                        ContextCompat.getColor(JobseekerProvideReviewActivity.this, R.color.colorWhite));
+                        ContextCompat.getColor(CompanyProvideReviewActivity.this, R.color.colorWhite));
             } else {
                 tags.get(index).setBackground(getDrawable(R.drawable.bg_review_tag_accent));
                 tags.get(index).setTextColor(
-                        ContextCompat.getColor(JobseekerProvideReviewActivity.this, R.color.colorWhite));
+                        ContextCompat.getColor(CompanyProvideReviewActivity.this, R.color.colorWhite));
             }
             currentSelectedTag = index;
         } else {
             tags.get(currentSelectedTag).setBackground(getDrawable(R.drawable.bg_review_tag_null));
             tags.get(currentSelectedTag).setTextColor(
-                    ContextCompat.getColor(JobseekerProvideReviewActivity.this, R.color.colorTextPrimary));
+                    ContextCompat.getColor(CompanyProvideReviewActivity.this, R.color.colorTextPrimary));
             currentSelectedTag = -1;
         }
     }
@@ -151,7 +151,7 @@ public class JobseekerProvideReviewActivity extends AppCompatActivity {
                     //To close progress dialog
                     mProgressDialog.toggleProgressDialog();
                     //If failed, then show alert dialog
-                    AlertDialog.Builder builder = new AlertDialog.Builder(JobseekerProvideReviewActivity.this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(CompanyProvideReviewActivity.this);
                     builder.setTitle(title)
                             .setMessage(jsonResponse.getString("msg"))
                             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -170,7 +170,7 @@ public class JobseekerProvideReviewActivity extends AppCompatActivity {
                     //To close progress dialog
                     mProgressDialog.toggleProgressDialog();
                     //If exception, then show alert dialog
-                    AlertDialog.Builder builder = new AlertDialog.Builder(JobseekerProvideReviewActivity.this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(CompanyProvideReviewActivity.this);
                     builder.setMessage(e.getMessage())
                             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
@@ -191,14 +191,15 @@ public class JobseekerProvideReviewActivity extends AppCompatActivity {
         }
 
         CustomVolleyErrorListener errorListener
-                = new CustomVolleyErrorListener(JobseekerProvideReviewActivity.this, mProgressDialog, mRequestQueue);
+                = new CustomVolleyErrorListener(this, mProgressDialog, mRequestQueue);
 
-        JobseekerProvideReviewActivity.SubmitReviewRequest submitReviewRequest = new JobseekerProvideReviewActivity.SubmitReviewRequest(
+        CompanyProvideReviewActivity.SubmitReviewRequest submitReviewRequest
+                = new CompanyProvideReviewActivity.SubmitReviewRequest(
                 jobApplication.getId(),
                 etReview.getText().toString(),
                 tag,
                 Float.toString(ratingBar.getRating()),
-                root + getString(R.string.url_submit_review_by_jobseeker),
+                root + getString(R.string.url_submit_review_by_company),
                 responseListener,
                 errorListener
         );
@@ -226,7 +227,7 @@ public class JobseekerProvideReviewActivity extends AppCompatActivity {
 
             params = new HashMap<>();
             params.put("job_application_id", jobApplicationId);
-            params.put("jobseeker_id", userId);
+            params.put("company_id", userId);
             params.put("comment", comment);
             params.put("tag", tag);
             params.put("star_value", starValue);

@@ -31,7 +31,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin"
-                    android:background="@drawable/bg_label_tag"
+                    android:background="@drawable/bg_label_tag_light_yellow"
                     android:fontFamily="@string/font_family_light"
                     android:minHeight="24dp"
                     android:minWidth="64dp"
@@ -65,6 +65,7 @@
                 </HorizontalScrollView>
 
                 <LinearLayout
+                    android:id="@+id/layout_position"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"

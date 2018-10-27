@@ -8,6 +8,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -70,6 +71,8 @@ public class UpdateJobPostActivity extends AppCompatActivity implements
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_job_post);
+
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         jobPost = (JobPost) getIntent().getSerializableExtra("JOBPOST");
         jobLocation = (JobLocation) getIntent().getSerializableExtra("JOBLOCATION");
@@ -343,8 +346,8 @@ public class UpdateJobPostActivity extends AppCompatActivity implements
                     mProgressDialog.toggleProgressDialog();
 
                     if (success) {
-                        String locationId = jsonResponse.getString("job_location_id");
-                        updateJobPost(locationId);
+                        jobLocation.setId(jsonResponse.getString("job_location_id"));
+                        updateJobPost();
                     } else {
                         //If failed, then show alert dialog
                         AlertDialog.Builder builder = new AlertDialog.Builder(UpdateJobPostActivity.this);
@@ -388,7 +391,7 @@ public class UpdateJobPostActivity extends AppCompatActivity implements
         mRequestQueue.add(checkJobLocationRequest);
     }
 
-    private void updateJobPost(String locationId) {
+    private void updateJobPost() {
 
         // Show progress dialog
         mProgressDialog.setMessage("Updating your job post …");
@@ -477,7 +480,7 @@ public class UpdateJobPostActivity extends AppCompatActivity implements
             e.printStackTrace();
         }
 
-        jobPost.setLocation_id(locationId);
+        jobPost.setJobLocation(jobLocation);
         jobPost.setTitle(etTitle.getText().toString());
         jobPost.setWorkingDate(workingDateJSON.toString());
         jobPost.setWorkingTime(workingTimeJSON.toString());
@@ -549,7 +552,7 @@ public class UpdateJobPostActivity extends AppCompatActivity implements
 
             params = new HashMap<>();
             params.put("job_post_id", jobPost.getId());
-            params.put("location_id", jobPost.getLocation_id());
+            params.put("location_id", jobPost.getJobLocation().getId());
             params.put("job_post_title", jobPost.getTitle());
             params.put("job_post_working_date", jobPost.getWorkingDate());
             params.put("job_post_working_timetable", jobPost.getWorkingTime());

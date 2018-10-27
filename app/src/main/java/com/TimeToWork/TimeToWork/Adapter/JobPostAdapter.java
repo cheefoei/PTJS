@@ -36,16 +36,23 @@ public class JobPostAdapter extends RecyclerView.Adapter<JobPostAdapter.JobPostV
 
     private Context mContext;
     private List<JobPost> jobPostList;
-    private List<JobLocation> jobLocationList;
+    private boolean isShowPosition;
     private int position = 0;
+
+    public static JobPostAdapter getAdapter(Context mContext,
+                                            List<JobPost> jobPostList,
+                                            boolean isShowPosition) {
+
+        return new JobPostAdapter(mContext, jobPostList, isShowPosition);
+    }
 
     public JobPostAdapter(Context mContext,
                           List<JobPost> jobPostList,
-                          List<JobLocation> jobLocationList) {
+                          boolean isShowPosition) {
 
         this.mContext = mContext;
         this.jobPostList = jobPostList;
-        this.jobLocationList = jobLocationList;
+        this.isShowPosition = isShowPosition;
     }
 
     @Override
@@ -60,7 +67,7 @@ public class JobPostAdapter extends RecyclerView.Adapter<JobPostAdapter.JobPostV
     public void onBindViewHolder(final JobPostViewHolder jobPostViewHolder, int i) {
 
         final JobPost jobPost = jobPostList.get(i);
-        final JobLocation jobLocation = jobLocationList.get(i);
+        final JobLocation jobLocation = jobPost.getJobLocation();
 
         SimpleDateFormat newDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
 
@@ -104,20 +111,28 @@ public class JobPostAdapter extends RecyclerView.Adapter<JobPostAdapter.JobPostV
 
                 Intent intent = new Intent(mContext, CompanyJobDetailActivity.class);
                 intent.putExtra("JOBPOST", jobPost);
-                intent.putExtra("JOBLOCATION", jobLocation);
+                if (jobPost.isAds()) {
+                    intent.putExtra("MENU", "Ads");
+                } else {
+                    intent.putExtra("MENU", jobPost.getStatus());
+                }
                 mContext.startActivity(intent);
             }
         });
 
-        new JobPostAdapter.AdapterAsyncTask() {
+        if (isShowPosition) {
+            new JobPostAdapter.AdapterAsyncTask() {
 
-            @Override
-            protected String doInBackground(String... params) {
+                @Override
+                protected String doInBackground(String... params) {
 
-                calculatePosition(jobPost, jobPostViewHolder.jobPosition);
-                return null;
-            }
-        }.execute();
+                    calculatePosition(jobPost, jobPostViewHolder.jobPosition);
+                    return null;
+                }
+            }.execute();
+        } else {
+            jobPostViewHolder.layoutPosition.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -167,7 +182,7 @@ public class JobPostAdapter extends RecyclerView.Adapter<JobPostAdapter.JobPostV
     class JobPostViewHolder extends RecyclerView.ViewHolder {
 
         CardView cardViewJobPost;
-        LinearLayout layoutJob;
+        LinearLayout layoutJob, layoutPosition;
         TextView ads, title, jobPosition, postedDate, workplaceName,
                 workplaceAddress, workingDate, wages;
 
@@ -176,6 +191,7 @@ public class JobPostAdapter extends RecyclerView.Adapter<JobPostAdapter.JobPostV
             super(view);
             cardViewJobPost = (CardView) view.findViewById(R.id.card_view_job_post);
             layoutJob = (LinearLayout) view.findViewById(R.id.layout_job);
+            layoutPosition = (LinearLayout) view.findViewById(R.id.layout_position);
             ads = (TextView) view.findViewById(R.id.tv_is_ads);
             title = (TextView) view.findViewById(R.id.tv_job_title);
             jobPosition = (TextView) view.findViewById(R.id.tv_job_position);

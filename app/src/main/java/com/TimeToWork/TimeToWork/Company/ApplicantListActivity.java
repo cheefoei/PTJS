@@ -28,16 +28,18 @@ public class ApplicantListActivity extends AppCompatActivity {
 
         Fragment sentFragment = new ApplicantFragment();
         Fragment approvedFragment = new ApplicantFragment();
+        Fragment completedFragment = new ApplicantFragment();
         Fragment rejectedFragment = new ApplicantFragment();
 
         ApplicantListActivity.ViewPagerAdapter viewPagerAdapter
                 = new ApplicantListActivity.ViewPagerAdapter(getSupportFragmentManager());
         viewPagerAdapter.addFragment(sentFragment, "Sent");
         viewPagerAdapter.addFragment(approvedFragment, "Approved");
+        viewPagerAdapter.addFragment(completedFragment, "Completed");
         viewPagerAdapter.addFragment(rejectedFragment, "Rejected");
 
         ViewPager mViewPager = (ViewPager) findViewById(R.id.viewpager_applicant);
-        mViewPager.setOffscreenPageLimit(4);
+        mViewPager.setOffscreenPageLimit(3);
         mViewPager.setAdapter(viewPagerAdapter);
 
         TabLayout mTabLayout = (TabLayout) findViewById(R.id.tab_application_status);

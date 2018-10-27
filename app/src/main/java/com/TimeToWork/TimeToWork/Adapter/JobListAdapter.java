@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.TimeToWork.TimeToWork.CustomClass.CategoryTagView;
 import com.TimeToWork.TimeToWork.Database.Entity.Company;
 import com.TimeToWork.TimeToWork.Database.Entity.JobLocation;
 import com.TimeToWork.TimeToWork.Database.Entity.JobPost;
@@ -41,20 +42,13 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.JobListV
 
     private Context mContext;
     private List<JobPost> jobPostList;
-    private List<JobLocation> jobLocationList;
-    private List<Company> companyList;
     private double latitude;
     private double longitude;
 
-    public JobListAdapter(Context mContext,
-                          List<JobPost> jobPostList,
-                          List<JobLocation> jobLocationList,
-                          List<Company> companyList) {
+    public JobListAdapter(Context mContext, List<JobPost> jobPostList) {
 
         this.mContext = mContext;
         this.jobPostList = jobPostList;
-        this.jobLocationList = jobLocationList;
-        this.companyList = companyList;
     }
 
     @Override
@@ -69,8 +63,8 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.JobListV
     public void onBindViewHolder(final JobListViewHolder jobListViewHolder, int i) {
 
         final JobPost jobPost = jobPostList.get(i);
-        final JobLocation jobLocation = jobLocationList.get(i);
-        final Company company = companyList.get(i);
+        final JobLocation jobLocation = jobPost.getJobLocation();
+        final Company company = jobPost.getCompany();
 
         try {
             JSONObject workingDateObject = new JSONObject(jobPost.getWorkingDate());
@@ -101,6 +95,14 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.JobListV
         jobListViewHolder.title.setText(jobPost.getTitle());
         jobListViewHolder.workplace.setText(jobLocation.getName());
         jobListViewHolder.wages.setText(String.format(Locale.getDefault(), "RM %.2f", jobPost.getWages()));
+        jobListViewHolder.categoryTagView.setText(jobPost.getCategory());
+
+        if (jobPost.getPaymentTerm() > 7) {
+            jobListViewHolder.tagFastPayment.setVisibility(View.GONE);
+        }
+        if (!jobPost.isAds()) {
+            jobListViewHolder.tagRecommended.setVisibility(View.GONE);
+        }
 
         if (company.getImg() != null) {
             byte[] decodedString = Base64.decode(company.getImg(), Base64.DEFAULT);
@@ -131,8 +133,6 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.JobListV
 
                 Intent intent = new Intent(mContext, ViewJobDetailActivity.class);
                 intent.putExtra("JOB", jobPost);
-                intent.putExtra("JOBLOCATION", jobLocation);
-                intent.putExtra("COMPANY", company);
                 mContext.startActivity(intent);
             }
         });
@@ -200,6 +200,8 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.JobListV
         LinearLayout layoutJob;
         ImageView img;
         TextView title, companyName, workplace, workingDate, wages, ratingText, distance;
+        TextView tagFastPayment, tagRecommended;
+        CategoryTagView categoryTagView;
         RatingBar rateBarCompany;
 
         JobListViewHolder(View view) {
@@ -214,6 +216,9 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.JobListV
             wages = (TextView) view.findViewById(R.id.tv_wages);
             ratingText = (TextView) view.findViewById(R.id.tv_company_rating);
             distance = (TextView) view.findViewById(R.id.tv_job_distance);
+            tagFastPayment = (TextView) view.findViewById(R.id.tag_fast_payment);
+            tagRecommended = (TextView) view.findViewById(R.id.tag_recommended);
+            categoryTagView = (CategoryTagView) view.findViewById(R.id.tag_category);
             rateBarCompany = (RatingBar) view.findViewById(R.id.rate_bar_company);
         }
     }

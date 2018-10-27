@@ -1,6 +1,7 @@
 package com.TimeToWork.TimeToWork.Company;
 
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -94,7 +95,32 @@ public class ApplicantFragment extends Fragment
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(adapter);
 
-        getApplicantList();
+        new ApplicantAsyncTask() {
+
+            @Override
+            protected void onPreExecute() {
+
+                super.onPreExecute();
+                //Show progress dialog
+                mProgressDialog.setMessage("Getting all applicants …");
+                mProgressDialog.show();
+            }
+
+            @Override
+            protected Boolean doInBackground(String... params) {
+
+                getApplicantList();
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Boolean aBoolean) {
+
+                super.onPostExecute(aBoolean);
+                // Hide progress dialog
+                mProgressDialog.dismiss();
+            }
+        }.execute();
 
         return view;
     }
@@ -230,6 +256,12 @@ public class ApplicantFragment extends Fragment
 
         public Map<String, String> getParams() {
             return params;
+        }
+    }
+
+    private abstract class ApplicantAsyncTask extends AsyncTask<String, Boolean, Boolean> {
+
+        private ApplicantAsyncTask() {
         }
     }
 }

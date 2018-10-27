@@ -1,68 +1,188 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite"
-    android:orientation="vertical"
     android:padding="@dimen/padding">
 
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp">
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="64dp"
+        android:scrollbars="none">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:fontFamily="@string/font_family_light"
-            android:text="Wages"
-            android:textSize="18sp" />
+            android:background="@color/colorWhite"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_wages_value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:fontFamily="@string/font_family_light"
-            android:text="minimum RM 0"
-            android:textSize="16sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@string/font_family_light"
+                android:text="@string/string_working_date"
+                android:textSize="18sp" />
 
-    </RelativeLayout>
+            <EditText
+                android:id="@+id/et_working_date_start"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edit_text_height"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/edit_text_bg"
+                android:focusable="false"
+                android:hint="Start Date"
+                android:inputType="date"
+                android:labelFor="@+id/et_working_date_start" />
 
-    <SeekBar
-        android:id="@+id/seekbar_wages"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:max="500" />
+            <EditText
+                android:id="@+id/et_working_date_end"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edit_text_height"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/edit_text_bg"
+                android:focusable="false"
+                android:hint="End Date"
+                android:inputType="date"
+                android:labelFor="@+id/et_working_date_end" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin"
-        android:fontFamily="@string/font_family_light"
-        android:text="Payment Terms"
-        android:textSize="18sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@string/font_family_light"
+                android:text="Working Time"
+                android:textSize="18sp" />
 
-    <Spinner
-        android:id="@+id/spinner_payment_term"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:entries="@array/array_payment_term"
-        android:fontFamily="@string/font_family_light"
-        android:textSize="16sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <EditText
+                    android:id="@+id/et_working_time_start"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/edit_text_height"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/edit_text_bg"
+                    android:focusable="false"
+                    android:hint="@string/hint_start_time"
+                    android:inputType="time"
+                    android:labelFor="@+id/et_working_time_start" />
+
+                <EditText
+                    android:id="@+id/et_working_time_end"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/edit_text_height"
+                    android:layout_marginStart="4dp"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/edit_text_bg"
+                    android:focusable="false"
+                    android:hint="@string/hint_end_time"
+                    android:inputType="time"
+                    android:labelFor="@+id/et_working_time_end" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@string/font_family_light"
+                android:text="@string/string_location"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/et_location_name"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edit_text_height"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/edit_text_bg"
+                android:hint="@string/hint_location"
+                android:inputType="text"
+                android:labelFor="@+id/et_working_date_start" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin"
+                android:fontFamily="@string/font_family_light"
+                android:text="@string/string_category"
+                android:textSize="18sp" />
+
+            <Spinner
+                android:id="@+id/spinner_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:layout_marginTop="4dp"
+                android:entries="@array/array_category"
+                android:fontFamily="@string/font_family_light"
+                android:textSize="16sp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:fontFamily="@string/font_family_light"
+                    android:text="Wages"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_wages_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="@string/font_family_light"
+                    android:text="minimum RM 0"
+                    android:textSize="16sp" />
+
+            </RelativeLayout>
+
+            <SeekBar
+                android:id="@+id/seekbar_wages"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                android:max="500" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin"
+                android:fontFamily="@string/font_family_light"
+                android:text="Payment Terms"
+                android:textSize="18sp" />
+
+            <Spinner
+                android:id="@+id/spinner_payment_term"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:entries="@array/array_payment_term"
+                android:fontFamily="@string/font_family_light"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
     <Button
         android:id="@+id/btn_submit_filter"
         style="@style/ButtonStyle"
         android:layout_width="108dp"
         android:layout_height="42dp"
-        android:layout_gravity="end"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
         android:layout_marginTop="24dp"
         android:background="@color/colorButtonBlue"
-        android:text="@string/btn_sort"
+        android:text="@string/btn_filter"
         android:textSize="16sp" />
 
-</LinearLayout>
+</RelativeLayout>

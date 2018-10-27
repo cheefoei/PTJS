@@ -1,11 +1,14 @@
 package com.TimeToWork.TimeToWork.NavigationFragment;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -19,6 +22,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,10 +32,13 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.TimeToWork.TimeToWork.Adapter.JobListAdapter;
 import com.TimeToWork.TimeToWork.CustomClass.CustomProgressDialog;
@@ -52,6 +59,10 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -70,7 +81,10 @@ public class JobseekerHomeFragment extends Fragment {
     private SwipeRefreshLayout swipeContainer;
     private TextView tvEmpty;
 
-    private Spinner spinnerPaymentTerm;
+    private EditText etStartDate, etEndDate;
+    private EditText etStartTime, etEndTime;
+    private EditText etLocation;
+    private Spinner spinnerPaymentTerm, spinnerCategory;
     private SeekBar seekBarWages;
 
     private LocationManager mLocationManager;
@@ -78,11 +92,15 @@ public class JobseekerHomeFragment extends Fragment {
 
     private JobListAdapter adapter;
     private List<JobPost> jobPostList;
-    private List<JobLocation> jobLocationList;
-    private List<Company> companyList;
 
-    private JSONObject optionJSON = new JSONObject();
+    private String[] option = new String[8];
     private TextView currentSort;
+
+    private Calendar calendar = Calendar.getInstance();
+    private DatePickerDialog startDatePickerDialog;
+    private DatePickerDialog endDatePickerDialog;
+    private TimePickerDialog startTimePickerDialog;
+    private TimePickerDialog endTimePickerDialog;
 
     public JobseekerHomeFragment() {
         // Required empty public constructor
@@ -101,7 +119,6 @@ public class JobseekerHomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home_jobseeker, container, false);
 
         mDrawerLayout = (DrawerLayout) view.findViewById(R.id.layout_filter);
-//        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         navigationView = (NavigationView) view.findViewById(R.id.nav_view_filter);
 
         mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
@@ -121,9 +138,7 @@ public class JobseekerHomeFragment extends Fragment {
         swipeContainer.setColorSchemeResources(R.color.colorAccent);
 
         jobPostList = new ArrayList<>();
-        jobLocationList = new ArrayList<>();
-        companyList = new ArrayList<>();
-        adapter = new JobListAdapter(getContext(), jobPostList, jobLocationList, companyList);
+        adapter = new JobListAdapter(getContext(), jobPostList);
 
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -132,18 +147,6 @@ public class JobseekerHomeFragment extends Fragment {
         mRecyclerView.setLayoutManager(llm);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(adapter);
-
-        // Show progress dialog at the beginning
-        mProgressDialog.setMessage("Loading job post ...");
-        mProgressDialog.show();
-        // Get current location
-        getCurrentLocation();
-        //Get jobseeker data from local database
-        JobseekerDA jobseekerDA = new JobseekerDA(getActivity());
-        jobseeker = jobseekerDA.getJobseekerData();
-        jobseekerDA.close();
-        // Show job posts in list
-        setupJobPostList();
 
         Button btnSortBy = (Button) view.findViewById(R.id.btn_sort);
         btnSortBy.setOnClickListener(new View.OnClickListener() {
@@ -179,7 +182,51 @@ public class JobseekerHomeFragment extends Fragment {
                 mDrawerLayout.openDrawer(GravityCompat.END);
             }
         });
-        setupFilterView();
+
+        // Set default option
+        option[0] = "01012018";
+        option[1] = "31122099";
+        option[2] = "00:00";
+        option[3] = "23:59";
+        option[4] = "";
+        option[5] = "";
+        option[6] = "0";
+        option[7] = "60";
+
+        new FragmentAsyncTask() {
+
+            @Override
+            protected void onPreExecute() {
+
+                // Show progress dialog at the beginning
+                mProgressDialog.setMessage("Loading job post ...");
+                mProgressDialog.show();
+                super.onPreExecute();
+            }
+
+            @Override
+            protected Boolean doInBackground(String... params) {
+
+                // Get current location
+                getCurrentLocation();
+                //Get jobseeker data from local database
+                JobseekerDA jobseekerDA = new JobseekerDA(getActivity());
+                jobseeker = jobseekerDA.getJobseekerData();
+                jobseekerDA.close();
+                // Show job posts in list
+                setupJobPostList();
+
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Boolean aBoolean) {
+
+                // Setup filter view
+                setupFilterView();
+                super.onPostExecute(aBoolean);
+            }
+        }.execute();
 
         return view;
     }
@@ -223,6 +270,69 @@ public class JobseekerHomeFragment extends Fragment {
 
     private void setupFilterView() {
 
+        etStartDate = (EditText) navigationView.findViewById(R.id.et_working_date_start);
+        etEndDate = (EditText) navigationView.findViewById(R.id.et_working_date_end);
+
+        // Get Current Date
+        int mYear = calendar.get(Calendar.YEAR);
+        int mMonth = calendar.get(Calendar.MONTH);
+        int mDay = calendar.get(Calendar.DAY_OF_MONTH);
+
+        startDatePickerDialog = new DatePickerDialog(
+                getActivity(), new DatePickerListener(etStartDate), mYear, mMonth, mDay);
+        startDatePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+
+        etStartDate.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                startDatePickerDialog.show();
+            }
+        });
+
+        endDatePickerDialog = new DatePickerDialog(
+                getActivity(), new DatePickerListener(etEndDate), mYear, mMonth, mDay);
+        endDatePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+
+        etEndDate.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                endDatePickerDialog.show();
+            }
+        });
+
+        etStartTime = (EditText) navigationView.findViewById(R.id.et_working_time_start);
+        etEndTime = (EditText) navigationView.findViewById(R.id.et_working_time_end);
+
+        // Get Current Time
+        int mHour = calendar.get(Calendar.HOUR_OF_DAY);
+        int mMinute = calendar.get(Calendar.MINUTE);
+
+        startTimePickerDialog = new TimePickerDialog(
+                getActivity(), new TimePickerListener(etStartTime), mHour, mMinute, true);
+        etStartTime.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                startTimePickerDialog.show();
+            }
+        });
+
+        endTimePickerDialog = new TimePickerDialog(
+                getActivity(), new TimePickerListener(etEndTime), mHour, mMinute, true);
+        etEndTime.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                endTimePickerDialog.show();
+            }
+        });
+
+        etLocation = (EditText) navigationView.findViewById(R.id.et_location_name);
+        spinnerPaymentTerm = (Spinner) navigationView.findViewById(R.id.spinner_payment_term);
+        spinnerCategory = (Spinner) navigationView.findViewById(R.id.spinner_category);
+
         final TextView tvWagesValue = (TextView) navigationView.findViewById(R.id.tv_wages_value);
 
         seekBarWages = (SeekBar) navigationView.findViewById(R.id.seekbar_wages);
@@ -242,34 +352,45 @@ public class JobseekerHomeFragment extends Fragment {
             }
         });
 
-        spinnerPaymentTerm = (Spinner) navigationView.findViewById(R.id.spinner_payment_term);
-
         Button btnSubmitFilter = (Button) navigationView.findViewById(R.id.btn_submit_filter);
         btnSubmitFilter.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
-                try {
-                    if (seekBarWages.getProgress() > 0) {
-                        optionJSON.put("wages", String.format(Locale.ENGLISH, "%d", seekBarWages.getProgress()));
-                    }
+                if (!etStartDate.getText().toString().equals("") &&
+                        !etEndDate.getText().toString().equals("")) {
 
-                    String paymentTerm = "0";
-                    if (spinnerPaymentTerm.getSelectedItemPosition() != 0) {
-                        paymentTerm = spinnerPaymentTerm.getSelectedItem().toString().substring(0, 2);
-                    }
-                    optionJSON.put("paymentTerm", paymentTerm);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    option[0] = etStartDate.getText().toString();
+                    option[1] = etEndDate.getText().toString();
                 }
 
-                String option = optionJSON.toString();
-                if (!option.equals("{}")) {
-                    mProgressDialog.setMessage("Filtering job post ...");
-                    mProgressDialog.show();
-                    setupJobPostList();
+                if (!etStartTime.getText().toString().equals("") &&
+                        !etEndTime.getText().toString().equals("")) {
+
+                    option[2] = etStartTime.getText().toString();
+                    option[3] = etEndTime.getText().toString();
                 }
+
+                option[4] = etLocation.getText().toString();
+                option[5] = spinnerCategory.getSelectedItem().toString();
+
+                if (seekBarWages.getProgress() >= 0) {
+                    option[6] = String.format(Locale.ENGLISH, "%d", seekBarWages.getProgress());
+                }
+
+                String paymentTerm = "0";
+                if (spinnerPaymentTerm.getSelectedItemPosition() != 0) {
+                    paymentTerm = spinnerPaymentTerm.getSelectedItem().toString().substring(0, 2);
+                }
+                option[7] = paymentTerm;
+
+
+                mProgressDialog.setMessage("Filtering job post ...");
+                mProgressDialog.show();
+
+                setupJobPostList();
+
                 mDrawerLayout.closeDrawer(GravityCompat.END);
             }
         });
@@ -387,10 +508,22 @@ public class JobseekerHomeFragment extends Fragment {
 
                                 JSONObject jsonobject = jobPostArray.getJSONObject(i);
 
+                                Company company = new Company();
+                                company.setName(jsonobject.getString("company_name"));
+                                company.setRating(Double.parseDouble(jsonobject.getString("company_rating")));
+                                company.setImg(jsonobject.getString("company_img"));
+
+                                JobLocation jobLocation = new JobLocation();
+                                jobLocation.setId(jsonobject.getString("job_location_id"));
+                                jobLocation.setName(jsonobject.getString("job_location_name"));
+                                jobLocation.setAddress(jsonobject.getString("job_location_address"));
+                                jobLocation.setLatitude(Double.parseDouble(jsonobject.getString("job_location_lat")));
+                                jobLocation.setLongitude(Double.parseDouble(jsonobject.getString("job_location_long")));
+
                                 JobPost jobPost = new JobPost();
                                 jobPost.setId(jsonobject.getString("job_post_id"));
-                                jobPost.setCompanyId(jsonobject.getString("company_id"));
-                                jobPost.setLocation_id(jsonobject.getString("job_location_id"));
+                                jobPost.setCompany(company);
+                                jobPost.setJobLocation(jobLocation);
                                 jobPost.setTitle(jsonobject.getString("job_post_title"));
                                 jobPost.setPostedDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH)
                                         .parse(jsonobject.getString("job_post_posted_date")));
@@ -409,22 +542,7 @@ public class JobseekerHomeFragment extends Fragment {
                                     jobPost.setPreferGender(jsonobject.getString("job_post_prefer_gender"));
                                 }
 
-                                JobLocation jobLocation = new JobLocation();
-                                jobLocation.setId(jsonobject.getString("job_location_id"));
-                                jobLocation.setName(jsonobject.getString("job_location_name"));
-                                jobLocation.setAddress(jsonobject.getString("job_location_address"));
-                                jobLocation.setLatitude(Double.parseDouble(jsonobject.getString("job_location_lat")));
-                                jobLocation.setLongitude(Double.parseDouble(jsonobject.getString("job_location_long")));
-
-                                Company company = new Company();
-                                company.setName(jsonobject.getString("company_name"));
-                                company.setRating(Double.parseDouble(jsonobject.getString("company_rating")));
-                                company.setImg(jsonobject.getString("company_img"));
-
                                 jobPostList.add(jobPost);
-                                jobLocationList.add(jobLocation);
-                                companyList.add(company);
-
                                 tvEmpty.setVisibility(View.GONE);
                             }
                         } else {
@@ -432,7 +550,6 @@ public class JobseekerHomeFragment extends Fragment {
                         }
                         adapter.notifyDataSetChanged();
                         swipeContainer.setRefreshing(false);
-
                     } else {
                         //If failed, then show alert dialog
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -446,9 +563,9 @@ public class JobseekerHomeFragment extends Fragment {
 
                 } catch (JSONException e) {
 
-                    e.printStackTrace();
                     //To close progress dialog
-                    mProgressDialog.toggleProgressDialog();
+                    mProgressDialog.dismiss();
+                    e.printStackTrace();
                     //If exception, then show alert dialog
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                     builder.setMessage(e.getMessage())
@@ -468,11 +585,13 @@ public class JobseekerHomeFragment extends Fragment {
             }
         };
 
+        Log.e("op", Arrays.toString(option));
+
         CustomVolleyErrorListener errorListener
                 = new CustomVolleyErrorListener(getActivity(), mProgressDialog, mRequestQueue);
         JobseekerHomeFragment.FetchJobPostRequest fetchJobPostRequest = new JobseekerHomeFragment.FetchJobPostRequest(
-                optionJSON.toString(),
                 Character.toString(jobseeker.getGender()),
+                option,
                 root + getString(R.string.url_get_job_post_for_jobseeker),
                 responseListener,
                 errorListener
@@ -485,17 +604,24 @@ public class JobseekerHomeFragment extends Fragment {
         private Map<String, String> params;
 
         FetchJobPostRequest(
-                String option,
                 String gender,
+                String[] option,
                 String url,
                 Response.Listener<String> listener,
                 Response.ErrorListener errorListener) {
             super(Method.POST, url, listener, errorListener);
 
             params = new HashMap<>();
-            params.put("option", option);
             params.put("jobseeker_id", userId);
             params.put("jobseeker_gender", gender);
+            params.put("date1", option[0]);
+            params.put("date2", option[1]);
+            params.put("time1", option[2]);
+            params.put("time2", option[3]);
+            params.put("location", option[4]);
+            params.put("category", option[5]);
+            params.put("wages", option[6]);
+            params.put("paymentTerm", option[7]);
         }
 
         public Map<String, String> getParams() {
@@ -514,16 +640,114 @@ public class JobseekerHomeFragment extends Fragment {
         @Override
         public void onClick(View v) {
 
-            ((TextView) v).setTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
-            if (currentSort != null) {
+            if (currentSort == v) {
                 currentSort.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextPrimary));
+                currentSort = null;
+                reset();
+            } else {
+                ((TextView) v).setTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+                if (currentSort != null) {
+                    currentSort.setTextColor(ContextCompat.getColor(getContext(), R.color.colorTextPrimary));
+                }
+                currentSort = ((TextView) v);
+                sort();
             }
-            currentSort = ((TextView) v);
-            sort();
         }
 
         private void sort() {
 
+            switch (sortType) {
+
+                case "distance":
+
+                    break;
+                case "wages":
+                    Collections.sort(jobPostList, new Comparator<JobPost>() {
+
+                        @Override
+                        public int compare(JobPost o1, JobPost o2) {
+                            return o1.getWages() > o2.getWages() ? -1
+                                    : (o1.getWages() < o2.getWages()) ? 1 : 0;
+                        }
+                    });
+                    break;
+                case "rating":
+                    Collections.sort(jobPostList, new Comparator<JobPost>() {
+
+                        @Override
+                        public int compare(JobPost o1, JobPost o2) {
+                            return o1.getCompany().getRating() > o2.getCompany().getRating() ? -1
+                                    : (o1.getCompany().getRating() < o2.getCompany().getRating()) ? 1 : 0;
+                        }
+                    });
+                    break;
+            }
+
+            adapter.notifyDataSetChanged();
+        }
+
+        private void reset() {
+
+            mProgressDialog.setMessage("Resetting job posts ...");
+            mProgressDialog.show();
+            setupJobPostList();
+        }
+    }
+
+    private class DatePickerListener implements DatePickerDialog.OnDateSetListener {
+
+        private EditText editText;
+
+        private DatePickerListener(EditText editText) {
+            this.editText = editText;
+        }
+
+        @Override
+        public void onDateSet(DatePicker view, int year,
+                              int monthOfYear, int dayOfMonth) {
+
+            String dateStr = dayOfMonth + "" + (monthOfYear + 1) + "" + year;
+            editText.setText(dateStr);
+        }
+    }
+
+    private class TimePickerListener implements TimePickerDialog.OnTimeSetListener {
+
+        private EditText editText;
+
+        private TimePickerListener(EditText editText) {
+            this.editText = editText;
+        }
+
+        @Override
+        public void onTimeSet(TimePicker view, int hourOfDay,
+                              int minute) {
+
+            String hour;
+            String min;
+
+            if (hourOfDay == 0) {
+                hour = "00";
+            } else if (hourOfDay < 10) {
+                hour = "0" + hourOfDay;
+            } else {
+                hour = Integer.toString(hourOfDay);
+            }
+            if (minute == 0) {
+                min = "00";
+            } else if (minute < 10) {
+                min = "0" + minute;
+            } else {
+                min = Integer.toString(minute);
+            }
+            editText.setText(hour + ":" + min);
+            editText.clearFocus();
+        }
+    }
+
+    private abstract class FragmentAsyncTask extends AsyncTask<String, Boolean, Boolean> {
+
+        private FragmentAsyncTask() {
         }
     }
 }

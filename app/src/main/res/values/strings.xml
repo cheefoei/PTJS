@@ -35,7 +35,7 @@
     <string name="btn_post_new_job">Post Job</string>
     <string name="btn_update_job_post">Update Job</string>
     <string name="btn_make_payment">Make Payment</string>
-    <string name="btn_rate_this">Rate This</string>
+    <string name="btn_rate_this">Rate</string>
     <string name="btn_review_this">Review</string>
     <string name="btn_cancel_job">Cancel Job</string>
     <string name="btn_submit_review">Submit Review</string>
@@ -116,14 +116,22 @@
     <string name="string_cvv">CVV</string>
     <string name="string_exp_date">Expiration Date</string>
 
+    <string name="category_ambassador">Ambassador</string>
+    <string name="category_driver">Driver</string>
+    <string name="category_event_crew">Event Crew</string>
+    <string name="category_promoter">Promoter</string>
+    <string name="category_tutor">Tutor</string>
+    <string name="category_waiter">Waiter/Waitress</string>
+    <string name="category_other">Other</string>
+
     <string-array name="array_category">
-        <item>Ambassador</item>
-        <item>Driver</item>
-        <item>Event Crew</item>
-        <item>Promoter</item>
-        <item>Tutor</item>
-        <item>Waiter/Waitress</item>
-        <item>Other</item>
+        <item>@string/category_ambassador</item>
+        <item>@string/category_driver</item>
+        <item>@string/category_event_crew</item>
+        <item>@string/category_promoter</item>
+        <item>@string/category_tutor</item>
+        <item>@string/category_waiter</item>
+        <item>@string/category_other</item>
     </string-array>
     <string-array name="array_payment_term">
         <item>On-the-spot</item>
@@ -198,12 +206,18 @@
     <string name="url_check_job_location_exists">company/CheckJobLocationExists.php</string>
     <string name="url_create_job_post">company/CreateJobPost.php</string>
     <string name="url_update_job_post">company/UpdateJobPost.php</string>
+    <string name="url_update_job_post_status">company/UpdateJobPostStatus.php</string>
     <string name="url_delete_job_post">company/DeleteJobPost.php</string>
     <string name="url_get_job_application_for_company">company/GetJobApplicationForCompany.php</string>
     <string name="url_approve_job_application">company/ApproveJobApplication.php</string>
     <string name="url_reject_job_application">company/RejectJobApplication.php</string>
     <string name="url_make_new_payment">company/MakeNewPayment.php</string>
     <string name="url_get_payment_history">company/GetPaymentHistory.php</string>
+    <string name="url_submit_review_by_company">company/ProvideReviewByCompany.php</string>
+    <string name="url_update_review_by_company">company/UpdateReviewByCompany.php</string>
+    <string name="url_delete_review_by_company">company/DeleteReviewByCompany.php</string>
+    <string name="url_get_review_of_jobseeker">jobseeker/GetReviewOfJobseeker.php</string>
+
 
     <string name="sort_the_nearest_distance">The nearest distance</string>
     <string name="sort_the_highest_wages">The highest wages</string>
@@ -228,5 +242,12 @@
     <string name="btn_view_job_post">View Job Post</string>
     <string name="string_payable_amount">Payable Amount:</string>
     <string name="string_rm_5_00">RM 5.00</string>
+    <string name="menu_applicant">Applicant</string>
+    <string name="menu_update_job_post">Update Job Post</string>
+    <string name="menu_delete_job_post">Delete Job Post</string>
+    <string name="menu_complete_job">Complete Job</string>
+    <string name="menu_unavailable_job">Set Unavailable</string>
+    <string name="menu_make_advertisement">Make Advertisement</string>
+    <string name="hint_location">One Utama, KLCC, Sunway Pyramid</string>
 
 </resources>

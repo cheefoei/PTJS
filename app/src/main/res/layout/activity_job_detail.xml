@@ -106,10 +106,37 @@
                 android:layout_marginBottom="16dp"
                 android:orientation="horizontal">
 
-                <TextView
+                <com.TimeToWork.TimeToWork.CustomClass.CategoryTagView
+                    android:id="@+id/tag_category"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_label_tag"
+                    android:fontFamily="@string/font_family_light"
+                    android:gravity="center"
+                    android:minHeight="24dp"
+                    android:minWidth="64dp"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tag_recommended"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_label_tag_red"
+                    android:fontFamily="@string/font_family_light"
+                    android:gravity="center"
+                    android:minHeight="24dp"
+                    android:minWidth="64dp"
+                    android:text="Recommended"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tag_fast_payment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_label_tag_light_yellow"
                     android:fontFamily="@string/font_family_light"
                     android:gravity="center"
                     android:minHeight="24dp"

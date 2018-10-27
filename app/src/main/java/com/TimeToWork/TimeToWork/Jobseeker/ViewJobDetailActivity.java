@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.TimeToWork.TimeToWork.CustomClass.CategoryTagView;
 import com.TimeToWork.TimeToWork.CustomClass.CustomProgressDialog;
 import com.TimeToWork.TimeToWork.CustomClass.CustomVolleyErrorListener;
 import com.TimeToWork.TimeToWork.Database.Entity.Company;
@@ -47,8 +48,8 @@ public class ViewJobDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_job_detail);
 
         jobPost = (JobPost) getIntent().getSerializableExtra("JOB");
-        JobLocation jobLocation = (JobLocation) getIntent().getSerializableExtra("JOBLOCATION");
-        Company company = (Company) getIntent().getSerializableExtra("COMPANY");
+        JobLocation jobLocation = jobPost.getJobLocation();
+        Company company = jobPost.getCompany();
 
         SimpleDateFormat newDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
         String workingDate = "";
@@ -69,6 +70,19 @@ public class ViewJobDetailActivity extends AppCompatActivity {
             }
         } catch (JSONException | ParseException e) {
             e.printStackTrace();
+        }
+
+        CategoryTagView categoryTagView = (CategoryTagView) findViewById(R.id.tag_category);
+        categoryTagView.setText(jobPost.getCategory());
+
+        TextView tagFastPayment = (TextView) findViewById(R.id.tag_fast_payment);
+        if (jobPost.getPaymentTerm() > 7) {
+            tagFastPayment.setVisibility(View.GONE);
+        }
+
+        TextView tagRecommended = (TextView) findViewById(R.id.tag_recommended);
+        if (!jobPost.isAds()) {
+            tagRecommended.setVisibility(View.GONE);
         }
 
         TextView tvJobTitle = (TextView) findViewById(R.id.tv_job_title);

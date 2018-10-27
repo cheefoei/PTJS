@@ -68,10 +68,19 @@
             android:name=".Company.PaymentActivity"
             android:label="@string/activity_payment"
             android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".Company.CompanyProvideReviewActivity"
+            android:label="@string/activity_new_review"
+            android:parentActivityName=".Company.ApplicantListActivity" />
+        <activity
+            android:name=".Company.CompanyViewReviewActivity"
+            android:label="@string/activity_view_review"
+            android:parentActivityName=".Company.ApplicantListActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyC1s0dTxpTAQ9ke5Oaqnu7K2k4GV-wEVVY" />
+
     </application>
 
 </manifest>

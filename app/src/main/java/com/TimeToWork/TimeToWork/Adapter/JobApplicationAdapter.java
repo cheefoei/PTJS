@@ -43,30 +43,21 @@ public class JobApplicationAdapter extends RecyclerView.Adapter<JobApplicationAd
 
     private Context mContext;
     private List<JobPost> jobPostList;
-    private List<JobLocation> jobLocationList;
-    private List<Company> companyList;
     private List<JobApplication> jobApplicationList;
 
     public static JobApplicationAdapter getAdapter(Context mContext,
                                                    List<JobPost> jobPostList,
-                                                   List<JobLocation> jobLocationList,
-                                                   List<Company> companyList,
                                                    List<JobApplication> jobApplicationList) {
 
-        return new JobApplicationAdapter(mContext, jobPostList,
-                jobLocationList, companyList, jobApplicationList);
+        return new JobApplicationAdapter(mContext, jobPostList, jobApplicationList);
     }
 
     private JobApplicationAdapter(Context mContext,
                                   List<JobPost> jobPostList,
-                                  List<JobLocation> jobLocationList,
-                                  List<Company> companyList,
                                   List<JobApplication> jobApplicationList) {
 
         this.mContext = mContext;
         this.jobPostList = jobPostList;
-        this.jobLocationList = jobLocationList;
-        this.companyList = companyList;
         this.jobApplicationList = jobApplicationList;
     }
 
@@ -82,8 +73,8 @@ public class JobApplicationAdapter extends RecyclerView.Adapter<JobApplicationAd
     public void onBindViewHolder(JobApplicationViewHolder jobApplicationViewHolder, int i) {
 
         final JobPost jobPost = jobPostList.get(i);
-        final JobLocation jobLocation = jobLocationList.get(i);
-        final Company company = companyList.get(i);
+        final JobLocation jobLocation = jobPost.getJobLocation();
+        final Company company = jobPost.getCompany();
         final JobApplication jobApplication = jobApplicationList.get(i);
 
         try {
@@ -125,8 +116,6 @@ public class JobApplicationAdapter extends RecyclerView.Adapter<JobApplicationAd
 
                 Intent intent = new Intent(mContext, ViewJobDetailActivity.class);
                 intent.putExtra("JOB", jobPost);
-                intent.putExtra("JOBLOCATION", jobLocation);
-                intent.putExtra("COMPANY", company);
                 intent.putExtra("APPLY", false);
 
                 if (jobApplication.getStatus().equals("Sent")) {

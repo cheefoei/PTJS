@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,8 +24,10 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -38,7 +41,9 @@ public class CompanyJobDetailActivity extends AppCompatActivity {
     private JobPost jobPost;
     private JobLocation jobLocation;
 
-    private boolean isRemovable = true;
+    private List<Date> workingDateList = new ArrayList<>();
+
+    private String menuMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +56,8 @@ public class CompanyJobDetailActivity extends AppCompatActivity {
 //        mProgressDialog.toggleProgressDialog();
 
         jobPost = (JobPost) getIntent().getSerializableExtra("JOBPOST");
-        jobLocation = (JobLocation) getIntent().getSerializableExtra("JOBLOCATION");
-        isRemovable = getIntent().getBooleanExtra("REMOVE", true);
+        jobLocation = jobPost.getJobLocation();
+        menuMode = getIntent().getStringExtra("MENU");
 
         SimpleDateFormat newDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
         String workingDate = "";
@@ -65,6 +70,7 @@ public class CompanyJobDetailActivity extends AppCompatActivity {
 
                 Date date = new SimpleDateFormat("ddMMyyyy", Locale.ENGLISH)
                         .parse(workingDateObject.getString("wd" + i));
+                workingDateList.add(date);
 
                 if (!workingDate.equals("")) {
                     workingDate = workingDate + "\n";
@@ -126,10 +132,22 @@ public class CompanyJobDetailActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        if (isRemovable) {
-            getMenuInflater().inflate(R.menu.menu_company_job_detail, menu);
-        } else {
-            getMenuInflater().inflate(R.menu.menu_company_job_detail_no_delete, menu);
+        switch (menuMode) {
+            case "Ads":
+                getMenuInflater().inflate(R.menu.menu_company_job_detail_ads, menu);
+                break;
+            case "Full":
+                getMenuInflater().inflate(R.menu.menu_company_job_detail_full, menu);
+                break;
+            case "Completed":
+                getMenuInflater().inflate(R.menu.menu_company_job_detail_completed, menu);
+                break;
+            case "Unavailable":
+                getMenuInflater().inflate(R.menu.menu_company_job_detail_unavailable, menu);
+                break;
+            default:
+                getMenuInflater().inflate(R.menu.menu_company_job_detail, menu);
+                break;
         }
         return super.onCreateOptionsMenu(menu);
     }
@@ -176,6 +194,37 @@ public class CompanyJobDetailActivity extends AppCompatActivity {
                     })
                     .setNegativeButton("Cancel", null);
             builder.show();
+
+        } else if (id == R.id.complete) {
+
+            Date date = new Date();
+            if (date.before(workingDateList.get(0))) {
+
+                AlertDialog.Builder builder
+                        = new AlertDialog.Builder(CompanyJobDetailActivity.this, R.style.DialogStyle)
+                        .setTitle("Error")
+                        .setMessage("The working date is before today.")
+                        .setPositiveButton("OK", null);
+                builder.show();
+            } else {
+                updateJonPostStatus("Completed");
+            }
+        } else if (id == R.id.unavailable) {
+
+            AlertDialog.Builder builder
+                    = new AlertDialog.Builder(CompanyJobDetailActivity.this, R.style.DialogStyle)
+                    .setTitle("Confirmation")
+                    .setMessage("Make this job post unavailable? You will not receive any application for this job.\n" +
+                            "You cannot undo this action.")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            updateJonPostStatus("Unavailable");
+                        }
+                    })
+                    .setNegativeButton("Cancel", null);
+            builder.show();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -206,9 +255,15 @@ public class CompanyJobDetailActivity extends AppCompatActivity {
             }
         };
 
+        String status = "Approved";
+        if (jobPost.getStatus().equals("Completed")) {
+            status = jobPost.getStatus();
+        }
+
         CompanyJobDetailActivity.CalculatePositionRequest calculatePositionRequest
                 = new CompanyJobDetailActivity.CalculatePositionRequest(
                 jobPost.getId(),
+                status,
                 root + getString(R.string.url_get_job_application_for_company),
                 responseListener,
                 null
@@ -222,7 +277,7 @@ public class CompanyJobDetailActivity extends AppCompatActivity {
         mProgressDialog.setMessage("Deleting your job post...");
         mProgressDialog.toggleProgressDialog();
 
-        final Response.Listener<String> responseListener = new Response.Listener<String>() {
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -283,12 +338,83 @@ public class CompanyJobDetailActivity extends AppCompatActivity {
         mRequestQueue.add(deleteJobPostRequest);
     }
 
+    private void updateJonPostStatus(String status) {
+
+        // Show progress dialog
+        mProgressDialog.setMessage("Updating job post status ...");
+        mProgressDialog.toggleProgressDialog();
+
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+
+                Log.e("gjgj", response);
+
+                try {
+                    JSONObject jsonResponse = new JSONObject(response);
+                    boolean success = jsonResponse.getBoolean("success");
+                    String title;
+
+                    if (success) {
+                        title = "Success";
+                    } else {
+                        title = "Failed";
+                    }
+                    //To close progress dialog
+                    mProgressDialog.toggleProgressDialog();
+                    //show message from server
+                    AlertDialog.Builder builder = new AlertDialog.Builder(CompanyJobDetailActivity.this);
+                    builder.setTitle(title)
+                            .setMessage(jsonResponse.getString("msg"))
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    recreate();
+                                }
+                            })
+                            .create()
+                            .show();
+
+                } catch (JSONException e) {
+
+                    e.printStackTrace();
+                    //To close progress dialog
+                    mProgressDialog.toggleProgressDialog();
+                    //If exception, then show alert dialog
+                    AlertDialog.Builder builder = new AlertDialog.Builder(CompanyJobDetailActivity.this);
+                    builder.setMessage(e.getMessage())
+                            .setPositiveButton("OK", null)
+                            .create()
+                            .show();
+                }
+            }
+        };
+
+        CompanyJobDetailActivity.UpdateJobPostStatusRequest updateJobPostStatusRequest
+                = new CompanyJobDetailActivity.UpdateJobPostStatusRequest(
+                jobPost.getId(),
+                status,
+                root + getString(R.string.url_update_job_post_status),
+                responseListener,
+                null
+        );
+        updateJobPostStatusRequest.setRetryPolicy(new DefaultRetryPolicy(
+                0,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        mRequestQueue.add(updateJobPostStatusRequest);
+    }
+
     private class CalculatePositionRequest extends StringRequest {
 
         private Map<String, String> params;
 
         CalculatePositionRequest(
                 String jobPostId,
+                String status,
                 String url,
                 Response.Listener<String> listener,
                 Response.ErrorListener errorListener) {
@@ -296,7 +422,7 @@ public class CompanyJobDetailActivity extends AppCompatActivity {
 
             params = new HashMap<>();
             params.put("job_post_id", jobPostId);
-            params.put("status", "Approved");
+            params.put("status", status);
         }
 
         public Map<String, String> getParams() {
@@ -317,6 +443,28 @@ public class CompanyJobDetailActivity extends AppCompatActivity {
 
             params = new HashMap<>();
             params.put("job_post_id", jobPostId);
+        }
+
+        public Map<String, String> getParams() {
+            return params;
+        }
+    }
+
+    private class UpdateJobPostStatusRequest extends StringRequest {
+
+        private Map<String, String> params;
+
+        UpdateJobPostStatusRequest(
+                String jobPostId,
+                String status,
+                String url,
+                Response.Listener<String> listener,
+                Response.ErrorListener errorListener) {
+            super(Method.POST, url, listener, errorListener);
+
+            params = new HashMap<>();
+            params.put("job_post_id", jobPostId);
+            params.put("status", status);
         }
 
         public Map<String, String> getParams() {

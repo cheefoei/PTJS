@@ -10,7 +10,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.TimeToWork.TimeToWork.Company.CompanyJobDetailActivity;
-import com.TimeToWork.TimeToWork.Database.Entity.JobLocation;
 import com.TimeToWork.TimeToWork.Database.Entity.JobPost;
 import com.TimeToWork.TimeToWork.Database.Entity.Payment;
 import com.TimeToWork.TimeToWork.R;
@@ -24,17 +23,14 @@ public class PaymentHistoryAdapter extends RecyclerView.Adapter<PaymentHistoryAd
     private Context mContext;
     private List<Payment> paymentList;
     private List<JobPost> jobPostList;
-    private List<JobLocation> jobLocationList;
 
     public PaymentHistoryAdapter(Context mContext,
                                  List<Payment> paymentList,
-                                 List<JobPost> jobPostList,
-                                 List<JobLocation> jobLocationList) {
+                                 List<JobPost> jobPostList) {
 
         this.mContext = mContext;
         this.paymentList = paymentList;
         this.jobPostList = jobPostList;
-        this.jobLocationList = jobLocationList;
     }
 
     @Override
@@ -50,7 +46,6 @@ public class PaymentHistoryAdapter extends RecyclerView.Adapter<PaymentHistoryAd
 
         Payment payment = paymentList.get(i);
         final JobPost jobPost = jobPostList.get(i);
-        final JobLocation jobLocation = jobLocationList.get(i);
 
         paymentHistoryViewHolder.id.setText(String.format("ID: %s", payment.getId()));
         paymentHistoryViewHolder.paymentDate.setText(String.format("Made on %s",
@@ -63,8 +58,7 @@ public class PaymentHistoryAdapter extends RecyclerView.Adapter<PaymentHistoryAd
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, CompanyJobDetailActivity.class);
                 intent.putExtra("JOBPOST", jobPost);
-                intent.putExtra("JOBLOCATION", jobLocation);
-                intent.putExtra("REMOVE", false);
+                intent.putExtra("MENU", "Ads");
                 mContext.startActivity(intent);
             }
         });

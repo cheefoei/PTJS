@@ -8,6 +8,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -67,6 +68,8 @@ public class PostNewJobActivity extends AppCompatActivity implements
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_job_post);
+
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         mProgressDialog = new CustomProgressDialog(this);
 
@@ -255,8 +258,8 @@ public class PostNewJobActivity extends AppCompatActivity implements
                     mProgressDialog.toggleProgressDialog();
 
                     if (success) {
-                        String locationId = jsonResponse.getString("job_location_id");
-                        createNewJobPost(locationId);
+                        jobLocation.setId(jsonResponse.getString("job_location_id"));
+                        createNewJobPost();
                     } else {
                         //If failed, then show alert dialog
                         AlertDialog.Builder builder = new AlertDialog.Builder(PostNewJobActivity.this);
@@ -300,7 +303,7 @@ public class PostNewJobActivity extends AppCompatActivity implements
         mRequestQueue.add(checkJobLocationRequest);
     }
 
-    private void createNewJobPost(String locationId) {
+    private void createNewJobPost() {
 
         // Show progress dialog
         mProgressDialog.setMessage("Posting new job …");
@@ -405,7 +408,7 @@ public class PostNewJobActivity extends AppCompatActivity implements
         }
 
         JobPost jobPost = new JobPost();
-        jobPost.setLocation_id(locationId);
+        jobPost.setJobLocation(jobLocation);
         jobPost.setTitle(etTitle.getText().toString());
         jobPost.setWorkingDate(workingDateJSON.toString());
         jobPost.setWorkingTime(workingTimeJSON.toString());
@@ -477,7 +480,7 @@ public class PostNewJobActivity extends AppCompatActivity implements
 
             params = new HashMap<>();
             params.put("company_id", userId);
-            params.put("location_id", jobPost.getLocation_id());
+            params.put("location_id", jobPost.getJobLocation().getId());
             params.put("job_post_title", jobPost.getTitle());
             params.put("job_post_working_date", jobPost.getWorkingDate());
             params.put("job_post_working_timetable", jobPost.getWorkingTime());
