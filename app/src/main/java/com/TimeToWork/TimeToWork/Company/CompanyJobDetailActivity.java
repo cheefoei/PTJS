@@ -57,7 +57,11 @@ public class CompanyJobDetailActivity extends AppCompatActivity {
 
         jobPost = (JobPost) getIntent().getSerializableExtra("JOBPOST");
         jobLocation = jobPost.getJobLocation();
+
         menuMode = getIntent().getStringExtra("MENU");
+        if (menuMode == null) {
+            menuMode = jobPost.getStatus();
+        }
 
         SimpleDateFormat newDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
         String workingDate = "";

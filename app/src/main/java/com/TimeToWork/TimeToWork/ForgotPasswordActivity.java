@@ -1,6 +1,7 @@
 package com.TimeToWork.TimeToWork;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -72,12 +73,27 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
                 try {
                     JSONObject jsonResponse = new JSONObject(response);
+                    boolean success = jsonResponse.getBoolean("success");
 
-
-                    //If failed, then show alert dialog
                     AlertDialog.Builder builder = new AlertDialog.Builder(ForgotPasswordActivity.this);
+                    if (success) {
+                        builder.setTitle("Success")
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                        Intent intent = new Intent(ForgotPasswordActivity.this, ResetPasswordActivity.class);
+                                        intent.putExtra("EMAIL", forgotEmail);
+                                        startActivity(intent);
+                                    }
+                                });
+                    } else {
+                        builder.setPositiveButton("OK", null)
+                                .setTitle("Failed");
+                    }
+                    //If failed, then show alert dialog
                     builder.setMessage(jsonResponse.getString("message"))
-                            .setPositiveButton("OK", null)
                             .create()
                             .show();
 

@@ -37,6 +37,11 @@
             android:parentActivityName=".LoginActivity"
             android:theme="@style/AppTheme.WhiteStatusBar" />
         <activity
+            android:name=".ResetPasswordActivity"
+            android:label="@string/activity_reset_password"
+            android:parentActivityName=".ForgotPasswordActivity"
+            android:theme="@style/AppTheme.WhiteStatusBar" />
+        <activity
             android:name=".Jobseeker.ViewJobDetailActivity"
             android:label="@string/activity_job_detail"
             android:parentActivityName=".MainActivity" />
