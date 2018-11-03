@@ -86,6 +86,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                                         Intent intent = new Intent(ForgotPasswordActivity.this, ResetPasswordActivity.class);
                                         intent.putExtra("EMAIL", forgotEmail);
                                         startActivity(intent);
+                                        finish();
                                     }
                                 });
                     } else {

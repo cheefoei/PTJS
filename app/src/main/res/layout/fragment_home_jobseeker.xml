@@ -134,7 +134,11 @@
         android:background="@color/colorWhite"
         android:paddingTop="0dp">
 
-        <include layout="@layout/navigation_view_filter" />
+        <fragment
+            android:id="@+id/fragment_job_filter"
+            class="com.TimeToWork.TimeToWork.Jobseeker.JobFilterNavigationView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
     </android.support.design.widget.NavigationView>
 

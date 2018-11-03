@@ -1,5 +1,6 @@
 package com.TimeToWork.TimeToWork;
 
+import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,11 +16,14 @@ import com.android.volley.toolbox.StringRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.TimeToWork.TimeToWork.MainApplication.mRequestQueue;
 import static com.TimeToWork.TimeToWork.MainApplication.root;
+import static com.TimeToWork.TimeToWork.MainApplication.userType;
 
 public class ResetPasswordActivity extends AppCompatActivity {
 
@@ -49,7 +53,9 @@ public class ResetPasswordActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if (isValidated) {
-
+                    if (isValid()) {
+                        resetPassword();
+                    }
                 } else {
                     if (!etCode.getText().toString().equals("")) {
                         checkVerifyCode();
@@ -59,6 +65,52 @@ public class ResetPasswordActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private boolean isValid() {
+
+        boolean isValid = true;
+
+        String password = etPassword.getText().toString();
+        String confirmPassword = etConfirmPassword.getText().toString();
+
+        if (password.equals("")) {
+            etPassword.setError(getString(R.string.error_required_field));
+            isValid = false;
+        }
+        if (confirmPassword.equals("")) {
+            etConfirmPassword.setError(getString(R.string.error_required_field));
+            isValid = false;
+        }
+        if (!password.equals("") && !confirmPassword.equals("")) {
+            if (!password.equals(confirmPassword)) {
+                etPassword.setError(getString(R.string.error_password_not_match));
+                etConfirmPassword.setError(getString(R.string.error_password_not_match));
+                isValid = false;
+            }
+        }
+
+        return isValid;
+    }
+
+    private String getEncryptedPassword() {
+
+        String encryptedPassword = null;
+
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(etPassword.getText().toString().getBytes());
+            byte[] bytes = md.digest();
+            StringBuilder sb = new StringBuilder();
+            for (byte aByte : bytes) {
+                sb.append(String.format("%02X", aByte));
+            }
+            encryptedPassword = sb.toString();
+        } catch (NoSuchAlgorithmException exc) {
+            exc.printStackTrace();
+        }
+
+        return encryptedPassword;
     }
 
     private void checkVerifyCode() {
@@ -120,6 +172,77 @@ public class ResetPasswordActivity extends AppCompatActivity {
         mRequestQueue.add(verifyCodeRequest);
     }
 
+    private void resetPassword() {
+
+        //Show progress dialog
+        mProgressDialog.setMessage("Resetting password …");
+        mProgressDialog.toggleProgressDialog();
+
+        final Response.Listener<String> responseListener = new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    JSONObject jsonResponse = new JSONObject(response);
+                    boolean success = jsonResponse.getBoolean("success");
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ResetPasswordActivity.this);
+
+                    if (success) {
+                        builder.setTitle("Success")
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        finish();
+                                    }
+                                });
+                    } else {
+                        builder.setPositiveButton("OK", null)
+                                .setTitle("Failed");
+                    }
+                    //To close progress dialog
+                    mProgressDialog.toggleProgressDialog();
+                    // Show message from server
+                    builder.setMessage(jsonResponse.getString("msg"))
+                            .create()
+                            .show();
+                } catch (JSONException e) {
+
+                    e.printStackTrace();
+                    //To close progress dialog
+                    mProgressDialog.toggleProgressDialog();
+                    //If exception, then show alert dialog
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ResetPasswordActivity.this);
+                    builder.setMessage(e.getMessage())
+                            .setPositiveButton("OK", null)
+                            .create()
+                            .show();
+                }
+            }
+        };
+
+        String newPassword = getEncryptedPassword();
+        String url = null;
+        if (userType.equals("Company")) {
+            url = getString(R.string.url_company_update_password);
+        } else if (userType.equals("Jobseeker")) {
+            url = getString(R.string.url_jobseeker_update_password);
+        }
+
+        CustomVolleyErrorListener errorListener
+                = new CustomVolleyErrorListener(this, mProgressDialog, mRequestQueue);
+        ResetPasswordActivity.ResetPasswordRequest resetPasswordRequest = new ResetPasswordActivity.ResetPasswordRequest(
+                email,
+                newPassword,
+                root + url,
+                responseListener,
+                errorListener
+        );
+        mRequestQueue.add(resetPasswordRequest);
+    }
+
     private class VerifyCodeRequest extends StringRequest {
 
         private Map<String, String> params;
@@ -153,7 +276,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
                 Response.ErrorListener errorListener) {
             super(Method.POST, url, listener, errorListener);
             params = new HashMap<>();
-            params.put("jobseeker_email", email);
+            params.put("email", email);
             params.put("new_password", password);
         }
 

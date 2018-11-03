@@ -1,9 +1,14 @@
 package com.TimeToWork.TimeToWork;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +27,8 @@ import com.TimeToWork.TimeToWork.NavigationFragment.PaymentHistoryFragment;
 import com.TimeToWork.TimeToWork.NavigationFragment.MyPostedJobFragment;
 
 import static com.TimeToWork.TimeToWork.MainApplication.clearAppData;
+import static com.TimeToWork.TimeToWork.MainApplication.latitude;
+import static com.TimeToWork.TimeToWork.MainApplication.longitude;
 import static com.TimeToWork.TimeToWork.MainApplication.userId;
 import static com.TimeToWork.TimeToWork.MainApplication.userType;
 
@@ -64,7 +71,12 @@ public class MainActivity extends AppCompatActivity
 
                 MainApplication.setRequestQueue(MainActivity.this);
                 readUserData();
-
+                // Get current location if user is jobseeker
+                if (userType != null) {
+                    if (userType.equals("Jobseeker")) {
+                        getCurrentLocation();
+                    }
+                }
                 return null;
             }
 
@@ -95,6 +107,19 @@ public class MainActivity extends AppCompatActivity
             }
         }.execute();
 
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 1:
+                getCurrentLocation();
+                break;
+        }
     }
 
     @Override
@@ -204,6 +229,31 @@ public class MainActivity extends AppCompatActivity
         }
         // Close progress dialog
         mProgressDialog.dismiss();
+    }
+
+    private void getCurrentLocation() {
+
+        LocationManager mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        } else {
+
+            Location location = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+            if (location != null) {
+                latitude = location.getLatitude();
+                longitude = location.getLongitude();
+            } else {
+                latitude = Double.NaN;
+                longitude = Double.NaN;
+            }
+        }
     }
 
     private abstract class ActivityAsyncTask extends AsyncTask<String, Boolean, Boolean> {

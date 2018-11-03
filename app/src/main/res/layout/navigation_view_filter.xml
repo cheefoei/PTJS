@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/padding">
+    android:padding="@dimen/padding"
+    tools:context="com.TimeToWork.TimeToWork.Jobseeker.JobFilterNavigationView">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -172,6 +174,18 @@
         </LinearLayout>
 
     </ScrollView>
+
+    <Button
+        android:id="@+id/btn_clear_filter"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="108dp"
+        android:layout_height="42dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="24dp"
+        android:background="@color/colorBackground"
+        android:text="@string/btn_clear_filter"
+        android:textSize="16sp" />
 
     <Button
         android:id="@+id/btn_submit_filter"

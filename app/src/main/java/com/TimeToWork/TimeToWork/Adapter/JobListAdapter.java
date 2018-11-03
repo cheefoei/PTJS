@@ -4,12 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -21,34 +23,32 @@ import com.TimeToWork.TimeToWork.Database.Entity.JobLocation;
 import com.TimeToWork.TimeToWork.Database.Entity.JobPost;
 import com.TimeToWork.TimeToWork.Jobseeker.ViewJobDetailActivity;
 import com.TimeToWork.TimeToWork.R;
-import com.android.volley.Response;
-import com.android.volley.toolbox.StringRequest;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static com.TimeToWork.TimeToWork.MainApplication.mRequestQueue;
-
-public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.JobListViewHolder> {
+public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.JobListViewHolder> implements Filterable {
 
     private Context mContext;
     private List<JobPost> jobPostList;
-    private double latitude;
-    private double longitude;
+    private List<JobPost> originalJobPostList;
 
-    public JobListAdapter(Context mContext, List<JobPost> jobPostList) {
+    public JobListAdapter(Context mContext,
+                          List<JobPost> jobPostList,
+                          List<JobPost> originalJobPostList) {
 
         this.mContext = mContext;
         this.jobPostList = jobPostList;
+        this.originalJobPostList = originalJobPostList;
     }
 
     @Override
@@ -97,11 +97,21 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.JobListV
         jobListViewHolder.wages.setText(String.format(Locale.getDefault(), "RM %.2f", jobPost.getWages()));
         jobListViewHolder.categoryTagView.setText(jobPost.getCategory());
 
+        if (jobLocation.getDistance() != 99999999) {
+            jobListViewHolder.distance.setVisibility(View.VISIBLE);
+            jobListViewHolder.distance.setText(String.format("%s km", jobLocation.getDistance()));
+        } else {
+            jobListViewHolder.distance.setVisibility(View.INVISIBLE);
+        }
         if (jobPost.getPaymentTerm() > 7) {
             jobListViewHolder.tagFastPayment.setVisibility(View.GONE);
+        } else {
+            jobListViewHolder.tagFastPayment.setVisibility(View.VISIBLE);
         }
         if (!jobPost.isAds()) {
             jobListViewHolder.tagRecommended.setVisibility(View.GONE);
+        } else {
+            jobListViewHolder.tagRecommended.setVisibility(View.VISIBLE);
         }
 
         if (company.getImg() != null) {
@@ -109,21 +119,6 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.JobListV
             Bitmap decodedByte = BitmapFactory
                     .decodeByteArray(decodedString, 0, decodedString.length);
             jobListViewHolder.img.setImageBitmap(decodedByte);
-        }
-
-        if (latitude != Double.NaN) {
-
-            new AdapterAsyncTask() {
-
-                @Override
-                protected String doInBackground(String... params) {
-
-                    calculateDistance(jobLocation, jobListViewHolder.distance);
-                    return null;
-                }
-            }.execute();
-        } else {
-            jobListViewHolder.distance.setVisibility(View.INVISIBLE);
         }
 
         jobListViewHolder.layoutJob.setOnClickListener(new View.OnClickListener() {
@@ -143,50 +138,51 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.JobListV
         return jobPostList.size();
     }
 
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
+    @Override
+    public Filter getFilter() {
 
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
-
-    private void calculateDistance(JobLocation jobLocation, final TextView distance) {
-
-        final Response.Listener<String> responseListener = new Response.Listener<String>() {
+        return new Filter() {
 
             @Override
-            public void onResponse(String response) {
+            protected FilterResults performFiltering(CharSequence charSequence) {
 
-                try {
+                String charString = charSequence.toString();
 
-                    JSONObject jsonResponse = new JSONObject(response);
-                    JSONArray rowArray = jsonResponse.getJSONArray("rows");
-                    JSONArray elementsArray = rowArray.getJSONObject(0).getJSONArray("elements");
-                    JSONObject distanceObject = elementsArray.getJSONObject(0).getJSONObject("distance");
-                    distance.setText(distanceObject.getString("text"));
-
-                } catch (JSONException e) {
-
-                    e.printStackTrace();
-                    distance.setVisibility(View.INVISIBLE);
+                if (charString.equals("")) {
+                    jobPostList = originalJobPostList;
+                } else {
+                    List<JobPost> searchedList = new ArrayList<>();
+                    for (JobPost jobPost : originalJobPostList) {
+                        if (jobPost.getId().toLowerCase().contains(charString.toLowerCase())) {
+                            searchedList.add(jobPost);
+                        }
+                        if (jobPost.getTitle().toLowerCase().contains(charString.toLowerCase())) {
+                            searchedList.add(jobPost);
+                        }
+                        if (jobPost.getCompany().getName().toLowerCase().contains(charString.toLowerCase())) {
+                            searchedList.add(jobPost);
+                        }
+                    }
+                    jobPostList.clear();
+                    jobPostList.addAll(searchedList);
                 }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = jobPostList;
+
+                return filterResults;
+            }
+
+            @SuppressWarnings("unchecked")
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+
+                jobPostList = (ArrayList<JobPost>) filterResults.values;
+                notifyDataSetChanged();
             }
         };
-
-        String url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins="
-                + latitude + "," + longitude + "&destinations="
-                + jobLocation.getLatitude() + "," + jobLocation.getLongitude()
-                + "&key=AIzaSyBskYfSet3LPn3SB6KldlvTJdVUIDnsprQ";
-
-        JobListAdapter.CalculateDistanceRequest calculateDistanceRequest
-                = new JobListAdapter.CalculateDistanceRequest(
-                url,
-                responseListener,
-                null
-        );
-        mRequestQueue.add(calculateDistanceRequest);
     }
+
 
     public void clear() {
 
@@ -220,21 +216,6 @@ public class JobListAdapter extends RecyclerView.Adapter<JobListAdapter.JobListV
             tagRecommended = (TextView) view.findViewById(R.id.tag_recommended);
             categoryTagView = (CategoryTagView) view.findViewById(R.id.tag_category);
             rateBarCompany = (RatingBar) view.findViewById(R.id.rate_bar_company);
-        }
-    }
-
-    private class CalculateDistanceRequest extends StringRequest {
-
-        CalculateDistanceRequest(String url,
-                                 Response.Listener<String> listener,
-                                 Response.ErrorListener errorListener) {
-            super(Method.GET, url, listener, errorListener);
-        }
-    }
-
-    private abstract class AdapterAsyncTask extends AsyncTask<String, String, String> {
-
-        private AdapterAsyncTask() {
         }
     }
 }

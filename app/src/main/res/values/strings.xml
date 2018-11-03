@@ -194,6 +194,7 @@
 
     <string name="url_jobseeker_login">jobseeker/JobseekerLogin.php</string>
     <string name="url_jobseeker_recovery">jobseeker/JobseekerRecovery.php</string>
+    <string name="url_jobseeker_update_password">jobseeker/UpdateJobseekerPassword.php</string>
     <string name="url_get_job_post_for_jobseeker">jobseeker/GetJobPostForJobseeker.php</string>
     <string name="url_submit_new_job_application">jobseeker/SubmitNewJobApplication.php</string>
     <string name="url_get_job_application_for_jobseeker">jobseeker/GetJobApplicationForJobseeker.php</string>
@@ -205,6 +206,7 @@
 
     <string name="url_company_login">company/CompanyLogin.php</string>
     <string name="url_company_recovery">company/CompanyRecovery.php</string>
+    <string name="url_company_update_password">company/UpdateCompanyPassword.php</string>
     <string name="url_get_job_post_summary">company/GetJobPostSummary.php</string>
     <string name="url_get_job_post_for_company">company/GetJobPostForCompany.php</string>
     <string name="url_check_job_location_exists">company/CheckJobLocationExists.php</string>
@@ -254,5 +256,6 @@
     <string name="menu_make_advertisement">Make Advertisement</string>
     <string name="hint_location">One Utama, KLCC, Sunway Pyramid</string>
     <string name="btn_reset_password">Reset Password</string>
+    <string name="btn_clear_filter">Clear</string>
 
 </resources>
