@@ -503,9 +503,11 @@ public class JobseekerHomeFragment extends Fragment
                 null
         );
 
-        if (latitude != Double.NaN) {
+        if (latitude != Double.NaN && !jobPostList.isEmpty()) {
             mRequestQueue.add(calculateDistanceRequest);
         } else {
+            //To close progress dialog
+            mProgressDialog.dismiss();
             adapter.notifyDataSetChanged();
             swipeContainer.setRefreshing(false);
         }

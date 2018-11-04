@@ -1,6 +1,8 @@
 package com.TimeToWork.TimeToWork.Jobseeker;
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,6 +21,7 @@ import com.TimeToWork.TimeToWork.Database.Entity.JobApplication;
 import com.TimeToWork.TimeToWork.Database.Entity.JobLocation;
 import com.TimeToWork.TimeToWork.Database.Entity.JobPost;
 import com.TimeToWork.TimeToWork.R;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 
@@ -41,11 +44,17 @@ public class ViewJobDetailActivity extends AppCompatActivity {
     private JobPost jobPost;
     private JobApplication jobApplication;
 
+    private CustomProgressDialog mProgressDialog;
+    private CustomVolleyErrorListener errorListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_job_detail);
+
+        mProgressDialog = new CustomProgressDialog(this);
+        errorListener = new CustomVolleyErrorListener(this, mProgressDialog, mRequestQueue);
 
         jobPost = (JobPost) getIntent().getSerializableExtra("JOB");
         JobLocation jobLocation = jobPost.getJobLocation();
@@ -105,6 +114,18 @@ public class ViewJobDetailActivity extends AppCompatActivity {
 
         TextView tvWorkplaceAddress = (TextView) findViewById(R.id.tv_workplace_address);
         tvWorkplaceAddress.setText(jobLocation.getAddress());
+        tvWorkplaceAddress.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                JobLocation jobLocation = jobPost.getJobLocation();
+                Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                        Uri.parse("geo:0,0?q=" +  jobLocation.getLatitude() + ","
+                                + jobLocation.getLongitude()+ "(" + jobLocation.getName() + ")"));
+                startActivity(intent);
+            }
+        });
 
         TextView tvWorkingDate = (TextView) findViewById(R.id.tv_working_date);
         tvWorkingDate.setText(workingDate);
@@ -201,7 +222,6 @@ public class ViewJobDetailActivity extends AppCompatActivity {
     private void applyJob() {
 
         //Show progress dialog
-        final CustomProgressDialog mProgressDialog = new CustomProgressDialog(ViewJobDetailActivity.this);
         mProgressDialog.setMessage(getString(R.string.progress_applying_job));
         mProgressDialog.toggleProgressDialog();
 
@@ -251,23 +271,23 @@ public class ViewJobDetailActivity extends AppCompatActivity {
                 }
             }
         };
-
-        CustomVolleyErrorListener errorListener
-                = new CustomVolleyErrorListener(ViewJobDetailActivity.this, mProgressDialog, mRequestQueue);
-        ViewJobDetailActivity.ApplyJobRequest loginRequest = new ViewJobDetailActivity.ApplyJobRequest(
+        ApplyJobRequest applyJobRequest = new ApplyJobRequest(
                 jobPost.getId(),
                 userId,
                 root + getString(R.string.url_submit_new_job_application),
                 responseListener,
                 errorListener
         );
-        mRequestQueue.add(loginRequest);
+        applyJobRequest.setRetryPolicy(new DefaultRetryPolicy(
+                0,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        mRequestQueue.add(applyJobRequest);
     }
 
     private void cancelJob() {
 
         //Show progress dialog
-        final CustomProgressDialog mProgressDialog = new CustomProgressDialog(ViewJobDetailActivity.this);
         mProgressDialog.setMessage(getString(R.string.progress_cancel_job));
         mProgressDialog.toggleProgressDialog();
 
@@ -317,9 +337,6 @@ public class ViewJobDetailActivity extends AppCompatActivity {
                 }
             }
         };
-
-        CustomVolleyErrorListener errorListener
-                = new CustomVolleyErrorListener(ViewJobDetailActivity.this, mProgressDialog, mRequestQueue);
         ViewJobDetailActivity.CancelJobRequest cancelJobRequest
                 = new ViewJobDetailActivity.CancelJobRequest(
                 jobApplication.getId(),

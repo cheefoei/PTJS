@@ -331,6 +331,7 @@ public class PostNewJobActivity extends AppCompatActivity implements
 
                                         Intent intent = new Intent(PostNewJobActivity.this, PaymentActivity.class);
                                         startActivity(intent);
+                                        PostNewJobActivity.this.finish();
                                     }
                                 })
                                 .setNegativeButton("No", new DialogInterface.OnClickListener() {

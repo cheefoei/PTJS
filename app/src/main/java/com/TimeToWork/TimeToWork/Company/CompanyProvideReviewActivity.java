@@ -193,8 +193,7 @@ public class CompanyProvideReviewActivity extends AppCompatActivity {
         CustomVolleyErrorListener errorListener
                 = new CustomVolleyErrorListener(this, mProgressDialog, mRequestQueue);
 
-        CompanyProvideReviewActivity.SubmitReviewRequest submitReviewRequest
-                = new CompanyProvideReviewActivity.SubmitReviewRequest(
+        SubmitReviewRequest submitReviewRequest = new SubmitReviewRequest(
                 jobApplication.getId(),
                 etReview.getText().toString(),
                 tag,

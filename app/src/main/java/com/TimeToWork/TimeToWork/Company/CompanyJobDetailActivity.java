@@ -2,6 +2,7 @@ package com.TimeToWork.TimeToWork.Company;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -96,6 +97,18 @@ public class CompanyJobDetailActivity extends AppCompatActivity {
 
         TextView tvWorkplaceAddress = (TextView) findViewById(R.id.tv_workplace_address);
         tvWorkplaceAddress.setText(jobLocation.getAddress());
+        tvWorkplaceAddress.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                JobLocation jobLocation = jobPost.getJobLocation();
+                Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                        Uri.parse("geo:0,0?q=" +  jobLocation.getLatitude() + ","
+                                + jobLocation.getLongitude()+ "(" + jobLocation.getName() + ")"));
+                startActivity(intent);
+            }
+        });
 
         TextView tvWorkingDate = (TextView) findViewById(R.id.tv_working_date);
         tvWorkingDate.setText(workingDate);

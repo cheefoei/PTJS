@@ -17,6 +17,7 @@ import com.TimeToWork.TimeToWork.CustomClass.CustomProgressDialog;
 import com.TimeToWork.TimeToWork.CustomClass.CustomVolleyErrorListener;
 import com.TimeToWork.TimeToWork.Database.Entity.JobPost;
 import com.TimeToWork.TimeToWork.R;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 
@@ -195,11 +196,15 @@ public class PaymentActivity extends AppCompatActivity {
         CustomVolleyErrorListener errorListener
                 = new CustomVolleyErrorListener(this, mProgressDialog, mRequestQueue);
 
-        PaymentActivity.NewPaymentRequest newPaymentRequest = new PaymentActivity.NewPaymentRequest(
+        NewPaymentRequest newPaymentRequest = new NewPaymentRequest(
                 root + getString(R.string.url_make_new_payment),
                 responseListener,
                 errorListener
         );
+        newPaymentRequest.setRetryPolicy(new DefaultRetryPolicy(
+                0,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         mRequestQueue.add(newPaymentRequest);
     }
 

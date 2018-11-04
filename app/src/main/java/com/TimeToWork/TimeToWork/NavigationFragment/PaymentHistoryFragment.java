@@ -202,6 +202,7 @@ public class PaymentHistoryFragment extends Fragment {
                                 jobPost.setPaymentTerm(jsonobject.getInt("job_post_payment_term"));
                                 jobPost.setPositionNumber(jsonobject.getInt("job_post_position_num"));
                                 jobPost.setAds(jsonobject.getInt("job_post_isAds") == 1);
+                                jobPost.setStatus(jsonobject.getString("job_post_status"));
 
                                 if (jsonobject.getString("job_post_prefer_gender").length() > 0) {
                                     jobPost.setPreferGender(jsonobject.getString("job_post_prefer_gender"));

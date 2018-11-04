@@ -100,7 +100,9 @@ public class JobPostAdapter extends RecyclerView.Adapter<JobPostAdapter.JobPostV
         jobPostViewHolder.workplaceAddress.setText(jobLocation.getAddress());
         jobPostViewHolder.wages.setText(String.format(Locale.getDefault(), "RM %.2f /day", jobPost.getWages()));
 
-        if (!jobPost.isAds()) {
+        if (jobPost.isAds()) {
+            jobPostViewHolder.ads.setVisibility(View.VISIBLE);
+        } else {
             jobPostViewHolder.ads.setVisibility(View.GONE);
         }
 
