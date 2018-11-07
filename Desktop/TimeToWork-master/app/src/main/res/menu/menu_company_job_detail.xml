@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group android:id="@+id/grp1">
+        <item
+            android:id="@+id/applicant"
+            android:icon="@drawable/baseline_list_alt_white_24"
+            android:title="@string/menu_applicant"
+            app:showAsAction="ifRoom" />
+
+        <item
+            android:id="@+id/job_post_ads"
+            android:icon="@drawable/baseline_payment_white_24"
+            android:title="@string/menu_make_advertisement"
+            app:showAsAction="ifRoom" />
+    </group>
+
+    <group android:id="@+id/grp2">
+
+        <item
+            android:id="@+id/job_post_update"
+            android:title="@string/menu_update_job_post"
+            app:showAsAction="never" />
+
+        <item
+            android:id="@+id/job_post_delete"
+            android:title="@string/menu_delete_job_post"
+            app:showAsAction="never" />
+    </group>
+
+    <group android:id="@+id/grp3">
+
+        <item
+            android:id="@+id/complete"
+            android:title="@string/menu_complete_job"
+            app:showAsAction="never" />
+
+        <item
+            android:id="@+id/unavailable"
+            android:title="@string/menu_unavailable_job"
+            app:showAsAction="never" />
+    </group>
+</menu>

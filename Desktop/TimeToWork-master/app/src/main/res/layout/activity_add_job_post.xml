@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    tools:context="com.TimeToWork.TimeToWork.Company.PostNewJobActivity">
+
+    <Button
+        android:id="@+id/btn_post_new_job"
+        style="@style/ButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorButtonGreen"
+        android:text="@string/btn_post_new_job" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/btn_post_new_job"
+        android:layout_alignParentTop="true"
+        android:overScrollMode="ifContentScrolls"
+        android:scrollbars="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:orientation="vertical"
+            android:padding="@dimen/padding">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="18dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@string/font_family_regular"
+                    android:text="@string/string_working_schedule"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/btn_set_schedule"
+                    style="@style/ButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_gravity="end"
+                    android:layout_marginStart="108dp"
+                    android:background="@color/colorButtonBlue"
+                    android:text="@string/btn_set_date"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@string/font_family_regular"
+                android:text="@string/string_job_title"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/et_job_title"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edit_text_height"
+                android:layout_marginBottom="18dp"
+                android:background="@drawable/edit_text_bg"
+                android:inputType="text|textCapSentences"
+                android:labelFor="@+id/et_job_title" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@string/font_family_regular"
+                android:text="@string/string_category"
+                android:textSize="16sp" />
+
+            <Spinner
+                android:id="@+id/spinner_category"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="6dp"
+                android:layout_marginTop="4dp"
+                android:entries="@array/array_category"
+                android:fontFamily="@string/font_family_light" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@string/font_family_regular"
+                android:text="@string/string_location"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/et_job_location"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edit_text_height"
+                android:layout_marginBottom="6dp"
+                android:background="@drawable/edit_text_bg"
+                android:focusable="false"
+                android:inputType="text|textCapSentences"
+                android:labelFor="@id/et_job_location" />
+
+            <TextView
+                android:id="@+id/tv_own_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginBottom="24dp"
+                android:fontFamily="@string/font_family_medium"
+                android:text="@string/string_use_my_location"
+                android:textSize="15sp"
+                android:typeface="normal" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@string/font_family_regular"
+                    android:text="@string/string_wages"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@string/font_family_regular"
+                    android:text="@string/string_payment_term"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="18dp"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <EditText
+                    android:id="@+id/et_wages"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/edit_text_height"
+                    android:layout_marginEnd="@dimen/margin"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/edit_text_bg"
+                    android:inputType="numberSigned"
+                    android:labelFor="@id/et_wages"
+                    android:maxLength="4" />
+
+                <Spinner
+                    android:id="@+id/spinner_payment_term"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_weight="0.5"
+                    android:entries="@array/array_payment_term"
+                    android:fontFamily="@string/font_family_light" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@string/font_family_regular"
+                    android:text="@string/string_position_number"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@string/font_family_regular"
+                    android:text="@string/string_prefer_gender"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="18dp"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <EditText
+                    android:id="@+id/et_position_number"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/edit_text_height"
+                    android:layout_marginEnd="@dimen/margin"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/edit_text_bg"
+                    android:inputType="numberSigned"
+                    android:labelFor="@id/et_position_number"
+                    android:maxLength="4" />
+
+                <Spinner
+                    android:id="@+id/spinner_prefer_gender"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_weight="0.5"
+                    android:entries="@array/array_prefer_gender"
+                    android:fontFamily="@string/font_family_light" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@string/font_family_regular"
+                android:text="@string/string_requirements"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/et_job_requirement"
+                android:layout_width="match_parent"
+                android:layout_height="96dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/edit_text_bg"
+                android:inputType="text|textMultiLine"
+                android:labelFor="@id/et_job_requirement"
+                android:lines="5"
+                android:scrollHorizontally="false"
+                android:scrollbarStyle="insideInset"
+                android:scrollbars="vertical" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@string/font_family_regular"
+                android:text="@string/string_description"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/et_job_description"
+                android:layout_width="match_parent"
+                android:layout_height="96dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/edit_text_bg"
+                android:inputType="text|textMultiLine"
+                android:labelFor="@id/et_job_description"
+                android:lines="5"
+                android:scrollHorizontally="false"
+                android:scrollbarStyle="insideInset"
+                android:scrollbars="vertical" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@string/font_family_regular"
+                android:text="@string/string_note"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/et_job_note"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/edit_text_bg"
+                android:inputType="text|textMultiLine"
+                android:labelFor="@id/et_job_note"
+                android:lines="3"
+                android:scrollHorizontally="false"
+                android:scrollbarStyle="insideInset"
+                android:scrollbars="vertical" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

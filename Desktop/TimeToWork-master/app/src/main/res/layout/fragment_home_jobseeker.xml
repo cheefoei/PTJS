@@ -1,0 +1,145 @@
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_filter"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.TimeToWork.TimeToWork.NavigationFragment.JobseekerHomeFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorBackground"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:background="@color/colorWhite"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/margin"
+            android:paddingTop="@dimen/margin"
+            android:weightSum="1">
+
+            <Button
+                android:id="@+id/btn_sort"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="24dp"
+                android:layout_weight="0.5"
+                android:background="@color/colorWhite"
+                android:fontFamily="@string/font_family_regular"
+                android:gravity="center"
+                android:text="@string/btn_sort_by"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/btn_filter"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="24dp"
+                android:layout_weight="0.5"
+                android:background="@color/colorWhite"
+                android:fontFamily="@string/font_family_regular"
+                android:gravity="center"
+                android:text="@string/btn_filter"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_sort"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/margin"
+            android:paddingEnd="0dp"
+            android:paddingStart="32dp"
+            android:paddingTop="16dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tv_nearest_distance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:clickable="true"
+                android:fontFamily="@string/font_family_regular"
+                android:text="@string/sort_the_nearest_distance"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tv_highest_wages"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:clickable="true"
+                android:fontFamily="@string/font_family_regular"
+                android:text="@string/sort_the_highest_wages"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tv_highest_rating"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:clickable="true"
+                android:fontFamily="@string/font_family_regular"
+                android:text="@string/sort_the_highest_rating_of_company"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <TextView
+                android:id="@+id/tv_empty_job_post"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:fontFamily="@string/font_family_light"
+                android:text="@string/empty_job_post"
+                android:textSize="18sp" />
+
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/swipeContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_job_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/margin"
+                    android:paddingTop="4dp"
+                    android:scrollbars="none" />
+
+            </android.support.v4.widget.SwipeRefreshLayout>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <android.support.design.widget.NavigationView
+
+        android:id="@+id/nav_view_filter"
+        android:layout_width="256dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:background="@color/colorWhite"
+        android:paddingTop="0dp">
+
+        <fragment
+            android:id="@+id/fragment_job_filter"
+            class="com.TimeToWork.TimeToWork.Jobseeker.JobFilterNavigationView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </android.support.design.widget.NavigationView>
+
+</android.support.v4.widget.DrawerLayout>
