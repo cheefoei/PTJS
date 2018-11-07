@@ -56,9 +56,15 @@ public class PaymentHistoryAdapter extends RecyclerView.Adapter<PaymentHistoryAd
 
             @Override
             public void onClick(View v) {
+
                 Intent intent = new Intent(mContext, CompanyJobDetailActivity.class);
                 intent.putExtra("JOBPOST", jobPost);
-                intent.putExtra("MENU", "Ads");
+                if (jobPost.getStatus().equals("Completed") ||
+                        jobPost.getStatus().equals("Unavailable")) {
+                    intent.putExtra("MENU", jobPost.getStatus());
+                } else {
+                    intent.putExtra("MENU", "Ads");
+                }
                 mContext.startActivity(intent);
             }
         });

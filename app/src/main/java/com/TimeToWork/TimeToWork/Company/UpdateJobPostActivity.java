@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -76,6 +77,8 @@ public class UpdateJobPostActivity extends AppCompatActivity implements
 
         jobPost = (JobPost) getIntent().getSerializableExtra("JOBPOST");
         jobLocation = (JobLocation) getIntent().getSerializableExtra("JOBLOCATION");
+
+        Log.e("hfhfhf", jobLocation.getId());
 
         mProgressDialog = new CustomProgressDialog(this);
 
@@ -493,6 +496,8 @@ public class UpdateJobPostActivity extends AppCompatActivity implements
 
         if (mSpinnerPaymentTerm.getSelectedItemPosition() == 0) {
             jobPost.setPaymentTerm(0);
+        } else if (mSpinnerPaymentTerm.getSelectedItemPosition() == 1) {
+            jobPost.setPaymentTerm(7);
         } else {
             jobPost.setPaymentTerm(Integer.parseInt(
                     mSpinnerPaymentTerm.getSelectedItem().toString().substring(0, 2)));

@@ -21,6 +21,13 @@
     <string name="fragment_posted_job">Posted Job</string>
     <string name="fragment_payment_history">Payment History</string>
 
+    <string name="menu_applicant">Applicant</string>
+    <string name="menu_update_job_post">Update Job Post</string>
+    <string name="menu_delete_job_post">Delete Job Post</string>
+    <string name="menu_complete_job">Complete Job</string>
+    <string name="menu_unavailable_job">Set Unavailable</string>
+    <string name="menu_make_advertisement">Make Advertisement</string>
+
     <!-- TODO: Dialog messages -->
     <string name="progress_loading">Loading …</string>
     <string name="progress_logging_in">Logging in …</string>
@@ -49,6 +56,9 @@
     <string name="btn_set_date">Set Now</string>
     <string name="btn_done">Done</string>
     <string name="btn_add">Add</string>
+    <string name="btn_view_job_post">View Job Post</string>
+    <string name="btn_reset_password">Reset Password</string>
+    <string name="btn_clear_filter">Clear</string>
 
     <!-- TODO: Examples/Placeholders -->
     <string name="example_company_name">[Company Name]</string>
@@ -245,17 +255,9 @@
     <string name="hint_optional">Optional</string>
     <string name="hint_start_time">Start Time</string>
     <string name="hint_end_time">End Time</string>
-    <string name="btn_view_job_post">View Job Post</string>
+    <string name="hint_location">One Utama, KLCC, Sunway Pyramid</string>
+
     <string name="string_payable_amount">Payable Amount:</string>
     <string name="string_rm_5_00">RM 5.00</string>
-    <string name="menu_applicant">Applicant</string>
-    <string name="menu_update_job_post">Update Job Post</string>
-    <string name="menu_delete_job_post">Delete Job Post</string>
-    <string name="menu_complete_job">Complete Job</string>
-    <string name="menu_unavailable_job">Set Unavailable</string>
-    <string name="menu_make_advertisement">Make Advertisement</string>
-    <string name="hint_location">One Utama, KLCC, Sunway Pyramid</string>
-    <string name="btn_reset_password">Reset Password</string>
-    <string name="btn_clear_filter">Clear</string>
 
 </resources>

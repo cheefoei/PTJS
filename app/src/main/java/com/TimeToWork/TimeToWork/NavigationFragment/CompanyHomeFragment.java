@@ -296,9 +296,9 @@ public class CompanyHomeFragment extends Fragment {
                                 jobPost.setAds(jsonobject.getInt("job_post_isAds") == 1);
                                 jobPost.setStatus(jsonobject.getString("job_post_status"));
 
-                                if (jsonobject.getString("job_post_prefer_gender").length() > 0) {
-                                    jobPost.setPreferGender(jsonobject.getString("job_post_prefer_gender"));
-                                }
+//                                if (jsonobject.getString("job_post_prefer_gender").length() > 0) {
+                                jobPost.setPreferGender(jsonobject.getString("job_post_prefer_gender"));
+//                                }
 
                                 jobPostList.add(jobPost);
                                 tvEmpty.setVisibility(View.GONE);

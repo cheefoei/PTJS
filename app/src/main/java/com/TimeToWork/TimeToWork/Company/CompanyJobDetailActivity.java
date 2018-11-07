@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.TimeToWork.TimeToWork.CustomClass.CategoryTagView;
 import com.TimeToWork.TimeToWork.CustomClass.CustomProgressDialog;
 import com.TimeToWork.TimeToWork.Database.Entity.JobLocation;
 import com.TimeToWork.TimeToWork.Database.Entity.JobPost;
@@ -92,6 +93,9 @@ public class CompanyJobDetailActivity extends AppCompatActivity {
         TextView tvPostedDate = (TextView) findViewById(R.id.tv_post_date);
         tvPostedDate.setText(String.format("%s%s", getString(R.string.example_posted_on), newDateFormat.format(jobPost.getPostedDate())));
 
+        CategoryTagView categoryTagView = (CategoryTagView) findViewById(R.id.tag_category);
+        categoryTagView.setText(jobPost.getCategory());
+
         TextView tvWorkplaceName = (TextView) findViewById(R.id.tv_workplace_name);
         tvWorkplaceName.setText(jobLocation.getName());
 
@@ -104,8 +108,8 @@ public class CompanyJobDetailActivity extends AppCompatActivity {
 
                 JobLocation jobLocation = jobPost.getJobLocation();
                 Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                        Uri.parse("geo:0,0?q=" +  jobLocation.getLatitude() + ","
-                                + jobLocation.getLongitude()+ "(" + jobLocation.getName() + ")"));
+                        Uri.parse("geo:0,0?q=" + jobLocation.getLatitude() + ","
+                                + jobLocation.getLongitude() + "(" + jobLocation.getName() + ")"));
                 startActivity(intent);
             }
         });
@@ -141,6 +145,18 @@ public class CompanyJobDetailActivity extends AppCompatActivity {
         if (!jobPost.isAds()) {
             TextView tvAds = (TextView) findViewById(R.id.tv_is_ads);
             tvAds.setVisibility(View.GONE);
+        }
+
+        TextView preferGender = (TextView) findViewById(R.id.tv_prefer_gender);
+        if (jobPost.getPreferGender() == null || jobPost.getPreferGender().equals("")) {
+            preferGender.setVisibility(View.GONE);
+        } else {
+            if (jobPost.getPreferGender().equals("M")) {
+                preferGender.setText(String.format("%sale", jobPost.getPreferGender()));
+            } else if (jobPost.getPreferGender().equals("F")) {
+                preferGender.setText(String.format("%semale", jobPost.getPreferGender()));
+            }
+            preferGender.setVisibility(View.VISIBLE);
         }
 
         calculatePosition();

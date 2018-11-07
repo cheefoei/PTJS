@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.TimeToWork.TimeToWork.Company.CompanyJobDetailActivity;
+import com.TimeToWork.TimeToWork.CustomClass.CategoryTagView;
 import com.TimeToWork.TimeToWork.Database.Entity.JobLocation;
 import com.TimeToWork.TimeToWork.Database.Entity.JobPost;
 import com.TimeToWork.TimeToWork.R;
@@ -99,11 +100,22 @@ public class JobPostAdapter extends RecyclerView.Adapter<JobPostAdapter.JobPostV
         jobPostViewHolder.workplaceName.setText(jobLocation.getName());
         jobPostViewHolder.workplaceAddress.setText(jobLocation.getAddress());
         jobPostViewHolder.wages.setText(String.format(Locale.getDefault(), "RM %.2f /day", jobPost.getWages()));
+        jobPostViewHolder.categoryTagView.setText(jobPost.getCategory());
 
         if (jobPost.isAds()) {
             jobPostViewHolder.ads.setVisibility(View.VISIBLE);
         } else {
             jobPostViewHolder.ads.setVisibility(View.GONE);
+        }
+        if (jobPost.getPreferGender() == null || jobPost.getPreferGender().equals("")) {
+            jobPostViewHolder.preferGender.setVisibility(View.GONE);
+        } else {
+            if (jobPost.getPreferGender().equals("M")) {
+                jobPostViewHolder.preferGender.setText(String.format("%sale", jobPost.getPreferGender()));
+            } else if (jobPost.getPreferGender().equals("F")) {
+                jobPostViewHolder.preferGender.setText(String.format("%semale", jobPost.getPreferGender()));
+            }
+            jobPostViewHolder.preferGender.setVisibility(View.VISIBLE);
         }
 
         jobPostViewHolder.layoutJob.setOnClickListener(new View.OnClickListener() {
@@ -185,8 +197,9 @@ public class JobPostAdapter extends RecyclerView.Adapter<JobPostAdapter.JobPostV
 
         CardView cardViewJobPost;
         LinearLayout layoutJob, layoutPosition;
-        TextView ads, title, jobPosition, postedDate, workplaceName,
+        TextView ads, preferGender, title, jobPosition, postedDate, workplaceName,
                 workplaceAddress, workingDate, wages;
+        CategoryTagView categoryTagView;
 
         JobPostViewHolder(View view) {
 
@@ -195,6 +208,7 @@ public class JobPostAdapter extends RecyclerView.Adapter<JobPostAdapter.JobPostV
             layoutJob = (LinearLayout) view.findViewById(R.id.layout_job);
             layoutPosition = (LinearLayout) view.findViewById(R.id.layout_position);
             ads = (TextView) view.findViewById(R.id.tv_is_ads);
+            preferGender = (TextView) view.findViewById(R.id.tv_prefer_gender);
             title = (TextView) view.findViewById(R.id.tv_job_title);
             jobPosition = (TextView) view.findViewById(R.id.tv_job_position);
             postedDate = (TextView) view.findViewById(R.id.tv_post_date);
@@ -202,6 +216,7 @@ public class JobPostAdapter extends RecyclerView.Adapter<JobPostAdapter.JobPostV
             workplaceAddress = (TextView) view.findViewById(R.id.tv_workplace_address);
             workingDate = (TextView) view.findViewById(R.id.tv_working_date);
             wages = (TextView) view.findViewById(R.id.tv_wages);
+            categoryTagView = (CategoryTagView) view.findViewById(R.id.tag_category);
         }
     }
 

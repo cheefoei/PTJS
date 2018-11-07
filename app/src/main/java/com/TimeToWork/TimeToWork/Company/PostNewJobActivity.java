@@ -422,6 +422,8 @@ public class PostNewJobActivity extends AppCompatActivity implements
 
         if (mSpinnerPaymentTerm.getSelectedItemPosition() == 0) {
             jobPost.setPaymentTerm(0);
+        } else if (mSpinnerPaymentTerm.getSelectedItemPosition() == 1) {
+            jobPost.setPaymentTerm(7);
         } else {
             jobPost.setPaymentTerm(Integer.parseInt(
                     mSpinnerPaymentTerm.getSelectedItem().toString().substring(0, 2)));
