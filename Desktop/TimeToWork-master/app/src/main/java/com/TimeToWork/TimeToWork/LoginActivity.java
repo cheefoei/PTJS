@@ -70,26 +70,16 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-//        Button btnRegister = (Button) view.findViewById(R.id.btn_register);
-//        btnRegister.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//
-//                RegisterFragment registerFragment = new RegisterFragment();
-//                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                fragmentTransaction.setCustomAnimations(
-//                        R.anim.trans_fragment_enter,
-//                        R.anim.trans_fragment_exit,
-//                        R.anim.trans_fragment_pop_enter,
-//                        R.anim.trans_fragment_pop_exit
-//                );
-//                fragmentTransaction.replace(R.id.login_container, registerFragment);
-//                fragmentTransaction.addToBackStack(null); // Press back key to go back
-//                fragmentTransaction.commit();
-//            }
-//        });
+        Button btnRegister = (Button) findViewById(R.id.btn_register);
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                Intent myIntent = new Intent(LoginActivity.this, ChooseRegisterPage.class);
+                startActivity(myIntent);
+            }
+        });
 
     }
 

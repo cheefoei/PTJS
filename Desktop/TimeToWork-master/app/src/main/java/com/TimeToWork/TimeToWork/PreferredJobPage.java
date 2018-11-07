@@ -35,7 +35,7 @@ public class PreferredJobPage extends AppCompatActivity {
         String jobList[] = {"Event & Promotion", "Restaurants & Cafes", "Fashion & Retail", "Administration", "Hotel & Tourism",
                 "Beauty & Healthcare", "Education", "Sales & Marketing", "Transportation & Logistic"};
 
-        ArrayAdapter adapter = new ArrayAdapter(this, R.layout.rowlayout, R.id.txt_lan, jobList);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.array_category, R.layout.rowlayout);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
