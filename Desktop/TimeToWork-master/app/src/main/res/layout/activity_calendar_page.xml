@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.TimeToWork.TimeToWork.CalendarPage">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/lrellay">
+
+        <CalendarView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/calendarView">
+
+        </CalendarView>
+
+        <View
+            android:id="@+id/view"
+            android:layout_below="@id/calendarView"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#f9d7db"></View>
+
+        <com.baoyz.swipemenulistview.SwipeMenuListView
+            android:id="@+id/listView"
+            android:layout_below="@id/view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </com.baoyz.swipemenulistview.SwipeMenuListView>
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

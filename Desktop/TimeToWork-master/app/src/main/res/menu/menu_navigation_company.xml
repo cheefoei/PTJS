@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/navigation_company_home"
+        android:icon="@drawable/baseline_home_white_24"
+        android:title="@string/fragment_home"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/navigation_posted_job"
+        android:icon="@drawable/baseline_list_alt_white_24"
+        android:title="@string/fragment_posted_job"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/navigation_payment_history"
+        android:icon="@drawable/baseline_history_white_24"
+        android:title="@string/fragment_payment_history"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/navigation_profile"
+        android:icon="@drawable/baseline_account_box_white_24"
+        android:title="@string/fragment_profile"
+        app:showAsAction="ifRoom" />
+</menu>

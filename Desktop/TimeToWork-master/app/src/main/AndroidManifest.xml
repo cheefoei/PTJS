@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.TimeToWork.TimeToWork">
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:name=".MainApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".LoginOptionActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/activity_login"
+            android:parentActivityName=".LoginOptionActivity"
+            android:theme="@style/AppTheme.WhiteStatusBar" />
+        <activity
+            android:name=".ForgotPasswordActivity"
+            android:label="@string/activity_forgot_password"
+            android:parentActivityName=".LoginActivity"
+            android:theme="@style/AppTheme.WhiteStatusBar" />
+        <activity
+            android:name=".ResetPasswordActivity"
+            android:label="@string/activity_reset_password"
+            android:parentActivityName=".ForgotPasswordActivity"
+            android:theme="@style/AppTheme.WhiteStatusBar" />
+        <activity
+            android:name=".Jobseeker.ViewJobDetailActivity"
+            android:label="@string/activity_job_detail"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".Jobseeker.JobseekerProvideReviewActivity"
+            android:label="@string/activity_new_review"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".Jobseeker.JobseekerViewReviewActivity"
+            android:label="@string/activity_view_review"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".Company.CompanyJobDetailActivity"
+            android:label="@string/activity_your_job_detail"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".Company.PostNewJobActivity"
+            android:label="@string/activity_add_job_post"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".Company.UpdateJobPostActivity"
+            android:label="@string/activity_update_job_post"
+            android:parentActivityName=".Company.CompanyJobDetailActivity" />
+        <activity
+            android:name=".Company.ApplicantListActivity"
+            android:label="@string/activity_applicant"
+            android:parentActivityName=".Company.CompanyJobDetailActivity" />
+        <activity
+            android:name=".Company.PaymentActivity"
+            android:label="@string/activity_payment"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".Company.CompanyProvideReviewActivity"
+            android:label="@string/activity_new_review"
+            android:parentActivityName=".Company.ApplicantListActivity" />
+        <activity
+            android:name=".Company.CompanyViewReviewActivity"
+            android:label="@string/activity_view_review"
+            android:parentActivityName=".Company.ApplicantListActivity" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyC1s0dTxpTAQ9ke5Oaqnu7K2k4GV-wEVVY" />
+
+        <activity android:name=".ChooseRegisterPage"></activity>
+    </application>
+
+</manifest>

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "541441647883",
+    "firebase_url": "https://parttimejob-2a107.firebaseio.com",
+    "project_id": "parttimejob-2a107",
+    "storage_bucket": "parttimejob-2a107.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:541441647883:android:9f27b7810adf05f0",
+        "android_client_info": {
+          "package_name": "com.example.melvintanchunkeat.fyp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "541441647883-22b6lft1v8lor73p4at8j8k3tg6nbf1t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.melvintanchunkeat.fyp",
+            "certificate_hash": "380f13681952b048b2eef7f304a9169c11196d7d"
+          }
+        },
+        {
+          "client_id": "541441647883-67ignv7icvhkcmji6lf3cmgq3h1s013t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJxRb3NA_MjQJNm5pJgO_g0xnP34WyY3g"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "541441647883-67ignv7icvhkcmji6lf3cmgq3h1s013t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
