@@ -1,0 +1,261 @@
+<resources>
+    <string name="app_name">TimeToWork</string>
+    <string name="activity_login">Login</string>
+    <string name="activity_forgot_password">Forgot Password</string>
+    <string name="activity_reset_password">Reset Password</string>
+    <string name="activity_job_detail">Job Detail</string>
+    <string name="activity_new_review">New Job Review</string>
+    <string name="activity_view_review">Job Review</string>
+    <string name="activity_your_job_detail">Your Job Detail</string>
+    <string name="activity_add_job_post">New Job Post</string>
+    <string name="activity_update_job_post">Update Job Post</string>
+    <string name="activity_payment">Payment</string>
+    <string name="activity_applicant">Applicant</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="fragment_home">Home</string>
+    <string name="fragment_profile">Profile</string>
+    <string name="fragment_my_job">My Job</string>
+    <string name="fragment_posted_job">Posted Job</string>
+    <string name="fragment_payment_history">Payment History</string>
+
+    <!-- TODO: Dialog messages -->
+    <string name="progress_loading">Loading …</string>
+    <string name="progress_logging_in">Logging in …</string>
+    <string name="progress_applying_job">Applying job …</string>
+    <string name="progress_cancel_job">Canceling job …</string>
+
+    <string name="string_img_company">Company Image</string>
+    <string name="string_requirements">Requirements</string>
+    <string name="string_description">Description</string>
+    <string name="string_note">Note</string>
+
+    <string name="btn_apply_now">Apply Now</string>
+    <string name="btn_post_new_job">Post Job</string>
+    <string name="btn_update_job_post">Update Job</string>
+    <string name="btn_make_payment">Make Payment</string>
+    <string name="btn_rate_this">Rate</string>
+    <string name="btn_review_this">Review</string>
+    <string name="btn_cancel_job">Cancel Job</string>
+    <string name="btn_submit_review">Submit Review</string>
+    <string name="btn_update_review">Update Review</string>
+    <string name="btn_sort_by">Sort by</string>
+    <string name="btn_filter">Filter</string>
+    <string name="btn_sort">Sort</string>
+    <string name="btn_update">Update</string>
+    <string name="btn_remove">Remove</string>
+    <string name="btn_set_date">Set Now</string>
+    <string name="btn_done">Done</string>
+    <string name="btn_add">Add</string>
+
+    <!-- TODO: Examples/Placeholders -->
+    <string name="example_company_name">[Company Name]</string>
+    <string name="example_job_distance">0.00KM</string>
+    <string name="example_rate_value">4.3</string>
+    <string name="example_job_title">[Job Title]</string>
+    <string name="example_location">[Location]</string>
+    <string name="example_posted_on">Posted on &#160;</string>
+    <string name="example_date">[Date]</string>
+    <string name="example_wage">[RM 000.00]</string>
+    <string name="example_job_requirement">[Job Requirement]</string>
+    <string name="example_job_description">[Job Description]</string>
+    <string name="example_job_note">[Job Note]</string>
+    <string name="example_job_position">0/0</string>
+
+    <!-- TODO: Notice empty content -->
+    <string name="empty_job_post">Empty job post</string>
+    <string name="empty_job_application">No job application found</string>
+    <string name="empty_applicant">Nobody to apply this job yet</string>
+    <string name="empty_payment_record">No payment record found</string>
+
+    <!-- TODO: Error messages -->
+    <string name="error_required_field">This field is required</string>
+    <string name="error_email_invalid">Invalid email address</string>
+    <string name="error_password_not_match">Password and confirm password are not match</string>
+    <string name="error_password_too_short">Your password must be at least 8 characters</string>
+    <string name="error_general">Error occurred!</string>
+    <string name="error_connection_timeout">Connection timeout. Please check your internet connection</string>
+    <string name="error_no_connection">Cannot connect to Internet. Please check your connection</string>
+    <string name="error_server_connection">The server could not be found. Please try again later</string>
+    <string name="error_no_internet">No Internet Connections</string>
+    <string name="error_end_time">End time cannot before start time</string>
+
+    <!-- TODO: Login and Register activity Strings -->
+    <string name="string_login">login</string>
+    <string name="string_register">register</string>
+    <string name="string_continue_forgot">Continue</string>
+    <string name="string_back">back</string>
+    <string name="string_full_name">Full Name</string>
+    <string name="string_email">Email</string>
+    <string name="string_password">Password</string>
+    <string name="string_confirm_password">Confirm Password</string>
+    <string name="string_verify_code">Verify code</string>
+    <string name="tv_forgot_password">Forgot?</string>
+
+    <string name="string_applicant">Applicant</string>
+    <string name="string_position">Position</string>
+    <string name="string_available_job_post">Available Job Post</string>
+    <string name="string_advertisement_post">Advertisement Post</string>
+    <string name="string_advertisement">Advertisement</string>
+
+    <string name="string_job_title">Job Title</string>
+    <string name="string_location">Location</string>
+    <string name="string_working_date">Working Date</string>
+    <string name="string_wages">Wages</string>
+    <string name="string_payment_term">Payment Term</string>
+    <string name="string_use_my_location"><u>Use my location</u></string>
+    <string name="string_working_schedule">Working Schedule</string>
+    <string name="string_position_number">Position Number</string>
+    <string name="string_prefer_gender">Prefer gender</string>
+    <string name="string_category">Category</string>
+
+    <!-- TODO: Payment -->
+    <string name="string_card_type">Card type</string>
+    <string name="string_card_name">Card Holders Name</string>
+    <string name="string_card_number">Card Number</string>
+    <string name="string_cvv">CVV</string>
+    <string name="string_exp_date">Expiration Date</string>
+
+    <string name="category_ambassador">Ambassador</string>
+    <string name="category_driver">Driver</string>
+    <string name="category_event_crew">Event Crew</string>
+    <string name="category_promoter">Promoter</string>
+    <string name="category_tutor">Tutor</string>
+    <string name="category_waiter">Waiter/Waitress</string>
+    <string name="category_other">Other</string>
+
+    <string-array name="array_category">
+        <item>@string/category_ambassador</item>
+        <item>@string/category_driver</item>
+        <item>@string/category_event_crew</item>
+        <item>@string/category_promoter</item>
+        <item>@string/category_tutor</item>
+        <item>@string/category_waiter</item>
+        <item>@string/category_other</item>
+    </string-array>
+    <string-array name="array_payment_term">
+        <item>On-the-spot</item>
+        <item>7 days</item>
+        <item>14 days</item>
+        <item>30 days</item>
+        <item>45 days</item>
+        <item>60 days</item>
+    </string-array>
+    <string-array name="array_prefer_gender">
+        <item>None</item>
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+    <string-array name="array_review_tag_jobseeker">
+        <item>good company</item>
+        <item>high wages</item>
+        <item>training provided</item>
+        <item>helpful</item>
+    </string-array>
+    <string-array name="array_review_tag_company">
+        <item>hardworking</item>
+        <item>punctual</item>
+        <item>open-mind</item>
+        <item>satisfied</item>
+    </string-array>
+    <string-array name="month">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
+    <string-array name="year">
+        <item>2018</item>
+        <item>2019</item>
+        <item>2020</item>
+        <item>2021</item>
+        <item>2022</item>
+        <item>2023</item>
+        <item>2024</item>
+        <item>2025</item>
+        <item>2026</item>
+        <item>2027</item>
+        <item>2028</item>
+    </string-array>
+
+    <!-- TODO: Urls -->
+    <string name="url_root">https://timetowork.azurewebsites.net/TimeToWork/view/</string>
+    <string name="url_check_verify_code">CheckVerifyCode.php</string>
+
+    <string name="url_jobseeker_login">jobseeker/JobseekerLogin.php</string>
+    <string name="url_jobseeker_recovery">jobseeker/JobseekerRecovery.php</string>
+    <string name="url_jobseeker_update_password">jobseeker/UpdateJobseekerPassword.php</string>
+    <string name="url_get_job_post_for_jobseeker">jobseeker/GetJobPostForJobseeker.php</string>
+    <string name="url_submit_new_job_application">jobseeker/SubmitNewJobApplication.php</string>
+    <string name="url_get_job_application_for_jobseeker">jobseeker/GetJobApplicationForJobseeker.php</string>
+    <string name="url_cancel_job_application">jobseeker/CancelJobApplication.php</string>
+    <string name="url_submit_review_by_jobseeker">jobseeker/ProvideReviewByJobseeker.php</string>
+    <string name="url_update_review_by_jobseeker">jobseeker/UpdateReviewByJobseeker.php</string>
+    <string name="url_delete_review_by_jobseeker">jobseeker/DeleteReviewByJobseeker.php</string>
+    <string name="url_get_review_of_company">company/GetReviewOfCompany.php</string>
+
+    <string name="url_company_login">company/CompanyLogin.php</string>
+    <string name="url_company_recovery">company/CompanyRecovery.php</string>
+    <string name="url_company_update_password">company/UpdateCompanyPassword.php</string>
+    <string name="url_get_job_post_summary">company/GetJobPostSummary.php</string>
+    <string name="url_get_job_post_for_company">company/GetJobPostForCompany.php</string>
+    <string name="url_check_job_location_exists">company/CheckJobLocationExists.php</string>
+    <string name="url_create_job_post">company/CreateJobPost.php</string>
+    <string name="url_update_job_post">company/UpdateJobPost.php</string>
+    <string name="url_update_job_post_status">company/UpdateJobPostStatus.php</string>
+    <string name="url_delete_job_post">company/DeleteJobPost.php</string>
+    <string name="url_get_job_application_for_company">company/GetJobApplicationForCompany.php</string>
+    <string name="url_approve_job_application">company/ApproveJobApplication.php</string>
+    <string name="url_reject_job_application">company/RejectJobApplication.php</string>
+    <string name="url_make_new_payment">company/MakeNewPayment.php</string>
+    <string name="url_get_payment_history">company/GetPaymentHistory.php</string>
+    <string name="url_submit_review_by_company">company/ProvideReviewByCompany.php</string>
+    <string name="url_update_review_by_company">company/UpdateReviewByCompany.php</string>
+    <string name="url_delete_review_by_company">company/DeleteReviewByCompany.php</string>
+    <string name="url_get_review_of_jobseeker">jobseeker/GetReviewOfJobseeker.php</string>
+
+
+    <string name="sort_the_nearest_distance">The nearest distance</string>
+    <string name="sort_the_highest_wages">The highest wages</string>
+    <string name="sort_the_highest_rating_of_company">The highest rating of company</string>
+
+    <string name="string_location_name">Location Name</string>
+    <string name="string_address">Address</string>
+    <string name="string_until">until</string>
+    <string name="string_working_time">Working Time</string>
+    <string name="string_break_time">Break Time</string>
+    <string name="string_reason">Reason:</string>
+    <string name="string_reject_reason">Reject Reason</string>
+    <string name="string_change">Change</string>
+
+    <string name="string_visa_card">Visa</string>
+    <string name="string_master_card">MasterCard</string>
+    <string name="string_not_card">N/A</string>
+
+    <string name="hint_optional">Optional</string>
+    <string name="hint_start_time">Start Time</string>
+    <string name="hint_end_time">End Time</string>
+    <string name="btn_view_job_post">View Job Post</string>
+    <string name="string_payable_amount">Payable Amount:</string>
+    <string name="string_rm_5_00">RM 5.00</string>
+    <string name="menu_applicant">Applicant</string>
+    <string name="menu_update_job_post">Update Job Post</string>
+    <string name="menu_delete_job_post">Delete Job Post</string>
+    <string name="menu_complete_job">Complete Job</string>
+    <string name="menu_unavailable_job">Set Unavailable</string>
+    <string name="menu_make_advertisement">Make Advertisement</string>
+    <string name="hint_location">One Utama, KLCC, Sunway Pyramid</string>
+    <string name="btn_reset_password">Reset Password</string>
+    <string name="btn_clear_filter">Clear</string>
+
+</resources>
