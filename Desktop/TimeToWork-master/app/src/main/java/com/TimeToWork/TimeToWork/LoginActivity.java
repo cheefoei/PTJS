@@ -38,13 +38,18 @@ public class LoginActivity extends AppCompatActivity {
 
     private CustomProgressDialog mProgressDialog;
     private EditText etEmail, etPassword;
-    private String email, password;
+    private String email, password, jobseeker, company;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        intent = getIntent();
+        jobseeker = intent.getExtras().getString("jobseeker");
+        company = intent.getExtras().getString("company");
 
         mProgressDialog = new CustomProgressDialog(LoginActivity.this);
         etEmail = (EditText) findViewById(R.id.et_email);
@@ -71,16 +76,31 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         Button btnRegister = (Button) findViewById(R.id.btn_register);
-        btnRegister.setOnClickListener(new View.OnClickListener() {
+        if (jobseeker.equals("Jobseeker")) {
+            btnRegister.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
+                @Override
+                public void onClick(View v) {
 
-                Intent myIntent = new Intent(LoginActivity.this, ChooseRegisterPage.class);
-                startActivity(myIntent);
-            }
-        });
+                    Intent myIntent = new Intent(LoginActivity.this, RegistrationPage.class);
+                    startActivity(myIntent);
 
+                }
+            });
+        }
+        else if (company.equals("Company"))
+        {
+            btnRegister.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+
+                    Intent myIntent = new Intent(LoginActivity.this, CompanyRegistrationPage.class);
+                    startActivity(myIntent);
+
+                }
+            });
+        }
     }
 
     private boolean isValid() {

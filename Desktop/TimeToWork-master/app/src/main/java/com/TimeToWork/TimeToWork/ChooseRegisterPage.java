@@ -13,16 +13,15 @@ public class ChooseRegisterPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_register_page);
 
-        Button shwJobseeker = (Button) findViewById(R.id.btnShowDialog);
+        Button shwJobseeker = (Button) findViewById(R.id.btnJobseeker);
         shwJobseeker.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view) {
-                Intent myIntent = new Intent(ChooseRegisterPage.this, RegistrationPage.class);
-                startActivity(myIntent);
+                Intent intent = new Intent(ChooseRegisterPage.this, RegistrationPage.class);
+                startActivity(intent);
             }
         });
 
-
-        Button shwCompany = (Button) findViewById(R.id.btnProfile);
+        Button shwCompany = (Button) findViewById(R.id.btnCompany);
         shwCompany.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view) {
                 Intent myIntent = new Intent(ChooseRegisterPage.this, CompanyRegistrationPage.class);

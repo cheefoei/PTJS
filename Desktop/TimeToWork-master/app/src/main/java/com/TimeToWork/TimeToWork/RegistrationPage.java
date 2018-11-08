@@ -31,7 +31,7 @@ import com.TimeToWork.TimeToWork.Entity.PartTimer;
 import java.util.ArrayList;
 import android.util.Base64;
 
-public class RegistrationPage extends AppCompatActivity {
+public class  RegistrationPage extends AppCompatActivity {
 
     private MaintainPartTimer MPartTimer = new MaintainPartTimer();
     private EditText editTextName, editTextIC, editTextDob, editTextPhoneNumber, editTextEmail, editTextAddress, editTextPassword, editTextConfirmPassword;

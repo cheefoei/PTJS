@@ -24,6 +24,9 @@ import com.TimeToWork.TimeToWork.Entity.PartTimer;
 
 public class ProfilePage extends AppCompatActivity {
 
+    public ProfilePage() {
+    }
+
     private TextView textViewName, txtViewSalary, txtViewCompleted;
     private ImageView imageView;
     private DatabaseReference databaseRef;

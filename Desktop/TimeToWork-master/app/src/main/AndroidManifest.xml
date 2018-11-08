@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -87,6 +89,25 @@
             android:value="AIzaSyC1s0dTxpTAQ9ke5Oaqnu7K2k4GV-wEVVY" />
 
         <activity android:name=".ChooseRegisterPage"></activity>
+        <activity android:name=".RegistrationPage"></activity>
+        <activity android:name=".CompanyRegistrationPage"></activity>
+        <activity android:name=".CalendarPage"></activity>
+        <activity android:name=".ChangePasswordPage"></activity>
+        <activity android:name=".CompanyReport"></activity>
+        <activity android:name=".CompanyProfilePage"></activity>
+        <activity android:name=".EditFreeTimePage"></activity>
+        <activity android:name=".IncomeSummaryReport"></activity>
+        <activity android:name=".JobseekerReport"></activity>
+        <activity android:name=".PersonalDetails"></activity>
+        <activity android:name=".PreferredJobPage"></activity>
+        <activity android:name=".PreferredLocationPage"></activity>
+        <activity android:name=".ProfilePage"></activity>
+        <activity android:name=".SelangorPage"></activity>
+        <activity android:name=".SetFreeTimePage"></activity>
+        <activity android:name=".WorkerRatingReport"></activity>
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
     </application>
 
 </manifest>

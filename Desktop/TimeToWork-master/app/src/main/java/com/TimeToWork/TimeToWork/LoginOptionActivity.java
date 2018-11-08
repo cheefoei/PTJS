@@ -28,6 +28,7 @@ public class LoginOptionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 MainApplication.userType = "Jobseeker";
+                intent.putExtra("jobseeker", "Jobseeker");
                 startActivityForResult(intent, 0);
             }
         });
@@ -38,6 +39,7 @@ public class LoginOptionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 MainApplication.userType = "Company";
+                intent.putExtra("company", "Company");
                 startActivityForResult(intent, 0);
             }
         });

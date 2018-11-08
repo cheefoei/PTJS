@@ -14,6 +14,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Button;
 
 import com.TimeToWork.TimeToWork.CustomClass.CustomProgressDialog;
 import com.TimeToWork.TimeToWork.Database.CompanyDA;
@@ -183,8 +184,9 @@ public class MainActivity extends AppCompatActivity
             }
         } else if (id == R.id.navigation_profile && !currentFragment.equals("PROFILE")) {
 
-            clearAppData(MainActivity.this);
-//            currentFragment = "PROFILE";
+            Intent myIntent = new Intent(MainActivity.this, ProfilePage.class);
+            startActivity(myIntent);
+            currentFragment = "PROFILE";
         }
 
         mFragmentTransaction = getSupportFragmentManager().beginTransaction();

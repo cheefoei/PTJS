@@ -35,7 +35,7 @@ public class CompanyProfilePage extends AppCompatActivity {
         setContentView(R.layout.activity_company_profile_page);
         txtViewName = (TextView) findViewById(R.id.name);
         imageView = (ImageView) findViewById(R.id.imgUser);
-        databaseRef = FirebaseDatabase.getInstance().getReference("jobseeker");
+        databaseRef = FirebaseDatabase.getInstance().getReference("company");
 
         databaseRef.addValueEventListener(new ValueEventListener() {
             @Override
