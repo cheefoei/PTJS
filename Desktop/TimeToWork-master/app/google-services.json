@@ -8,6 +8,37 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:541441647883:android:dbd71ab19b8b3fd0",
+        "android_client_info": {
+          "package_name": "com.TimeToWork.TimeToWork"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "541441647883-67ignv7icvhkcmji6lf3cmgq3h1s013t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJxRb3NA_MjQJNm5pJgO_g0xnP34WyY3g"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:541441647883:android:9f27b7810adf05f0",
         "android_client_info": {
           "package_name": "com.example.melvintanchunkeat.fyp"
