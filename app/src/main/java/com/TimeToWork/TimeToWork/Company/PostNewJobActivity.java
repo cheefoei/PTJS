@@ -57,9 +57,11 @@ public class PostNewJobActivity extends AppCompatActivity implements
     private List<Date> workingDateList;
     private WorkingTime workingTime;
 
+    private JobPost jobPost;
     private JobLocation jobLocation;
 
     private CustomProgressDialog mProgressDialog;
+    private CustomVolleyErrorListener errorListener;
 
     private int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
 
@@ -72,6 +74,7 @@ public class PostNewJobActivity extends AppCompatActivity implements
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         mProgressDialog = new CustomProgressDialog(this);
+        errorListener = new CustomVolleyErrorListener(this, mProgressDialog, mRequestQueue);
 
         etTitle = (EditText) findViewById(R.id.et_job_title);
         etWages = (EditText) findViewById(R.id.et_wages);
@@ -245,7 +248,7 @@ public class PostNewJobActivity extends AppCompatActivity implements
         mProgressDialog.setMessage("Verifying job location …");
         mProgressDialog.toggleProgressDialog();
 
-        final Response.Listener<String> responseListener = new Response.Listener<String>() {
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -290,11 +293,7 @@ public class PostNewJobActivity extends AppCompatActivity implements
             }
         };
 
-        CustomVolleyErrorListener errorListener
-                = new CustomVolleyErrorListener(this, mProgressDialog, mRequestQueue);
-
-        PostNewJobActivity.CheckJobLocationRequest checkJobLocationRequest
-                = new PostNewJobActivity.CheckJobLocationRequest(
+        CheckJobLocationRequest checkJobLocationRequest = new CheckJobLocationRequest(
                 jobLocation,
                 root + getString(R.string.url_check_job_location_exists),
                 responseListener,
@@ -309,7 +308,7 @@ public class PostNewJobActivity extends AppCompatActivity implements
         mProgressDialog.setMessage("Posting new job …");
         mProgressDialog.toggleProgressDialog();
 
-        final Response.Listener<String> responseListener = new Response.Listener<String>() {
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -322,6 +321,7 @@ public class PostNewJobActivity extends AppCompatActivity implements
                             = new AlertDialog.Builder(PostNewJobActivity.this, R.style.DialogStyle);
 
                     if (success) {
+                        jobPost.setId(jsonResponse.getString("job_post_id"));
                         builder.setTitle("Successful")
                                 .setMessage("Job post is posted successfully. Do you want to make advertisement for this job post? ")
                                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -330,15 +330,16 @@ public class PostNewJobActivity extends AppCompatActivity implements
                                     public void onClick(DialogInterface dialog, int which) {
 
                                         Intent intent = new Intent(PostNewJobActivity.this, PaymentActivity.class);
+                                        intent.putExtra("JOBPOST", jobPost);
                                         startActivity(intent);
-                                        PostNewJobActivity.this.finish();
+                                        finish();
                                     }
                                 })
                                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
 
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        PostNewJobActivity.this.finish();
+                                        finish();
                                     }
                                 })
                                 .create();
@@ -354,7 +355,6 @@ public class PostNewJobActivity extends AppCompatActivity implements
                                 })
                                 .create();
                     }
-
                     //To close progress dialog
                     mProgressDialog.toggleProgressDialog();
                     //Show alert dialog
@@ -377,13 +377,9 @@ public class PostNewJobActivity extends AppCompatActivity implements
                             })
                             .create()
                             .show();
-
                 }
             }
         };
-
-        CustomVolleyErrorListener errorListener
-                = new CustomVolleyErrorListener(this, mProgressDialog, mRequestQueue);
 
         JSONObject workingDateJSON = new JSONObject();
         SimpleDateFormat newDateFormat = new SimpleDateFormat("ddMMyyyy", Locale.ENGLISH);
@@ -400,15 +396,15 @@ public class PostNewJobActivity extends AppCompatActivity implements
         try {
             workingTimeJSON.put("startWorkTime", workingTime.getStartWorkingTime());
             workingTimeJSON.put("endWorkTime", workingTime.getEndWorkingTime());
-            workingTimeJSON.put("startBreakTime1", workingTime.getStartBreakTime1());
-            workingTimeJSON.put("endBreakTime1", workingTime.getEndBreakTime1());
-            workingTimeJSON.put("startBreakTime2", workingTime.getStartBreakTime2());
-            workingTimeJSON.put("endBreakTime2", workingTime.getEndBreakTime2());
+            workingTimeJSON.put("startBreakTime1", workingTime.getStartFirstBreakTime());
+            workingTimeJSON.put("endBreakTime1", workingTime.getEndFirstBreakTime());
+            workingTimeJSON.put("startBreakTime2", workingTime.getStartSecondBreakTime());
+            workingTimeJSON.put("endBreakTime2", workingTime.getEndSecondBreakTime());
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        JobPost jobPost = new JobPost();
+        jobPost = new JobPost();
         jobPost.setJobLocation(jobLocation);
         jobPost.setTitle(etTitle.getText().toString());
         jobPost.setWorkingDate(workingDateJSON.toString());
@@ -437,8 +433,7 @@ public class PostNewJobActivity extends AppCompatActivity implements
             jobPost.setPreferGender("F");
         }
 
-        PostNewJobActivity.CreateNewJobPostRequest createNewJobPostRequest
-                = new PostNewJobActivity.CreateNewJobPostRequest(
+        CreateNewJobPostRequest createNewJobPostRequest = new CreateNewJobPostRequest(
                 jobPost,
                 root + getString(R.string.url_create_job_post),
                 responseListener,

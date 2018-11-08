@@ -48,6 +48,33 @@
                 android:orientation="vertical"
                 android:padding="@dimen/padding">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:fontFamily="@string/font_family_regular"
+                        android:text="@string/string_working_hours"
+                        android:textSize="16sp" />
+
+                    <Spinner
+                        android:id="@+id/spinner_working_hour"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:background="@color/colorWhite"
+                        android:entries="@array/array_working_hours"
+                        android:fontFamily="@string/font_family_light"
+                        android:popupBackground="@color/colorWhite" />
+
+                </LinearLayout>
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -58,7 +85,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="18dp"
+                    android:layout_marginBottom="24dp"
                     android:orientation="horizontal"
                     android:weightSum="1">
 
@@ -97,52 +124,138 @@
 
                 </LinearLayout>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@string/font_family_regular"
-                    android:text="@string/string_break_time"
-                    android:textSize="16sp" />
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="18dp"
+                    android:layout_marginBottom="@dimen/margin"
                     android:orientation="horizontal"
                     android:weightSum="1">
-
-                    <EditText
-                        android:id="@+id/et_start_break_time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/edit_text_height"
-                        android:layout_weight="0.4"
-                        android:background="@drawable/edit_text_bg"
-                        android:focusable="false"
-                        android:hint="@string/hint_start_time"
-                        android:inputType="time"
-                        android:labelFor="@+id/et_start_break_time"
-                        android:textColor="@color/colorTextPrimary" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.2"
+                        android:layout_weight="0.5"
                         android:fontFamily="@string/font_family_regular"
-                        android:gravity="center"
-                        android:text="@string/string_until"
-                        android:textSize="18sp" />
+                        android:text="@string/string_break_duration"
+                        android:textSize="16sp" />
 
-                    <EditText
-                        android:id="@+id/et_end_break_time"
+                    <Spinner
+                        android:id="@+id/spinner_break_duration"
                         android:layout_width="wrap_content"
-                        android:layout_height="@dimen/edit_text_height"
-                        android:layout_weight="0.4"
-                        android:background="@drawable/edit_text_bg"
-                        android:focusable="false"
-                        android:hint="@string/hint_end_time"
-                        android:inputType="time"
-                        android:labelFor="@+id/et_end_break_time"
-                        android:textColor="@color/colorTextPrimary" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="40dp"
+                        android:layout_weight="0.5"
+                        android:background="@color/colorWhite"
+                        android:entries="@array/array_break_duration"
+                        android:fontFamily="@string/font_family_light"
+                        android:popupBackground="@color/colorWhite" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_break"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@string/font_family_regular"
+                        android:text="@string/string_first_break_time"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <EditText
+                            android:id="@+id/et_start_first_break_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/edit_text_height"
+                            android:layout_weight="0.4"
+                            android:background="@drawable/edit_text_bg"
+                            android:focusable="false"
+                            android:hint="@string/hint_start_time"
+                            android:inputType="time"
+                            android:labelFor="@+id/et_start_first_break_time"
+                            android:textColor="@color/colorTextPrimary" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.2"
+                            android:fontFamily="@string/font_family_regular"
+                            android:gravity="center"
+                            android:text="@string/string_until"
+                            android:textSize="18sp" />
+
+                        <EditText
+                            android:id="@+id/et_end_first_break_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/edit_text_height"
+                            android:layout_weight="0.4"
+                            android:background="@drawable/edit_text_bg"
+                            android:focusable="false"
+                            android:hint="@string/hint_end_time"
+                            android:inputType="time"
+                            android:labelFor="@+id/et_end_first_break_time"
+                            android:textColor="@color/colorTextPrimary" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@string/font_family_regular"
+                        android:text="@string/string_second_break_time"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <EditText
+                            android:id="@+id/et_start_second_break_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/edit_text_height"
+                            android:layout_weight="0.4"
+                            android:background="@drawable/edit_text_bg"
+                            android:focusable="false"
+                            android:hint="@string/hint_start_time"
+                            android:inputType="time"
+                            android:labelFor="@+id/et_start_second_break_time"
+                            android:textColor="@color/colorTextPrimary" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.2"
+                            android:fontFamily="@string/font_family_regular"
+                            android:gravity="center"
+                            android:text="@string/string_until"
+                            android:textSize="18sp" />
+
+                        <EditText
+                            android:id="@+id/et_end_second_break_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/edit_text_height"
+                            android:layout_weight="0.4"
+                            android:background="@drawable/edit_text_bg"
+                            android:focusable="false"
+                            android:hint="@string/hint_end_time"
+                            android:inputType="time"
+                            android:labelFor="@+id/et_second_end_break_time"
+                            android:textColor="@color/colorTextPrimary" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -176,6 +289,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin"
+                    android:minHeight="256dp"
                     android:scrollbars="none" />
 
             </LinearLayout>

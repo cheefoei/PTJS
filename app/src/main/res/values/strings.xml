@@ -74,6 +74,12 @@
     <string name="example_job_note">[Job Note]</string>
     <string name="example_job_position">0/0</string>
 
+    <!-- TODO: Hints -->
+    <string name="hint_optional">Optional</string>
+    <string name="hint_start_time">Start Time</string>
+    <string name="hint_end_time">End Time</string>
+    <string name="hint_location">One Utama, KLCC, Sunway Pyramid</string>
+
     <!-- TODO: Notice empty content -->
     <string name="empty_job_post">Empty job post</string>
     <string name="empty_job_application">No job application found</string>
@@ -144,6 +150,32 @@
         <item>@string/category_tutor</item>
         <item>@string/category_waiter</item>
         <item>@string/category_other</item>
+    </string-array>
+    <string-array name="array_working_hours">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+    </string-array>
+    <string-array name="array_break_duration">
+        <item>No break</item>
+        <item>30 minutes</item>
+        <item>45 minutes</item>
+        <item>60 minutes</item>
+        <item>75 minutes</item>
+        <item>90 minutes</item>
     </string-array>
     <string-array name="array_payment_term">
         <item>On-the-spot</item>
@@ -242,8 +274,11 @@
     <string name="string_location_name">Location Name</string>
     <string name="string_address">Address</string>
     <string name="string_until">until</string>
+    <string name="string_working_hours">Working hours</string>
     <string name="string_working_time">Working Time</string>
-    <string name="string_break_time">Break Time</string>
+    <string name="string_break_duration">Break Duration</string>
+    <string name="string_first_break_time">First Break Time</string>
+    <string name="string_second_break_time">Second Break Time (if any)</string>
     <string name="string_reason">Reason:</string>
     <string name="string_reject_reason">Reject Reason</string>
     <string name="string_change">Change</string>
@@ -251,11 +286,6 @@
     <string name="string_visa_card">Visa</string>
     <string name="string_master_card">MasterCard</string>
     <string name="string_not_card">N/A</string>
-
-    <string name="hint_optional">Optional</string>
-    <string name="hint_start_time">Start Time</string>
-    <string name="hint_end_time">End Time</string>
-    <string name="hint_location">One Utama, KLCC, Sunway Pyramid</string>
 
     <string name="string_payable_amount">Payable Amount:</string>
     <string name="string_rm_5_00">RM 5.00</string>

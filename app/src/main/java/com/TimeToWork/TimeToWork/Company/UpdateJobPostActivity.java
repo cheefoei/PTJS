@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -77,8 +76,6 @@ public class UpdateJobPostActivity extends AppCompatActivity implements
 
         jobPost = (JobPost) getIntent().getSerializableExtra("JOBPOST");
         jobLocation = (JobLocation) getIntent().getSerializableExtra("JOBLOCATION");
-
-        Log.e("hfhfhf", jobLocation.getId());
 
         mProgressDialog = new CustomProgressDialog(this);
 
@@ -281,10 +278,10 @@ public class UpdateJobPostActivity extends AppCompatActivity implements
                 workingTime = new WorkingTime();
                 workingTime.setStartWorkingTime(workingTimeJSON.getString("startWorkTime"));
                 workingTime.setEndWorkingTime(workingTimeJSON.getString("endWorkTime"));
-                workingTime.setStartBreakTime1(workingTimeJSON.getString("startBreakTime1"));
-                workingTime.setEndBreakTime1(workingTimeJSON.getString("endBreakTime1"));
-                workingTime.setStartBreakTime2(workingTimeJSON.getString("startBreakTime2"));
-                workingTime.setEndBreakTime2(workingTimeJSON.getString("endBreakTime2"));
+                workingTime.setStartFirstBreakTime(workingTimeJSON.getString("startBreakTime1"));
+                workingTime.setEndFirstBreakTime(workingTimeJSON.getString("endBreakTime1"));
+                workingTime.setStartSecondBreakTime(workingTimeJSON.getString("startBreakTime2"));
+                workingTime.setEndSecondBreakTime(workingTimeJSON.getString("endBreakTime2"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -475,10 +472,10 @@ public class UpdateJobPostActivity extends AppCompatActivity implements
         try {
             workingTimeJSON.put("startWorkTime", workingTime.getStartWorkingTime());
             workingTimeJSON.put("endWorkTime", workingTime.getEndWorkingTime());
-            workingTimeJSON.put("startBreakTime1", workingTime.getStartBreakTime1());
-            workingTimeJSON.put("endBreakTime1", workingTime.getEndBreakTime1());
-            workingTimeJSON.put("startBreakTime2", workingTime.getStartBreakTime2());
-            workingTimeJSON.put("endBreakTime2", workingTime.getEndBreakTime2());
+            workingTimeJSON.put("startBreakTime1", workingTime.getStartFirstBreakTime());
+            workingTimeJSON.put("endBreakTime1", workingTime.getEndFirstBreakTime());
+            workingTimeJSON.put("startBreakTime2", workingTime.getStartSecondBreakTime());
+            workingTimeJSON.put("endBreakTime2", workingTime.getEndSecondBreakTime());
         } catch (JSONException e) {
             e.printStackTrace();
         }

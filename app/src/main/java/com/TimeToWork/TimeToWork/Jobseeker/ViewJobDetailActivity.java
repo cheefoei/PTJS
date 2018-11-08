@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -81,6 +82,26 @@ public class ViewJobDetailActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        String workingTime = "";
+        try {
+            JSONObject workingTimeObject = new JSONObject(jobPost.getWorkingTime());
+
+            workingTime += "Work &nbsp;Time: " + workingTimeObject.getString("startWorkTime") + " - "
+                    + workingTimeObject.getString("endWorkTime");
+            if (workingTimeObject.getString("startBreakTime1") != null) {
+                workingTime += "<br/>Break Time: " + workingTimeObject.getString("startBreakTime1") + " - "
+                        + workingTimeObject.getString("endBreakTime1");
+                if (workingTimeObject.getString("startBreakTime2") != null) {
+                    workingTime += "<br/>" + workingTimeObject.getString("startBreakTime2") + " - "
+                            + workingTimeObject.getString("endBreakTime2");
+                }
+            } else {
+                workingTime += "<b>No break time</b>";
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         CategoryTagView categoryTagView = (CategoryTagView) findViewById(R.id.tag_category);
         categoryTagView.setText(jobPost.getCategory());
 
@@ -121,14 +142,18 @@ public class ViewJobDetailActivity extends AppCompatActivity {
 
                 JobLocation jobLocation = jobPost.getJobLocation();
                 Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                        Uri.parse("geo:0,0?q=" +  jobLocation.getLatitude() + ","
-                                + jobLocation.getLongitude()+ "(" + jobLocation.getName() + ")"));
+                        Uri.parse("geo:0,0?q=" + jobLocation.getLatitude() + ","
+                                + jobLocation.getLongitude() + "(" + jobLocation.getName() + ")"));
                 startActivity(intent);
             }
         });
 
         TextView tvWorkingDate = (TextView) findViewById(R.id.tv_working_date);
         tvWorkingDate.setText(workingDate);
+
+        TextView tvJobTime = (TextView) findViewById(R.id.tv_job_time);
+        //noinspection deprecation
+        tvJobTime.setText(Html.fromHtml(workingTime));
 
         String wage = String.format(Locale.getDefault(), "RM %.2f /day ", jobPost.getWages());
         String paymentTerm;

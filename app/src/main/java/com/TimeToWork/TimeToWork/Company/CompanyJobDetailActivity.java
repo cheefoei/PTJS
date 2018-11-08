@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -87,6 +88,26 @@ public class CompanyJobDetailActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        String workingTime = "";
+        try {
+            JSONObject workingTimeObject = new JSONObject(jobPost.getWorkingTime());
+
+            workingTime += "Work &nbsp;Time: " + workingTimeObject.getString("startWorkTime") + " - "
+                    + workingTimeObject.getString("endWorkTime");
+            if (workingTimeObject.getString("startBreakTime1") != null) {
+                workingTime += "<br/>Break Time: " + workingTimeObject.getString("startBreakTime1") + " - "
+                        + workingTimeObject.getString("endBreakTime1");
+                if (workingTimeObject.getString("startBreakTime2") != null) {
+                    workingTime += " & " + workingTimeObject.getString("startBreakTime2") + " - "
+                            + workingTimeObject.getString("endBreakTime2");
+                }
+            } else {
+                workingTime += "<b>No break time</b>";
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         TextView tvJobTitle = (TextView) findViewById(R.id.tv_job_title);
         tvJobTitle.setText(jobPost.getTitle());
 
@@ -116,6 +137,10 @@ public class CompanyJobDetailActivity extends AppCompatActivity {
 
         TextView tvWorkingDate = (TextView) findViewById(R.id.tv_working_date);
         tvWorkingDate.setText(workingDate);
+
+        TextView tvJobTime = (TextView) findViewById(R.id.tv_job_time);
+        //noinspection deprecation
+        tvJobTime.setText(Html.fromHtml(workingTime));
 
         String wage = String.format(Locale.getDefault(), "RM %.2f /day ", jobPost.getWages());
         String paymentTerm;

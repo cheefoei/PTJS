@@ -6,10 +6,10 @@ public class WorkingTime implements Serializable {
 
     private String startWorkingTime;
     private String endWorkingTime;
-    private String startBreakTime1;
-    private String startBreakTime2;
-    private String endBreakTime1;
-    private String endBreakTime2;
+    private String startFirstBreakTime;
+    private String startSecondBreakTime;
+    private String endFirstBreakTime;
+    private String endSecondBreakTime;
 
     public WorkingTime() {
     }
@@ -30,35 +30,35 @@ public class WorkingTime implements Serializable {
         this.endWorkingTime = endWorkingTime;
     }
 
-    public String getStartBreakTime1() {
-        return startBreakTime1;
+    public String getStartFirstBreakTime() {
+        return startFirstBreakTime;
     }
 
-    public void setStartBreakTime1(String startBreakTime1) {
-        this.startBreakTime1 = startBreakTime1;
+    public void setStartFirstBreakTime(String startFirstBreakTime) {
+        this.startFirstBreakTime = startFirstBreakTime;
     }
 
-    public String getStartBreakTime2() {
-        return startBreakTime2;
+    public String getStartSecondBreakTime() {
+        return startSecondBreakTime;
     }
 
-    public void setStartBreakTime2(String startBreakTime2) {
-        this.startBreakTime2 = startBreakTime2;
+    public void setStartSecondBreakTime(String startSecondBreakTime) {
+        this.startSecondBreakTime = startSecondBreakTime;
     }
 
-    public String getEndBreakTime1() {
-        return endBreakTime1;
+    public String getEndFirstBreakTime() {
+        return endFirstBreakTime;
     }
 
-    public void setEndBreakTime1(String endBreakTime1) {
-        this.endBreakTime1 = endBreakTime1;
+    public void setEndFirstBreakTime(String endFirstBreakTime) {
+        this.endFirstBreakTime = endFirstBreakTime;
     }
 
-    public String getEndBreakTime2() {
-        return endBreakTime2;
+    public String getEndSecondBreakTime() {
+        return endSecondBreakTime;
     }
 
-    public void setEndBreakTime2(String endBreakTime2) {
-        this.endBreakTime2 = endBreakTime2;
+    public void setEndSecondBreakTime(String endSecondBreakTime) {
+        this.endSecondBreakTime = endSecondBreakTime;
     }
 }

@@ -182,6 +182,17 @@
                 android:textSize="16sp" />
 
             <TextView
+            android:id="@+id/tv_job_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin"
+            android:drawablePadding="6dp"
+            android:drawableStart="@drawable/round_access_time_black_18"
+            android:fontFamily="@string/font_family_light"
+            android:text="@string/example_date"
+            android:textSize="16sp" />
+
+            <TextView
                 android:id="@+id/tv_wages"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
