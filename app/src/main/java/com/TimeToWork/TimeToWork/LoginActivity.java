@@ -1,6 +1,5 @@
 package com.TimeToWork.TimeToWork;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -189,13 +188,7 @@ public class LoginActivity extends AppCompatActivity {
                     //If exception, then show alert dialog
                     AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
                     builder.setMessage(e.getMessage())
-                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    LoginActivity.this.finish();
-                                }
-                            })
+                            .setPositiveButton("OK", null)
                             .create()
                             .show();
 

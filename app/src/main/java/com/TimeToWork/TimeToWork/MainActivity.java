@@ -25,8 +25,8 @@ import com.TimeToWork.TimeToWork.NavigationFragment.JobseekerHomeFragment;
 import com.TimeToWork.TimeToWork.NavigationFragment.MyAppliedJobFragment;
 import com.TimeToWork.TimeToWork.NavigationFragment.PaymentHistoryFragment;
 import com.TimeToWork.TimeToWork.NavigationFragment.MyPostedJobFragment;
+import com.TimeToWork.TimeToWork.NavigationFragment.ProfileFragment;
 
-import static com.TimeToWork.TimeToWork.MainApplication.clearAppData;
 import static com.TimeToWork.TimeToWork.MainApplication.latitude;
 import static com.TimeToWork.TimeToWork.MainApplication.longitude;
 import static com.TimeToWork.TimeToWork.MainApplication.userId;
@@ -183,8 +183,13 @@ public class MainActivity extends AppCompatActivity
             }
         } else if (id == R.id.navigation_profile && !currentFragment.equals("PROFILE")) {
 
-            clearAppData(MainActivity.this);
-//            currentFragment = "PROFILE";
+            mFragment = new ProfileFragment();
+            currentFragment = "PROFILE";
+
+            mFragment = getSupportFragmentManager().findFragmentByTag(currentFragment);
+            if (mFragment == null) {
+                mFragment = new ProfileFragment();
+            }
         }
 
         mFragmentTransaction = getSupportFragmentManager().beginTransaction();

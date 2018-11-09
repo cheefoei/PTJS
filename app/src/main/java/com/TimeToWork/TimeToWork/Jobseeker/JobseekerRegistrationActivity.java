@@ -4,8 +4,8 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -16,7 +16,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 
-import com.TimeToWork.TimeToWork.Company.CompanyRegistrationActivity;
 import com.TimeToWork.TimeToWork.CustomClass.CustomProgressDialog;
 import com.TimeToWork.TimeToWork.Database.Control.MaintainJobseeker;
 import com.TimeToWork.TimeToWork.Database.Entity.Jobseeker;
@@ -42,12 +41,18 @@ public class JobseekerRegistrationActivity extends AppCompatActivity {
 
     private String name, ic, dob, phoneNum, email, address, pass;
 
+    private CustomProgressDialog mProgressDialog;
+    private Handler handler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_jobseeker_registration);
+
+        mProgressDialog = new CustomProgressDialog(JobseekerRegistrationActivity.this);
+        handler = new Handler();
 
         editTextName = (EditText) findViewById(R.id.name);
         editTextIC = (EditText) findViewById(R.id.ic);
@@ -105,8 +110,40 @@ public class JobseekerRegistrationActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.done) {
+
+            Thread thread = new Thread(new Runnable() {
+
+                @Override
+                public void run() {
+
+                    final boolean validIc = checkIc();
+                    final boolean   validPhoneNumber = checkPhoneNumber();
+                    final boolean   validEmail = checkEmail();
+
+                    handler.post(new Runnable() {
+
+                        @Override
+                        public void run() {
+
+                            mProgressDialog.dismiss();
+                            if (!validIc) {
+                                editTextIC.setError("IC Has Been Used.");
+                            } else if (!validPhoneNumber) {
+                                editTextPhoneNumber.setError("Phone Number Has Been Used.");
+                            } else if (!validEmail) {
+                                editTextEmail.setError("Email Has Been Used.");
+                            } else {
+                                registerJobseeker();
+                            }
+                        }
+                    });
+                }
+            });
+
             if (isValid()) {
-                registerJobseeker();
+                mProgressDialog.setMessage("Verifying your data …");
+                mProgressDialog.show();
+                thread.start();
             }
             return true;
         }
@@ -123,21 +160,13 @@ public class JobseekerRegistrationActivity extends AppCompatActivity {
             gender = 'F';
         }
 
-        new RegisterAsyncTask() {
+        mProgressDialog.setMessage("Registering account …");
+        mProgressDialog.show();
 
-            CustomProgressDialog mProgressDialog;
-
-            @Override
-            protected void onPreExecute() {
-
-                mProgressDialog = new CustomProgressDialog(JobseekerRegistrationActivity.this);
-                mProgressDialog.setMessage("Registering account  …");
-                mProgressDialog.show();
-                super.onPreExecute();
-            }
+        new Thread(new Runnable() {
 
             @Override
-            protected Boolean doInBackground(String... params) {
+            public void run() {
 
                 String id = maintainJobseeker.getJobseekerLastId();
 
@@ -162,41 +191,38 @@ public class JobseekerRegistrationActivity extends AppCompatActivity {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
+                final boolean success = maintainJobseeker.insertJobSeekerDetail(jobseeker);
 
-                return maintainJobseeker.insertJobSeekerDetail(jobseeker);
-            }
-
-            @Override
-            protected void onPostExecute(Boolean aBoolean) {
-
-                mProgressDialog.dismiss();
-                AlertDialog.Builder builder = new AlertDialog.Builder(CompanyRegistrationActivity.this);
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                handler.post(new Runnable() {
 
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
+                    public void run() {
+
+                        mProgressDialog.dismiss();
+                        AlertDialog.Builder builder =
+                                new AlertDialog.Builder(JobseekerRegistrationActivity.this);
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                finish();
+                            }
+                        });
+
+                        if (success) {
+                            builder.setMessage("Success Registered.");
+                        } else {
+                            builder.setMessage("Error occurred.");
+                        }
+                        builder.create()
+                                .show();
                     }
                 });
-
-                if (aBoolean) {
-                    builder.setMessage("Success Registered.");
-                } else {
-                    builder.setMessage("Error occurred.");
-                }
-                builder.create()
-                        .show();
-
-                super.onPostExecute(aBoolean);
             }
-        }.execute();
+        }).start();
     }
 
     private boolean isValid() {
-
-        CustomProgressDialog mProgressDialog = new CustomProgressDialog(this);
-        mProgressDialog.setMessage("Verifying your data  …");
-        mProgressDialog.show();
 
         boolean valid = true;
 
@@ -222,11 +248,6 @@ public class JobseekerRegistrationActivity extends AppCompatActivity {
         if (!matcher.matches()) {
             editTextIC.setError("Invalid IC Format");
             valid = false;
-        } else {
-            if (!checkIc()) {
-                editTextIC.setError("IC Has Been Used.");
-                valid = false;
-            }
         }
 
         String phoneNumFormat = "[0-9]+";
@@ -235,11 +256,6 @@ public class JobseekerRegistrationActivity extends AppCompatActivity {
         if (!matcher.matches()) {
             editTextPhoneNumber.setError("Invalid Phone Number Format");
             valid = false;
-        } else {
-            if (!checkPhoneNumber()) {
-                editTextPhoneNumber.setError("Phone Number Has Been Used.");
-                valid = false;
-            }
         }
 
         String emailFormat = "^(.+)@(.+)$";
@@ -248,11 +264,6 @@ public class JobseekerRegistrationActivity extends AppCompatActivity {
         if (!matcher.matches()) {
             editTextEmail.setError("Invalid Email Format");
             valid = false;
-        } else {
-            if (!checkEmail()) {
-                editTextEmail.setError("Email Has Been Used.");
-                valid = false;
-            }
         }
 
         if (pass.length() >= 8) {
@@ -269,8 +280,6 @@ public class JobseekerRegistrationActivity extends AppCompatActivity {
             editTextPassword.setError("Invalid Password Format");
             valid = false;
         }
-
-        mProgressDialog.dismiss();
 
         return valid;
     }
@@ -305,8 +314,5 @@ public class JobseekerRegistrationActivity extends AppCompatActivity {
         }
 
         return encryptedPassword;
-    }
-
-    private abstract class RegisterAsyncTask extends AsyncTask<String, Boolean, Boolean> {
     }
 }

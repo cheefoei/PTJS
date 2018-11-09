@@ -41,7 +41,7 @@ public class JobseekerConnection {
             stmt.setString(9, null);
             stmt.setString(10, null);
             stmt.setString(11, null);
-            stmt.setString(12, null);
+            stmt.setDouble(12, jobseeker.getRating());
             stmt.setString(13, jobseeker.getPassword());
             stmt.setString(14, null);
             stmt.executeUpdate();
@@ -272,34 +272,34 @@ public class JobseekerConnection {
     }
 
     // Get the Jobseeker Earn and Completed
-    public List<Jobseeker> getJobseekerProfile(String jobseeker_id) {
+    public List<Object> getJobseekerProfile(String jobseekerId) {
 
         ConnectionHelper connection = new ConnectionHelper();
         connect = connection.connectionClass();
 
-        List<Jobseeker> jobseekerList = new ArrayList<>();
+        List<Object> jobseekerList = new ArrayList<>();
 
-        String query = "SELECT jobseeker_name, COUNT(s.jobseeker_id)" +
-                ", Sum(p.payment_amount)\n" +
-                "From payment p, jobpost j, jobapplication a, jobseeker s\n" +
-                "Where p.job_post_id = j.job_post_id AND\n" +
-                "j.job_post_id = a.job_post_id AND\n" +
-                "a.jobseeker_id = s.jobseeker_id AND\n" +
-                "a.job_application_status = 'Sent' AND\n" +
+        String query = "SELECT jobseeker_name, COUNT(a.jobseeker_id) AS total_completed " +
+                ", Sum(p.payment_amount) AS amount " +
+                "From payment p, jobpost j, jobapplication a, jobseeker s " +
+                "Where p.job_post_id = j.job_post_id AND " +
+                "j.job_post_id = a.job_post_id AND " +
+                "a.jobseeker_id = s.jobseeker_id AND " +
+                "a.job_application_status = 'Completed' AND " +
                 "s.jobseeker_id = ?;";
         try {
             stmt = connect.prepareStatement(query);
-            stmt.setString(1, jobseeker_id);
+            stmt.setString(1, jobseekerId);
             rs = stmt.executeQuery();
 
             while (rs.next()) {
 
                 Jobseeker jobseeker = new Jobseeker();
                 jobseeker.setName(rs.getString("jobseeker_name"));
-//                jobseeker.setDob(rs.getInt("Sum(p.payment_amount)"));
-//                jobseeker.setIc(rs.getInt("COUNT(s.jobseeker_id)"));
 
-                jobseekerList.add(jobseeker);
+                jobseekerList.add(0, jobseeker);
+                jobseekerList.add(1, rs.getDouble("amount"));
+                jobseekerList.add(2, rs.getInt("total_completed"));
             }
             connect.close();
         } catch (SQLException ex) {

@@ -50,8 +50,8 @@ public class MaintainJobseeker {
         jobseekerConnection.updatePassword(jobseeker);
     }
 
-    public List<Jobseeker> getJobseekerProfile(String jobseeker_id) {
-        return jobseekerConnection.getJobseekerProfile(jobseeker_id);
+    public List<Object> getJobseekerProfile(String jobseekerId) {
+        return jobseekerConnection.getJobseekerProfile(jobseekerId);
     }
 
 }

@@ -12,7 +12,7 @@ import java.sql.SQLException;
  * Created by Alaeddin on 5/21/2017.
  */
 
-public class ConnectionHelper {
+class ConnectionHelper {
 
     @SuppressLint("NewApi")
     Connection connectionClass() {
