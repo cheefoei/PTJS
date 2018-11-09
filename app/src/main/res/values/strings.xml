@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">TimeToWork</string>
     <string name="activity_login">Login</string>
+    <string name="activity_register">Register Account</string>
     <string name="activity_forgot_password">Forgot Password</string>
     <string name="activity_reset_password">Reset Password</string>
     <string name="activity_job_detail">Job Detail</string>

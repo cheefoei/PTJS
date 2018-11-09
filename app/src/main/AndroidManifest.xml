@@ -32,6 +32,16 @@
             android:parentActivityName=".LoginOptionActivity"
             android:theme="@style/AppTheme.WhiteStatusBar" />
         <activity
+            android:name=".Jobseeker.JobseekerRegistrationActivity"
+            android:label="@string/activity_register"
+            android:parentActivityName=".LoginActivity"
+            android:theme="@style/AppTheme.WhiteStatusBar" />
+        <activity
+            android:name=".Company.CompanyRegistrationActivity"
+            android:label="@string/activity_register"
+            android:parentActivityName=".LoginActivity"
+            android:theme="@style/AppTheme.WhiteStatusBar" />
+        <activity
             android:name=".ForgotPasswordActivity"
             android:label="@string/activity_forgot_password"
             android:parentActivityName=".LoginActivity"

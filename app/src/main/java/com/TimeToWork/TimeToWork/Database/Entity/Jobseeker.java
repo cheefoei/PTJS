@@ -18,6 +18,7 @@ public class Jobseeker implements Serializable {
     private String experience;
     private double rating;
     private String img;
+    private String password;
 
     public Jobseeker() {
     }
@@ -124,5 +125,13 @@ public class Jobseeker implements Serializable {
 
     public void setImg(String img) {
         this.img = img;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

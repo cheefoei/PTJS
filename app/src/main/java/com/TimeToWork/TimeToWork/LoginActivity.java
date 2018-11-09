@@ -10,12 +10,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.TimeToWork.TimeToWork.Company.CompanyRegistrationActivity;
 import com.TimeToWork.TimeToWork.CustomClass.CustomProgressDialog;
 import com.TimeToWork.TimeToWork.CustomClass.CustomVolleyErrorListener;
 import com.TimeToWork.TimeToWork.Database.CompanyDA;
 import com.TimeToWork.TimeToWork.Database.Entity.Company;
 import com.TimeToWork.TimeToWork.Database.Entity.Jobseeker;
 import com.TimeToWork.TimeToWork.Database.JobseekerDA;
+import com.TimeToWork.TimeToWork.Jobseeker.JobseekerRegistrationActivity;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 
@@ -70,26 +72,21 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-//        Button btnRegister = (Button) view.findViewById(R.id.btn_register);
-//        btnRegister.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//
-//                RegisterFragment registerFragment = new RegisterFragment();
-//                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                fragmentTransaction.setCustomAnimations(
-//                        R.anim.trans_fragment_enter,
-//                        R.anim.trans_fragment_exit,
-//                        R.anim.trans_fragment_pop_enter,
-//                        R.anim.trans_fragment_pop_exit
-//                );
-//                fragmentTransaction.replace(R.id.login_container, registerFragment);
-//                fragmentTransaction.addToBackStack(null); // Press back key to go back
-//                fragmentTransaction.commit();
-//            }
-//        });
+        Button btnRegister = (Button) findViewById(R.id.btn_register);
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = null;
+                if (userType.equals("Company")) {
+                    intent = new Intent(LoginActivity.this, CompanyRegistrationActivity.class);
+                } else if (userType.equals("Jobseeker")) {
+                    intent = new Intent(LoginActivity.this, JobseekerRegistrationActivity.class);
+                }
+                startActivity(intent);
+            }
+        });
 
     }
 

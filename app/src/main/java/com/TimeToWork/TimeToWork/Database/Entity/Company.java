@@ -11,6 +11,7 @@ public class Company implements Serializable {
     private String email;
     private double rating;
     private String img;
+    private String password;
 
     public Company() {
     }
@@ -69,5 +70,13 @@ public class Company implements Serializable {
 
     public void setImg(String img) {
         this.img = img;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
