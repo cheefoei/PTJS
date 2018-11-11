@@ -16,13 +16,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.TimeToWork.TimeToWork.ChangePasswordActivity;
 import com.TimeToWork.TimeToWork.CustomClass.CustomProgressDialog;
 import com.TimeToWork.TimeToWork.Database.Control.MaintainJobseeker;
 import com.TimeToWork.TimeToWork.Database.Entity.Jobseeker;
 import com.TimeToWork.TimeToWork.Database.JobseekerDA;
 import com.TimeToWork.TimeToWork.Jobseeker.JobseekerDetailActivity;
+import com.TimeToWork.TimeToWork.Jobseeker.JobseekerReportActivity;
 import com.TimeToWork.TimeToWork.Jobseeker.PreferredJobActivity;
 import com.TimeToWork.TimeToWork.Jobseeker.PreferredLocationActivity;
 import com.TimeToWork.TimeToWork.Jobseeker.SetFreeTimeActivity;
@@ -40,8 +43,9 @@ public class JobseekerProfileFragment extends Fragment {
     private CustomProgressDialog mProgressDialog;
     private Handler handler;
 
-    private TextView textViewName, txtViewSalary, txtViewCompleted;
+    private TextView textViewName, txtViewSalary, txtViewCompleted, ratingValue;
     private ImageView imageView;
+    private RatingBar ratingBar;
 
     private Jobseeker jobseeker;
 
@@ -69,6 +73,8 @@ public class JobseekerProfileFragment extends Fragment {
         textViewName = (TextView) view.findViewById(R.id.name);
         txtViewSalary = (TextView) view.findViewById(R.id.salary);
         txtViewCompleted = (TextView) view.findViewById(R.id.completed);
+        ratingValue = (TextView) view.findViewById(R.id.tv_jobseeker_rating);
+        ratingBar = (RatingBar) view.findViewById(R.id.rate_bar_jobseeker);
         imageView = (ImageView) view.findViewById(R.id.imgUser);
 
         TextView showPersonalDetails = (TextView) view.findViewById(R.id.pd);
@@ -114,16 +120,16 @@ public class JobseekerProfileFragment extends Fragment {
         TextView changePassword = (TextView) view.findViewById(R.id.cp);
         changePassword.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-//                Intent myIntent = new Intent(getActivity(), ChangePasswordPage.class);
-//                startActivity(myIntent);
+                Intent myIntent = new Intent(getActivity(), ChangePasswordActivity.class);
+                startActivity(myIntent);
             }
         });
 
         TextView report = (TextView) view.findViewById(R.id.report);
         report.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-//                Intent myIntent = new Intent(getActivity(), JobseekerReport.class);
-//                startActivity(myIntent);
+                Intent myIntent = new Intent(getActivity(), JobseekerReportActivity.class);
+                startActivity(myIntent);
             }
         });
 
@@ -207,6 +213,8 @@ public class JobseekerProfileFragment extends Fragment {
                         textViewName.setText(jobseeker.getName());
                         txtViewSalary.setText(String.format(Locale.ENGLISH, "RM %.2f", amount));
                         txtViewCompleted.setText(String.valueOf(totalCompleted));
+                        ratingBar.setRating((float) jobseeker.getRating());
+                        ratingValue.setText(String.valueOf(jobseeker.getRating()));
 
                         if (jobseeker.getImg() != null && !jobseeker.getImg().equals("")
                                 && !jobseeker.getImg().equals("null")) {

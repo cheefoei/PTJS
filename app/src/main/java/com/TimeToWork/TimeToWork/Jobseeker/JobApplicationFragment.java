@@ -120,7 +120,7 @@ public class JobApplicationFragment extends Fragment {
 
                         if (total != 0) {
 
-                            // Convert job post list to json array
+                            // Convert job post reportList to json array
                             JSONArray jobPostArray = jsonResponse.getJSONArray("JOBAPPLICATION");
 
                             for (int i = 0; i < jobPostArray.length(); i++) {

@@ -91,6 +91,7 @@ public class CompanyConnection {
                 company.setPhone_number(rs.getString("company_phone_number"));
                 company.setEmail(rs.getString("company_email"));
                 company.setAddress(rs.getString("company_address"));
+                company.setRating(rs.getDouble("company_rating"));
                 company.setImg(rs.getString("company_img"));
             }
             connect.close();

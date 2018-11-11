@@ -1,6 +1,7 @@
 package com.TimeToWork.TimeToWork.NavigationFragment;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -15,8 +16,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.TimeToWork.TimeToWork.ChangePasswordActivity;
+import com.TimeToWork.TimeToWork.Company.CompanyDetailActivity;
+import com.TimeToWork.TimeToWork.Company.CompanyReportActivity;
 import com.TimeToWork.TimeToWork.CustomClass.CustomProgressDialog;
 import com.TimeToWork.TimeToWork.Database.Control.MaintainCompany;
 import com.TimeToWork.TimeToWork.Database.Entity.Company;
@@ -30,8 +35,9 @@ public class CompanyProfileFragment extends Fragment {
     private CustomProgressDialog mProgressDialog;
     private Handler handler;
 
-    private TextView txtViewName;
+    private TextView txtViewName, ratingValue;
     private ImageView imageView;
+    private RatingBar ratingBar;
 
     private Company company;
 
@@ -57,31 +63,36 @@ public class CompanyProfileFragment extends Fragment {
         handler = new Handler();
 
         txtViewName = (TextView) view.findViewById(R.id.name);
+        ratingValue = (TextView) view.findViewById(R.id.tv_company_rating);
+        ratingBar = (RatingBar) view.findViewById(R.id.rate_bar_company);
         imageView = (ImageView) view.findViewById(R.id.imgUser);
-//
-//        TextView showCompanyDetails = (TextView) view.findViewById(R.id.cd);
-//        showCompanyDetails.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View view) {
-//                Intent myIntent = new Intent(getActivity(), CompanyDetails.class);
-//                startActivity(myIntent);
-//            }
-//        });
-//
-//        TextView changePassword = (TextView) view.findViewById(R.id.cp);
-//        changePassword.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View view) {
-//                Intent myIntent = new Intent(getActivity(), ChangePasswordPage.class);
-//                startActivity(myIntent);
-//            }
-//        });
-//
-//        TextView report = (TextView) view.findViewById(R.id.report);
-//        report.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View view) {
-//                Intent myIntent = new Intent(getActivity(), CompanyReport.class);
-//                startActivity(myIntent);
-//            }
-//        });
+
+        TextView showCompanyDetails = (TextView) view.findViewById(R.id.cd);
+        showCompanyDetails.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View view) {
+                Intent myIntent = new Intent(getActivity(), CompanyDetailActivity.class);
+                startActivity(myIntent);
+            }
+        });
+
+        TextView changePassword = (TextView) view.findViewById(R.id.cp);
+        changePassword.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View view) {
+                Intent myIntent = new Intent(getActivity(), ChangePasswordActivity.class);
+                startActivity(myIntent);
+            }
+        });
+
+        TextView report = (TextView) view.findViewById(R.id.report);
+        report.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View view) {
+                Intent myIntent = new Intent(getActivity(), CompanyReportActivity.class);
+                startActivity(myIntent);
+            }
+        });
 
         if (userId != null) {
             // Get profile detail
@@ -155,6 +166,8 @@ public class CompanyProfileFragment extends Fragment {
                         if (company != null) {
 
                             txtViewName.setText(company.getName());
+                            ratingBar.setRating((float) company.getRating());
+                            ratingValue.setText(String.valueOf(company.getRating()));
 
                             if (company.getImg() != null && !company.getImg().equals("")
                                     && !company.getImg().equals("null")) {

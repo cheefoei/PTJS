@@ -19,7 +19,7 @@
             android:layout_height="128dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/margin"
             android:src="@drawable/user"
             app:civ_border_color="@color/colorBackground"
             app:civ_border_width="1dp" />
@@ -34,6 +34,38 @@
             android:fontFamily="@string/font_family_light"
             android:textColor="@color/colorWhite"
             android:textSize="26sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/name"
+            android:layout_marginTop="4dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <RatingBar
+                android:id="@+id/rate_bar_company"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:isIndicator="true"
+                android:numStars="5"
+                android:rating="5"
+                android:scaleX="1.3"
+                android:scaleY="1.3"
+                android:stepSize="0.5" />
+
+            <TextView
+                android:id="@+id/tv_company_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:fontFamily="@string/font_family_light"
+                android:text="@string/example_rate_value"
+                android:textColor="@color/colorWhite"
+                android:textSize="14sp" />
+        </LinearLayout>
+
     </RelativeLayout>
 
     <ScrollView

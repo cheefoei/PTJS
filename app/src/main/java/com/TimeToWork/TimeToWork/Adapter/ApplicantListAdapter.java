@@ -84,7 +84,8 @@ public class ApplicantListAdapter extends RecyclerView.Adapter<ApplicantListAdap
         final JobApplication jobApplication = jobApplicationList.get(i);
         final Jobseeker jobseeker = jobseekerList.get(i);
 
-        if (jobseeker.getImg() != null) {
+        if (jobseeker.getImg() != null && !jobseeker.getImg().equals("")
+                && !jobseeker.getImg().equals("null")) {
             byte[] decodedString = Base64.decode(jobseeker.getImg(), Base64.DEFAULT);
             Bitmap decodedByte = BitmapFactory
                     .decodeByteArray(decodedString, 0, decodedString.length);

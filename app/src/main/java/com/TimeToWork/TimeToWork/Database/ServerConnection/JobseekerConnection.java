@@ -277,7 +277,7 @@ public class JobseekerConnection {
 
         List<Object> jobseekerList = new ArrayList<>();
 
-        String query = "SELECT jobseeker_name, COUNT(a.jobseeker_id) AS total_completed " +
+        String query = "SELECT jobseeker_name, jobseeker_rating, COUNT(a.jobseeker_id) AS total_completed " +
                 ", Sum(p.payment_amount) AS amount " +
                 "From payment p, jobpost j, jobapplication a, jobseeker s " +
                 "Where p.job_post_id = j.job_post_id AND " +
@@ -294,6 +294,7 @@ public class JobseekerConnection {
 
                 Jobseeker jobseeker = new Jobseeker();
                 jobseeker.setName(rs.getString("jobseeker_name"));
+                jobseeker.setRating(rs.getDouble("jobseeker_rating"));
 
                 jobseekerList.add(0, jobseeker);
                 jobseekerList.add(1, rs.getDouble("amount"));

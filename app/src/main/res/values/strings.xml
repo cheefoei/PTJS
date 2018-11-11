@@ -4,6 +4,7 @@
     <string name="activity_register">Register Account</string>
     <string name="activity_forgot_password">Forgot Password</string>
     <string name="activity_reset_password">Reset Password</string>
+    <string name="activity_change_password">Changing Password</string>
     <string name="activity_job_detail">Job Detail</string>
     <string name="activity_new_review">New Job Review</string>
     <string name="activity_view_review">Job Review</string>
@@ -18,6 +19,7 @@
     <string name="activity_set_free_time">Set Your Free Time</string>
     <string name="activity_view_free_time">View Free Time</string>
     <string name="activity_edit_free_time">Edit Free Time</string>
+    <string name="activity_report">Report</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.TimeToWork.TimeToWork.Jobseeker.JobseekerDetailActivity">
+    tools:context="com.TimeToWork.TimeToWork.Company.CompanyDetailActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -41,7 +41,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.2"
                     android:fontFamily="@string/font_family_regular"
-                    android:text="Name"
+                    android:text="Company Name"
                     android:textSize="15sp" />
 
                 <EditText
@@ -50,7 +50,6 @@
                     android:layout_height="@dimen/edit_text_height"
                     android:layout_weight="0.8"
                     android:inputType="textPersonName"
-                    android:labelFor="@id/name"
                     android:maxLines="1"
                     android:textSize="15sp" />
 
@@ -67,107 +66,6 @@
                     android:layout_width="48dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.2"
-                    android:fontFamily="@string/font_family_regular"
-                    android:text="D.O.B"
-                    android:textSize="15sp" />
-
-                <EditText
-                    android:id="@+id/dob"
-                    android:layout_width="100dp"
-                    android:layout_height="@dimen/edit_text_height"
-                    android:layout_weight="0.8"
-                    android:focusable="false"
-                    android:hint="Your birthday"
-                    android:inputType="text"
-                    android:labelFor="@id/dob"
-                    android:maxLines="1"
-                    android:textSize="15sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:orientation="horizontal"
-                android:weightSum="1">
-
-                <TextView
-                    android:layout_width="48dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.2"
-                    android:fontFamily="@string/font_family_regular"
-                    android:text="NRIC No."
-                    android:textSize="15sp" />
-
-                <EditText
-                    android:id="@+id/ic"
-                    android:layout_width="100dp"
-                    android:layout_height="@dimen/edit_text_height"
-                    android:layout_weight="0.8"
-                    android:inputType="textPersonName"
-                    android:labelFor="@id/ic"
-                    android:maxLines="1"
-                    android:textSize="15sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:orientation="horizontal"
-                android:weightSum="1">
-
-                <TextView
-                    android:layout_width="72dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:layout_weight="0.3"
-                    android:fontFamily="@string/font_family_regular"
-                    android:text="Gender"
-                    android:textSize="15sp" />
-
-                <RadioGroup
-                    android:id="@+id/gender"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="72dp"
-                    android:layout_weight="0.7"
-                    android:orientation="horizontal"
-                    android:textSize="15sp">
-
-                    <RadioButton
-                        android:id="@+id/male"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="7dp"
-                        android:text="Male"
-                        android:textColor="#000" />
-
-                    <RadioButton
-                        android:id="@+id/female"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="7dp"
-                        android:text="Female"
-                        android:textColor="#000" />
-                </RadioGroup>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:orientation="horizontal"
-                android:weightSum="1">
-
-                <TextView
-                    android:layout_width="48dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.2"
-                    android:focusable="false"
                     android:fontFamily="@string/font_family_regular"
                     android:text="Email"
                     android:textSize="15sp" />
@@ -176,9 +74,9 @@
                     android:id="@+id/email"
                     android:layout_width="100dp"
                     android:layout_height="@dimen/edit_text_height"
+                    android:focusable="false"
                     android:layout_weight="0.8"
                     android:inputType="textEmailAddress"
-                    android:labelFor="@id/email"
                     android:maxLines="1"
                     android:textSize="15sp" />
 
@@ -196,7 +94,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.2"
                     android:fontFamily="@string/font_family_regular"
-                    android:text="Contact No."
+                    android:text="Phone No."
                     android:textSize="15sp" />
 
                 <EditText
@@ -205,7 +103,6 @@
                     android:layout_height="@dimen/edit_text_height"
                     android:layout_weight="0.8"
                     android:inputType="phone"
-                    android:labelFor="@id/phoneNumber"
                     android:maxLines="1"
                     android:textSize="15sp" />
 
@@ -214,7 +111,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="32dp"
                 android:orientation="horizontal"
                 android:weightSum="1">
 
@@ -223,7 +120,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.2"
                     android:fontFamily="@string/font_family_regular"
-                    android:text="Home Address."
+                    android:text="Address"
                     android:textSize="15sp" />
 
                 <EditText
@@ -231,8 +128,7 @@
                     android:layout_width="100dp"
                     android:layout_height="@dimen/edit_text_height"
                     android:layout_weight="0.8"
-                    android:inputType="textPersonName"
-                    android:labelFor="@id/address"
+                    android:inputType="text"
                     android:maxLines="1"
                     android:textSize="15sp" />
 

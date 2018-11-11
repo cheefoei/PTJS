@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
+/*
  * Created by MelvinTanChunKeat on 5/11/2018.
  */
 
@@ -26,7 +26,12 @@ public class ReportConnection {
         connect = connection.connectionClass();
 
         List<Report> reportList = new ArrayList<>();
-        String query = "Select s.jobseeker_id, c.company_name, j.job_post_category, date(p.payment_date), p.payment_amount From company c, jobpost j, jobseeker s, jobapplication a, payment p Where c.company_id = j.company_id AND j.job_post_id = a.job_post_id AND a.jobseeker_id = s.jobseeker_id AND j.job_post_id = p.job_post_id AND s.jobseeker_id = ? AND MONTH(p.payment_date) = ? AND YEAR(p.payment_date) = ?";
+        String query = "Select s.jobseeker_id, c.company_name, j.job_post_category, " +
+                "date(p.payment_date), p.payment_amount " +
+                "From company c, jobpost j, jobseeker s, jobapplication a, payment p " +
+                "Where c.company_id = j.company_id AND j.job_post_id = a.job_post_id " +
+                "AND a.jobseeker_id = s.jobseeker_id AND j.job_post_id = p.job_post_id " +
+                "AND s.jobseeker_id = ? AND MONTH(p.payment_date) = ? AND YEAR(p.payment_date) = ?";
 
         try {
             stmt = connect.prepareStatement(query);
@@ -51,7 +56,7 @@ public class ReportConnection {
     }
 
     // Read Income Report
-    public List<Report> getWorkerReport(String company_id) {
+    public List<Report> getWorkerReport(String companyId) {
 
         ConnectionHelper connection = new ConnectionHelper(); // Open Connection
         connect = connection.connectionClass();
@@ -60,11 +65,11 @@ public class ReportConnection {
         String query = "SELECT jobseeker_name, jobseeker_preferred_job, AVG(jobseeker_rating) " +
                 "From company c, jobpost j, jobseeker s, jobapplication a " +
                 "Where c.company_id = j.company_id AND j.job_post_id = a.job_post_id " +
-                "AND a.jobseeker_id = s.jobseeker_id AND c.company_name = 'Connect Dots Sdn Bhd'";
+                "AND a.jobseeker_id = s.jobseeker_id AND c.company_id = ?";
 
         try {
             stmt = connect.prepareStatement(query);
-            //stmt.setString(1, company_id);
+            stmt.setString(1, companyId);
             rs = stmt.executeQuery();
 
             while (rs.next()) {
