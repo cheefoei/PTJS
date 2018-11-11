@@ -2,7 +2,7 @@ package com.TimeToWork.TimeToWork.Database.Entity;
 
 import java.io.Serializable;
 
-/**
+/*
  * Created by MelvinTanChunKeat on 4/8/2018.
  */
 

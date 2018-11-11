@@ -19,8 +19,8 @@ public class CustomVolleyErrorListener implements Response.ErrorListener {
     private RequestQueue mRequestQueue;
 
     public CustomVolleyErrorListener(Activity mActivity,
-                              ProgressDialog mProgressDialog,
-                              RequestQueue mRequestQueue) {
+                                     ProgressDialog mProgressDialog,
+                                     RequestQueue mRequestQueue) {
         this.mActivity = mActivity;
         this.mProgressDialog = mProgressDialog;
         this.mRequestQueue = mRequestQueue;
@@ -48,6 +48,7 @@ public class CustomVolleyErrorListener implements Response.ErrorListener {
             errorMessage = mActivity.getResources().getString(R.string.error_server_connection);
         } else {
             errorMessage = mActivity.getResources().getString(R.string.error_general);
+            errorMessage += "\n" + error.getMessage();
         }
         //To show error alert dialog
         AlertDialog errorDialog = new AlertDialog.Builder(mActivity)

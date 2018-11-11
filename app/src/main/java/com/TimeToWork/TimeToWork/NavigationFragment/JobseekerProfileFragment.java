@@ -1,10 +1,13 @@
 package com.TimeToWork.TimeToWork.NavigationFragment;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,6 +22,11 @@ import com.TimeToWork.TimeToWork.CustomClass.CustomProgressDialog;
 import com.TimeToWork.TimeToWork.Database.Control.MaintainJobseeker;
 import com.TimeToWork.TimeToWork.Database.Entity.Jobseeker;
 import com.TimeToWork.TimeToWork.Database.JobseekerDA;
+import com.TimeToWork.TimeToWork.Jobseeker.JobseekerDetailActivity;
+import com.TimeToWork.TimeToWork.Jobseeker.PreferredJobActivity;
+import com.TimeToWork.TimeToWork.Jobseeker.PreferredLocationActivity;
+import com.TimeToWork.TimeToWork.Jobseeker.SetFreeTimeActivity;
+import com.TimeToWork.TimeToWork.Jobseeker.ViewFreeTimeActivity;
 import com.TimeToWork.TimeToWork.R;
 
 import java.util.List;
@@ -27,7 +35,7 @@ import java.util.Locale;
 import static com.TimeToWork.TimeToWork.MainApplication.clearAppData;
 import static com.TimeToWork.TimeToWork.MainApplication.userId;
 
-public class ProfileFragment extends Fragment {
+public class JobseekerProfileFragment extends Fragment {
 
     private CustomProgressDialog mProgressDialog;
     private Handler handler;
@@ -39,7 +47,7 @@ public class ProfileFragment extends Fragment {
 
     private MaintainJobseeker maintainJobseeker = new MaintainJobseeker();
 
-    public ProfileFragment() {
+    public JobseekerProfileFragment() {
         // Required empty public constructor
     }
 
@@ -53,7 +61,7 @@ public class ProfileFragment extends Fragment {
         setHasOptionsMenu(true);
 
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_profile_jobseeker, container, false);
 
         mProgressDialog = new CustomProgressDialog(getActivity());
         handler = new Handler();
@@ -66,40 +74,40 @@ public class ProfileFragment extends Fragment {
         TextView showPersonalDetails = (TextView) view.findViewById(R.id.pd);
         showPersonalDetails.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-//                Intent myIntent = new Intent(getActivity(), PersonalDetails.class);
-//                startActivity(myIntent);
+                Intent myIntent = new Intent(getActivity(), JobseekerDetailActivity.class);
+                startActivity(myIntent);
             }
         });
 
         TextView showPreferredJob = (TextView) view.findViewById(R.id.pj);
         showPreferredJob.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-//                Intent myIntent = new Intent(getActivity(), PreferredJobPage.class);
-//                startActivity(myIntent);
+                Intent myIntent = new Intent(getActivity(), PreferredJobActivity.class);
+                startActivity(myIntent);
             }
         });
 
         TextView showPreferredLocation = (TextView) view.findViewById(R.id.pl);
         showPreferredLocation.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-//                Intent myIntent = new Intent(getActivity(), PreferredLocationPage.class);
-//                startActivity(myIntent);
+                Intent myIntent = new Intent(getActivity(), PreferredLocationActivity.class);
+                startActivity(myIntent);
             }
         });
 
         TextView showSetFreeTime = (TextView) view.findViewById(R.id.sft);
         showSetFreeTime.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-//                Intent myIntent = new Intent(getActivity(), SetFreeTimePage.class);
-//                startActivity(myIntent);
+                Intent myIntent = new Intent(getActivity(), SetFreeTimeActivity.class);
+                startActivity(myIntent);
             }
         });
 
         TextView showCalendar = (TextView) view.findViewById(R.id.eft);
         showCalendar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-//                Intent myIntent = new Intent(getActivity(), CalendarPage.class);
-//                startActivity(myIntent);
+                Intent myIntent = new Intent(getActivity(), ViewFreeTimeActivity.class);
+                startActivity(myIntent);
             }
         });
 
@@ -119,8 +127,10 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        // Get profile detail
-        getJobseekerProfile();
+        if (userId != null) {
+            // Get profile detail
+            getJobseekerProfile();
+        }
 
         return view;
     }
@@ -138,7 +148,32 @@ public class ProfileFragment extends Fragment {
         int id = item.getItemId();
 
         if (id == R.id.logout) {
-            clearAppData(getActivity());
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                    .setTitle("Confirmation")
+                    .setMessage("Confirm to logout?")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            clearAppData(getActivity());
+
+                            AlertDialog.Builder builder
+                                    = new AlertDialog.Builder(getActivity())
+                                    .setTitle("Successful")
+                                    .setMessage("You already logout.")
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            getActivity().recreate();
+                                        }
+                                    });
+                            builder.show();
+                        }
+                    })
+                    .setNegativeButton("Cancel", null);
+            builder.show();
         }
         return super.onOptionsItemSelected(item);
     }

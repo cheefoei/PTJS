@@ -18,8 +18,8 @@ public class MaintainJobseeker {
         return jobseekerConnection.getJobseekerLastId();
     }
 
-    public List<Jobseeker> getJobseekerDetails(String jobseeker_id) {
-        return jobseekerConnection.getJobseekerDetails(jobseeker_id);
+    public Jobseeker getJobseekerDetail(String jobseekerId) {
+        return jobseekerConnection.getJobseekerDetail(jobseekerId);
     }
 
     public Boolean checkIc(String jobseeker_ic) {

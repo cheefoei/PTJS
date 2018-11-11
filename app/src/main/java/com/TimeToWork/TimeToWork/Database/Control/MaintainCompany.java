@@ -18,8 +18,8 @@ public class MaintainCompany {
         return companyConnection.getCompanyLastId();
     }
 
-    public List<Company> getCompanyDetails(String company_id) {
-        return companyConnection.getCompanyDetails(company_id);
+    public Company getCompanyDetail(String companyId) {
+        return companyConnection.getCompanyDetail(companyId);
     }
 
     public Boolean checkPhoneNum(String jobseeker_phone_number) {

@@ -5,7 +5,7 @@ import com.TimeToWork.TimeToWork.Database.ServerConnection.FreeTimeConnection;
 
 import java.util.List;
 
-/**
+/*
  * Created by MelvinTanChunKeat on 11/10/2018.
  */
 
@@ -37,11 +37,11 @@ public class MaintainFreeTime {
         freeTimeConnection.deleteScheduleList(schedule);
     }
 
-    public Schedule readScheduleID() {
-        return freeTimeConnection.readScheduleID();
+    public String getScheduleLastId() {
+        return freeTimeConnection.getScheduleLastId();
     }
 
-    public Schedule readScheduleListID() {
-        return freeTimeConnection.readScheduleListID();
+    public String getScheduleListLastId() {
+        return freeTimeConnection.getScheduleListLastId();
     }
 }

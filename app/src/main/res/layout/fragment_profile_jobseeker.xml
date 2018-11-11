@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.TimeToWork.TimeToWork.NavigationFragment.ProfileFragment">
+    tools:context="com.TimeToWork.TimeToWork.NavigationFragment.JobseekerProfileFragment">
 
     <RelativeLayout
         android:id="@+id/rellay"

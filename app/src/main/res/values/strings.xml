@@ -12,6 +12,12 @@
     <string name="activity_update_job_post">Update Job Post</string>
     <string name="activity_payment">Payment</string>
     <string name="activity_applicant">Applicant</string>
+    <string name="activity_profile_detail">Profile Detail</string>
+    <string name="activity_preferred_job">Your Preferred Jobs</string>
+    <string name="activity_preferred_location">Your Preferred Locations</string>
+    <string name="activity_set_free_time">Set Your Free Time</string>
+    <string name="activity_view_free_time">View Free Time</string>
+    <string name="activity_edit_free_time">Edit Free Time</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -232,7 +238,7 @@
     </string-array>
 
     <!-- TODO: Urls -->
-    <string name="url_root">https://timetowork.azurewebsites.net/TimeToWork/view/</string>
+    <string name="url_root">http://timetowork-androidapp.online/TimeToWork/view/</string>
     <string name="url_check_verify_code">CheckVerifyCode.php</string>
 
     <string name="url_jobseeker_login">jobseeker/JobseekerLogin.php</string>

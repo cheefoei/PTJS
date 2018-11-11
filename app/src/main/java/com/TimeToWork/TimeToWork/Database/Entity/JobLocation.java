@@ -15,6 +15,10 @@ public class JobLocation implements Serializable {
     public JobLocation() {
     }
 
+    public JobLocation(String name) {
+        this.name = name;
+    }
+
     public String getId() {
         return id;
     }

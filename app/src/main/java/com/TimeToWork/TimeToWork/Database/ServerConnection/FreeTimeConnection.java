@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
+/*
  * Created by MelvinTanChunKeat on 11/10/2018.
  */
 
@@ -136,46 +136,46 @@ public class FreeTimeConnection {
     }
 
     // Read ID
-    public Schedule readScheduleID() {
+    public String getScheduleLastId() {
 
         ConnectionHelper connection = new ConnectionHelper(); // Open Connection
         connect = connection.connectionClass();
 
         String query = "SELECT * FROM schedule ORDER BY schedule_id DESC";
-        Schedule schedule = null;
+        String scheduleId = null;
 
         try {
             stmt = connect.prepareStatement(query);
             rs = stmt.executeQuery();
 
             if (rs.next()) {
-                schedule = new Schedule(rs.getString("schedule_id"), null);
+                scheduleId = rs.getString("schedule_id");
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        return schedule;
+        return scheduleId;
     }
 
     // Read ID
-    public Schedule readScheduleListID() {
+    public String getScheduleListLastId() {
 
         ConnectionHelper connection = new ConnectionHelper(); // Open Connection
         connect = connection.connectionClass();
 
         String query = "SELECT * FROM schedulelist ORDER BY schedule_list_id DESC";
-        Schedule schedule = null;
+        String scheduleListId = null;
 
         try {
             stmt = connect.prepareStatement(query);
             rs = stmt.executeQuery();
 
             if (rs.next()) {
-                schedule = new Schedule(null, rs.getString("schedule_list_id"));
+                scheduleListId = rs.getString("schedule_list_id");
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        return schedule;
+        return scheduleListId;
     }
 }

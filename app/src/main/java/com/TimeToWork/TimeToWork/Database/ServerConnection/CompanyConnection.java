@@ -9,7 +9,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class CompanyConnection {
 
@@ -71,21 +70,21 @@ public class CompanyConnection {
     }
 
     // Get the Company Details
-    public List<Company> getCompanyDetails(String company_id) {
+    public Company getCompanyDetail(String companyId) {
 
         connect = connection.connectionClass();
 
-        List<Company> companyArrayList = new ArrayList<>();
+        Company company = null;
         String query = "SELECT * FROM Company WHERE company_id = ?";
 
         try {
             stmt = connect.prepareStatement(query);
-            stmt.setString(1, company_id);
+            stmt.setString(1, companyId);
             rs = stmt.executeQuery();
 
             while (rs.next()) {
 
-                Company company = new Company();
+                company = new Company();
                 company.setId(rs.getString("company_ID"));
                 company.setName(rs.getString("company_name"));
                 company.setName(rs.getString("company_name"));
@@ -93,14 +92,12 @@ public class CompanyConnection {
                 company.setEmail(rs.getString("company_email"));
                 company.setAddress(rs.getString("company_address"));
                 company.setImg(rs.getString("company_img"));
-
-                companyArrayList.add(company);
             }
             connect.close();
         } catch (SQLException ex) {
             ex.getMessage();
         }
-        return companyArrayList;
+        return company;
     }
 
     // Get all the Company Details

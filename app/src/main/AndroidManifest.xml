@@ -91,6 +91,34 @@
             android:name=".Company.CompanyViewReviewActivity"
             android:label="@string/activity_view_review"
             android:parentActivityName=".Company.ApplicantListActivity" />
+        <activity
+            android:name=".Jobseeker.JobseekerDetailActivity"
+            android:label="@string/activity_profile_detail"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".Jobseeker.PreferredJobActivity"
+            android:label="@string/activity_preferred_job"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".Jobseeker.PreferredLocationActivity"
+            android:label="@string/activity_preferred_location"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".Jobseeker.SetFreeTimeActivity"
+            android:label="@string/activity_set_free_time"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".Jobseeker.ViewFreeTimeActivity"
+            android:label="@string/activity_view_free_time"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".Jobseeker.EditFreeTimeActivity"
+            android:label="@string/activity_edit_free_time"
+            android:parentActivityName=".Jobseeker.ViewFreeTimeActivity" />
+
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

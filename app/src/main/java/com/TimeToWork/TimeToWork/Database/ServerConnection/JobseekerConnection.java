@@ -147,22 +147,22 @@ public class JobseekerConnection {
     }
 
     // Get the Jobseeker Details
-    public List<Jobseeker> getJobseekerDetails(String jobseeker_id) {
+    public Jobseeker getJobseekerDetail(String jobseekerId) {
 
         ConnectionHelper connection = new ConnectionHelper();
         connect = connection.connectionClass();
 
-        List<Jobseeker> jobseekerList = new ArrayList<>();
+        Jobseeker jobseeker = null;
         String query = "SELECT * FROM Jobseeker WHERE jobseeker_id = ?";
 
         try {
             stmt = connect.prepareStatement(query);
-            stmt.setString(1, jobseeker_id);
+            stmt.setString(1, jobseekerId);
             rs = stmt.executeQuery();
 
             while (rs.next()) {
 
-                Jobseeker jobseeker = new Jobseeker();
+                jobseeker = new Jobseeker();
                 jobseeker.setId(rs.getString("jobseeker_id"));
                 jobseeker.setName(rs.getString("jobseeker_name"));
                 jobseeker.setDob(new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
@@ -173,8 +173,6 @@ public class JobseekerConnection {
                 jobseeker.setEmail(rs.getString("jobseeker_email"));
                 jobseeker.setImg(rs.getString("jobseeker_img"));
                 jobseeker.setGender(rs.getString("jobseeker_gender").charAt(0));
-
-                jobseekerList.add(jobseeker);
             }
             connect.close();
         } catch (SQLException ex) {
@@ -182,7 +180,7 @@ public class JobseekerConnection {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return jobseekerList;
+        return jobseeker;
     }
 
     // Update the Jobseeker Profile Details
