@@ -118,7 +118,7 @@ public class LoginActivity extends AppCompatActivity {
         mProgressDialog.setMessage(getString(R.string.progress_logging_in));
         mProgressDialog.toggleProgressDialog();
 
-        final Response.Listener<String> responseListener = new Response.Listener<String>() {
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {

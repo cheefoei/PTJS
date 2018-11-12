@@ -245,6 +245,7 @@
 
     <string name="url_jobseeker_login">jobseeker/JobseekerLogin.php</string>
     <string name="url_jobseeker_recovery">jobseeker/JobseekerRecovery.php</string>
+    <string name="url_get_jobseeker">jobseeker/GetJobseeker.php</string>
     <string name="url_jobseeker_update_password">jobseeker/UpdateJobseekerPassword.php</string>
     <string name="url_get_job_post_for_jobseeker">jobseeker/GetJobPostForJobseeker.php</string>
     <string name="url_submit_new_job_application">jobseeker/SubmitNewJobApplication.php</string>
@@ -253,10 +254,12 @@
     <string name="url_submit_review_by_jobseeker">jobseeker/ProvideReviewByJobseeker.php</string>
     <string name="url_update_review_by_jobseeker">jobseeker/UpdateReviewByJobseeker.php</string>
     <string name="url_delete_review_by_jobseeker">jobseeker/DeleteReviewByJobseeker.php</string>
+    <string name="url_get_schedule">jobseeker/GetSchedule.php</string>
     <string name="url_get_review_of_company">company/GetReviewOfCompany.php</string>
 
     <string name="url_company_login">company/CompanyLogin.php</string>
     <string name="url_company_recovery">company/CompanyRecovery.php</string>
+    <string name="url_get_company">company/GetCompany.php</string>
     <string name="url_company_update_password">company/UpdateCompanyPassword.php</string>
     <string name="url_get_job_post_summary">company/GetJobPostSummary.php</string>
     <string name="url_get_job_post_for_company">company/GetJobPostForCompany.php</string>
@@ -298,5 +301,6 @@
 
     <string name="string_payable_amount">Payable Amount:</string>
     <string name="string_rm_5_00">RM 5.00</string>
+    <string name="string_learn_more"><u>Learn More</u></string>
 
 </resources>

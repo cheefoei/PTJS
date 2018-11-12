@@ -9,6 +9,8 @@ import android.util.Log;
 
 import com.TimeToWork.TimeToWork.Database.Entity.Company;
 
+import static com.TimeToWork.TimeToWork.MainApplication.userId;
+
 public class CompanyDA {
 
     private SQLiteDatabase mDatabase;
@@ -79,6 +81,22 @@ public class CompanyDA {
 
         return company;
     }
+
+    public void updateCompanyData(Company company) {
+
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.COLUMN_COMPANY_ID, company.getId());
+        values.put(DatabaseHelper.COLUMN_COMPANY_NAME, company.getName());
+        values.put(DatabaseHelper.COLUMN_COMPANY_ADDRESS, company.getAddress());
+        values.put(DatabaseHelper.COLUMN_COMPANY_PHONE, company.getPhone_number());
+        values.put(DatabaseHelper.COLUMN_COMPANY_EMAIL, company.getEmail());
+        values.put(DatabaseHelper.COLUMN_COMPANY_RATING, company.getRating());
+        values.put(DatabaseHelper.COLUMN_COMPANY_IMG, company.getImg());
+
+        mDatabase.update(DatabaseHelper.TABLE_COMPANY, values,
+                DatabaseHelper.COLUMN_COMPANY_ID + " = ?", new String[]{userId});
+    }
+
 
     public void close() {
         mDatabaseHelper.close();

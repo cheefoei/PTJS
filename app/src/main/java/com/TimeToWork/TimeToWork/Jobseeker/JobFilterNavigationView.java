@@ -5,14 +5,18 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -23,11 +27,13 @@ import java.util.Locale;
 
 public class JobFilterNavigationView extends Fragment {
 
+    private LinearLayout layoutManualFilter;
     private EditText etStartDate, etEndDate;
     private EditText etStartTime, etEndTime;
     private EditText etLocation;
     private Spinner spinnerPaymentTerm, spinnerCategory;
     private SeekBar seekBarWages;
+    private Button btnSubmitFilter, btnClearFilter;
 
     private Calendar calendar = Calendar.getInstance();
     private DatePickerDialog startDatePickerDialog;
@@ -48,6 +54,8 @@ public class JobFilterNavigationView extends Fragment {
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.navigation_view_filter, container, false);
+
+        layoutManualFilter = (LinearLayout) view.findViewById(R.id.layout_manual_filter);
 
         etStartDate = (EditText) view.findViewById(R.id.et_working_date_start);
         etEndDate = (EditText) view.findViewById(R.id.et_working_date_end);
@@ -131,7 +139,7 @@ public class JobFilterNavigationView extends Fragment {
             }
         });
 
-        Button btnSubmitFilter = (Button) view.findViewById(R.id.btn_submit_filter);
+        btnSubmitFilter = (Button) view.findViewById(R.id.btn_submit_filter);
         btnSubmitFilter.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -168,7 +176,7 @@ public class JobFilterNavigationView extends Fragment {
             }
         });
 
-        Button btnClearFilter = (Button) view.findViewById(R.id.btn_clear_filter);
+        btnClearFilter = (Button) view.findViewById(R.id.btn_clear_filter);
         btnClearFilter.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -184,6 +192,41 @@ public class JobFilterNavigationView extends Fragment {
                 option[6] = "0";
                 option[7] = "60";
                 onFilterOptionChangeListener.OnFilterOptionChange(option);
+            }
+        });
+
+        Switch switchPersonalFilter = (Switch) view.findViewById(R.id.switch_schedule);
+        switchPersonalFilter.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if (isChecked) {
+                    layoutManualFilter.setVisibility(View.GONE);
+                    btnClearFilter.setVisibility(View.GONE);
+                    btnSubmitFilter.setVisibility(View.GONE);
+                } else {
+                    layoutManualFilter.setVisibility(View.VISIBLE);
+                    btnClearFilter.setVisibility(View.VISIBLE);
+                    btnSubmitFilter.setVisibility(View.VISIBLE);
+                }
+                onFilterOptionChangeListener.OnSwitchPersonalFilterChange(isChecked);
+            }
+        });
+
+        TextView tvLearnMore = (TextView) view.findViewById(R.id.tv_learn_more);
+        tvLearnMore.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                AlertDialog.Builder builder
+                        = new AlertDialog.Builder(getActivity())
+                        .setTitle("Learn More")
+                        .setMessage("TimeToWork provides advanced filter function that based on preferred job category," +
+                                " job location and time schedule you set before. ")
+                        .setPositiveButton("That's great", null);
+                builder.show();
             }
         });
 
@@ -203,7 +246,6 @@ public class JobFilterNavigationView extends Fragment {
         super.onDetach();
         onFilterOptionChangeListener = null;
     }
-
 
     private class DatePickerListener implements DatePickerDialog.OnDateSetListener {
 
@@ -270,6 +312,9 @@ public class JobFilterNavigationView extends Fragment {
     }
 
     public interface OnFilterOptionChangeListener {
+
         void OnFilterOptionChange(String option[]);
+
+        void OnSwitchPersonalFilterChange(boolean isChecked);
     }
 }

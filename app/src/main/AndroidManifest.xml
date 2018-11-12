@@ -116,6 +116,10 @@
             android:parentActivityName=".Company.ApplicantListActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".Jobseeker.JobseekerVisitorActivity"
+            android:parentActivityName=".Company.ApplicantListActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".Jobseeker.JobseekerDetailActivity"
             android:label="@string/activity_profile_detail"
             android:parentActivityName=".MainActivity"
@@ -170,7 +174,6 @@
             android:label="@string/activity_report"
             android:parentActivityName=".Company.CompanyReportActivity"
             android:screenOrientation="landscape" />
-
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />

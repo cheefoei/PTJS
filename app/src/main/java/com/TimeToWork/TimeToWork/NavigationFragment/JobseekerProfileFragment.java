@@ -31,11 +31,22 @@ import com.TimeToWork.TimeToWork.Jobseeker.PreferredLocationActivity;
 import com.TimeToWork.TimeToWork.Jobseeker.SetFreeTimeActivity;
 import com.TimeToWork.TimeToWork.Jobseeker.ViewFreeTimeActivity;
 import com.TimeToWork.TimeToWork.R;
+import com.android.volley.Response;
+import com.android.volley.toolbox.StringRequest;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import static com.TimeToWork.TimeToWork.MainApplication.clearAppData;
+import static com.TimeToWork.TimeToWork.MainApplication.mRequestQueue;
+import static com.TimeToWork.TimeToWork.MainApplication.root;
 import static com.TimeToWork.TimeToWork.MainApplication.userId;
 
 public class JobseekerProfileFragment extends Fragment {
@@ -184,6 +195,78 @@ public class JobseekerProfileFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onResume() {
+
+        if (userId != null && jobseeker != null) {
+            //Show progress dialog
+            mProgressDialog.setMessage("Loading …");
+            mProgressDialog.show();
+            syncJobseekerData();
+        }
+        super.onResume();
+    }
+
+    private void syncJobseekerData() {
+
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    JSONObject jsonResponse = new JSONObject(response);
+                    boolean success = jsonResponse.getBoolean("success");
+
+                    if (success) {
+
+                        //Change jobseeker JSON to Array
+                        JSONObject jobseekerObject = jsonResponse.getJSONObject("JOBSEEKER");
+                        //Create jobseeker object
+                        Jobseeker j = new Jobseeker();
+                        j.setId(jobseekerObject.getString("jobseeker_id"));
+                        j.setName(jobseekerObject.getString("jobseeker_name"));
+                        j.setGender(jobseekerObject.getString("jobseeker_gender").charAt(0));
+                        j.setDob(new SimpleDateFormat("yyyy-MM-dd",
+                                Locale.ENGLISH).parse(jobseekerObject.getString("jobseeker_dob")));
+                        j.setIc(jobseekerObject.getString("jobseeker_ic"));
+                        j.setAddress(jobseekerObject.getString("jobseeker_address"));
+                        j.setPhone_number(jobseekerObject.getString("jobseeker_phone_number"));
+                        j.setEmail(jobseekerObject.getString("jobseeker_email"));
+                        j.setPreferred_job(jobseekerObject.getString("jobseeker_preferred_job"));
+                        j.setPreferred_location(jobseekerObject.getString("jobseeker_preferred_location"));
+                        j.setExperience(jobseekerObject.getString("jobseeker_experience"));
+                        j.setRating(jobseekerObject.getDouble("jobseeker_rating"));
+                        j.setImg(jobseekerObject.getString("jobseeker_img"));
+
+                        //Update jobseeker data
+                        JobseekerDA jobseekerDA = new JobseekerDA(getActivity());
+                        jobseekerDA.updateJobseekerData(j);
+                        jobseekerDA.close();
+
+                        textViewName.setText(j.getName());
+                        if (j.getImg() != null && !j.getImg().equals("") && !j.getImg().equals("null")) {
+                            byte[] decodedString = Base64.decode(j.getImg(), Base64.DEFAULT);
+                            Bitmap decodedByte = BitmapFactory
+                                    .decodeByteArray(decodedString, 0, decodedString.length);
+                            imageView.setImageBitmap(decodedByte);
+                        }
+                    }
+                } catch (JSONException | ParseException e) {
+                    e.printStackTrace();
+                }
+                mProgressDialog.dismiss();
+            }
+        };
+
+        GetJobseekerRequest getJobseekerRequest = new GetJobseekerRequest(
+                root + getString(R.string.url_get_jobseeker),
+                responseListener,
+                null
+        );
+        mRequestQueue.add(getJobseekerRequest);
+    }
+
     private void getJobseekerProfile() {
 
         //Show progress dialog
@@ -228,5 +311,23 @@ public class JobseekerProfileFragment extends Fragment {
                 });
             }
         }).start();
+    }
+
+    private class GetJobseekerRequest extends StringRequest {
+
+        private Map<String, String> params;
+
+        GetJobseekerRequest(String url,
+                            Response.Listener<String> listener,
+                            Response.ErrorListener errorListener) {
+            super(Method.POST, url, listener, errorListener);
+
+            params = new HashMap<>();
+            params.put("id", userId);
+        }
+
+        public Map<String, String> getParams() {
+            return params;
+        }
     }
 }

@@ -33,6 +33,7 @@ import com.TimeToWork.TimeToWork.Database.Entity.Company;
 import com.TimeToWork.TimeToWork.Database.Entity.JobLocation;
 import com.TimeToWork.TimeToWork.Database.Entity.JobPost;
 import com.TimeToWork.TimeToWork.Database.Entity.Jobseeker;
+import com.TimeToWork.TimeToWork.Database.Entity.Schedule;
 import com.TimeToWork.TimeToWork.Database.JobseekerDA;
 import com.TimeToWork.TimeToWork.Jobseeker.JobFilterNavigationView;
 import com.TimeToWork.TimeToWork.R;
@@ -49,6 +50,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -76,6 +78,7 @@ public class JobseekerHomeFragment extends Fragment
     private JobListAdapter adapter;
     private List<JobPost> jobPostList;
     private List<JobPost> originalJobPostList;
+    private List<Schedule> scheduleList;
 
     private String[] option = new String[8];
     private TextView currentSort;
@@ -116,6 +119,7 @@ public class JobseekerHomeFragment extends Fragment
 
         jobPostList = new ArrayList<>();
         originalJobPostList = new ArrayList<>();
+        scheduleList = new ArrayList<>();
         adapter = new JobListAdapter(getContext(), jobPostList, originalJobPostList);
 
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
@@ -177,12 +181,8 @@ public class JobseekerHomeFragment extends Fragment
 
                 // Set default option
                 setupDefaultOption();
-                //Get jobseeker data from local database
-                JobseekerDA jobseekerDA = new JobseekerDA(getActivity());
-                jobseeker = jobseekerDA.getJobseekerData();
-                jobseekerDA.close();
-                // Show job posts in list
-                setupJobPostList();
+                //Sync jobseeker data from server
+                syncJobseekerData();
 
                 return null;
             }
@@ -257,6 +257,123 @@ public class JobseekerHomeFragment extends Fragment
         setupJobPostList();
         // Close filter navigation view
         mDrawerLayout.closeDrawer(GravityCompat.END);
+    }
+
+    @Override
+    public void OnSwitchPersonalFilterChange(boolean isChecked) {
+
+        // Close filter navigation view
+        mDrawerLayout.closeDrawer(GravityCompat.END);
+
+        if (isChecked) {
+            getJobseekerSchedule();
+        } else {
+            mProgressDialog.setMessage("Resetting job posts ...");
+            mProgressDialog.show();
+            // Set default option
+            setupDefaultOption();
+            // Retrieve part time job
+            setupJobPostList();
+        }
+    }
+
+    private void startPersonalFilter() {
+
+        List<JobPost> matchedCategoryJobList = new ArrayList<>();
+        List<JobPost> matchedLocationJobList = new ArrayList<>();
+        List<JobPost> matchedScheduleJobList = new ArrayList<>();
+
+        List<String> categoryList = Arrays.asList(jobseeker.getPreferred_job().split(","));
+        List<String> locationList = Arrays.asList(jobseeker.getPreferred_location().split(","));
+
+        boolean isCategoryList = !categoryList.isEmpty() && !categoryList.get(0).equals("null")
+                && !categoryList.get(0).equals("");
+        boolean isLocationList = !locationList.isEmpty() && !locationList.get(0).equals("null")
+                && !locationList.get(0).equals("");
+
+        if (isCategoryList) {
+            for (String category : categoryList) {
+                for (JobPost jp : jobPostList) {
+                    Log.e(category.trim(), jp.getCategory().trim());
+                    if (jp.getCategory().trim().equals(category.trim())) {
+                        matchedCategoryJobList.add(jp);
+                    }
+                }
+            }
+        } else {
+            matchedCategoryJobList.addAll(jobPostList);
+        }
+
+        if (isLocationList) {
+            for (String location : locationList) {
+                for (JobPost jp : jobPostList) {
+                    JobLocation jl = jp.getJobLocation();
+                    if (jl.getName().contains(location) || jl.getAddress().contains(location)) {
+                        matchedLocationJobList.add(jp);
+                    }
+                }
+            }
+        } else {
+            matchedLocationJobList.addAll(jobPostList);
+        }
+
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+        SimpleDateFormat dateFormat1 = new SimpleDateFormat("ddMMyyyy", Locale.ENGLISH);
+        SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+
+        try {
+            if (!scheduleList.isEmpty()) {
+                for (Schedule schedule : scheduleList) {
+                    for (JobPost jp : jobPostList) {
+
+                        JSONObject workingDateObject = new JSONObject(jp.getWorkingDate());
+                        Date workingDate = dateFormat1.parse(workingDateObject.getString("wd1"));
+
+                        if (dateFormat2.format(workingDate)
+                                .equals(schedule.getSchedule_list_date())) {
+
+                            JSONObject workingTimeObject = new JSONObject(jp.getWorkingTime());
+
+                            Date scheduleTimeFrom = sdf.parse(schedule.getTimeFrom());
+                            Date scheduleTimeTo = sdf.parse(schedule.getTimeTo());
+
+                            Date workingTimeFrom = sdf.parse(
+                                    workingTimeObject.getString("startWorkTime"));
+                            Date workingTimeTo = sdf.parse(
+                                    workingTimeObject.getString("endWorkTime"));
+
+                            if (scheduleTimeFrom.before(workingTimeFrom)
+                                    && scheduleTimeTo.after(workingTimeFrom)
+                                    && scheduleTimeFrom.before(workingTimeTo)
+                                    && scheduleTimeTo.after(workingTimeTo)) {
+
+                                Log.e("GOT", "----");
+                                Log.e("INFO", "schedule between " + schedule.getTimeFrom()
+                                        + " " + schedule.getTimeTo());
+                                Log.e("INFO", "working between " + workingTimeObject.getString("startWorkTime")
+                                        + " " + workingTimeObject.getString("endWorkTime"));
+                                matchedScheduleJobList.add(jp);
+                            }
+                        }
+                    }
+                }
+            } else {
+                matchedScheduleJobList.addAll(jobPostList);
+            }
+        } catch (ParseException | JSONException e) {
+            e.printStackTrace();
+        }
+
+        jobPostList.retainAll(matchedCategoryJobList);
+        jobPostList.retainAll(matchedLocationJobList);
+        jobPostList.retainAll(matchedScheduleJobList);
+
+        adapter.notifyDataSetChanged();
+
+        if (jobPostList.isEmpty()) {
+            tvEmpty.setVisibility(View.VISIBLE);
+        }
+        mProgressDialog.dismiss();
     }
 
     private void setupDefaultOption() {
@@ -334,7 +451,66 @@ public class JobseekerHomeFragment extends Fragment
         layoutSort.startAnimation(a);
     }
 
+    private void syncJobseekerData() {
+
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    JSONObject jsonResponse = new JSONObject(response);
+                    boolean success = jsonResponse.getBoolean("success");
+
+                    if (success) {
+
+                        //Change jobseeker JSON to Array
+                        JSONObject jobseekerObject = jsonResponse.getJSONObject("JOBSEEKER");
+                        //Create jobseeker object
+                        Jobseeker j = new Jobseeker();
+                        j.setId(jobseekerObject.getString("jobseeker_id"));
+                        j.setName(jobseekerObject.getString("jobseeker_name"));
+                        j.setGender(jobseekerObject.getString("jobseeker_gender").charAt(0));
+                        j.setDob(new SimpleDateFormat("yyyy-MM-dd",
+                                Locale.ENGLISH).parse(jobseekerObject.getString("jobseeker_dob")));
+                        j.setIc(jobseekerObject.getString("jobseeker_ic"));
+                        j.setAddress(jobseekerObject.getString("jobseeker_address"));
+                        j.setPhone_number(jobseekerObject.getString("jobseeker_phone_number"));
+                        j.setEmail(jobseekerObject.getString("jobseeker_email"));
+                        j.setPreferred_job(jobseekerObject.getString("jobseeker_preferred_job"));
+                        j.setPreferred_location(jobseekerObject.getString("jobseeker_preferred_location"));
+                        j.setExperience(jobseekerObject.getString("jobseeker_experience"));
+                        j.setRating(jobseekerObject.getDouble("jobseeker_rating"));
+                        j.setImg(jobseekerObject.getString("jobseeker_img"));
+
+                        //Update jobseeker data
+                        JobseekerDA jobseekerDA = new JobseekerDA(getActivity());
+                        jobseekerDA.updateJobseekerData(j);
+                        jobseekerDA.close();
+
+                        // Show job posts in list
+                        setupJobPostList();
+                    }
+                } catch (JSONException | ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        GetJobseekerRequest getJobseekerRequest = new GetJobseekerRequest(
+                root + getString(R.string.url_get_jobseeker),
+                responseListener,
+                errorListener
+        );
+        mRequestQueue.add(getJobseekerRequest);
+    }
+
     private void setupJobPostList() {
+
+        //Get jobseeker data from local database
+        JobseekerDA jobseekerDA = new JobseekerDA(getActivity());
+        jobseeker = jobseekerDA.getJobseekerData();
+        jobseekerDA.close();
 
         Response.Listener<String> responseListener = new Response.Listener<String>() {
 
@@ -435,7 +611,8 @@ public class JobseekerHomeFragment extends Fragment
             }
         };
 
-        Log.e("op", Arrays.toString(option));
+        Log.e("option", Arrays.toString(option));
+        Log.e("jobseeker name", jobseeker.getName());
 
         FetchJobPostRequest fetchJobPostRequest = new FetchJobPostRequest(
                 Character.toString(jobseeker.getGender()),
@@ -513,6 +690,73 @@ public class JobseekerHomeFragment extends Fragment
         }
     }
 
+    private void getJobseekerSchedule() {
+
+        mProgressDialog.setMessage("Matching job posts ...");
+        mProgressDialog.show();
+
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    JSONObject jsonResponse = new JSONObject(response);
+                    boolean success = jsonResponse.getBoolean("success");
+                    int total = jsonResponse.getInt("total");
+
+                    scheduleList.clear();
+                    if (success && total > 0) {
+
+                        JSONArray scheduleArray = jsonResponse.getJSONArray("SCHEDULE");
+
+                        for (int i = 0; i < scheduleArray.length(); i++) {
+
+                            JSONObject jsonobject = scheduleArray.getJSONObject(i);
+
+                            Schedule schedule = new Schedule();
+                            schedule.setSchedule_list_date(jsonobject.getString("schedule_date"));
+                            schedule.setTimeFrom(jsonobject.getString("schedule_time_from"));
+                            schedule.setTimeTo(jsonobject.getString("schedule_time_to"));
+
+                            scheduleList.add(schedule);
+                        }
+                    }
+                    startPersonalFilter();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    mProgressDialog.dismiss();
+                }
+            }
+        };
+
+        GetScheduleRequest getScheduleRequest = new GetScheduleRequest(
+                root + getString(R.string.url_get_schedule),
+                responseListener,
+                errorListener
+        );
+        mRequestQueue.add(getScheduleRequest);
+    }
+
+    private class GetJobseekerRequest extends StringRequest {
+
+        private Map<String, String> params;
+
+        GetJobseekerRequest(String url,
+                            Response.Listener<String> listener,
+                            Response.ErrorListener errorListener) {
+            super(Method.POST, url, listener, errorListener);
+
+            params = new HashMap<>();
+            params.put("id", userId);
+        }
+
+        public Map<String, String> getParams() {
+            return params;
+        }
+    }
+
     private class FetchJobPostRequest extends StringRequest {
 
         private Map<String, String> params;
@@ -549,6 +793,24 @@ public class JobseekerHomeFragment extends Fragment
                                  Response.Listener<String> listener,
                                  Response.ErrorListener errorListener) {
             super(Method.GET, url, listener, errorListener);
+        }
+    }
+
+    private class GetScheduleRequest extends StringRequest {
+
+        private Map<String, String> params;
+
+        GetScheduleRequest(String url,
+                           Response.Listener<String> listener,
+                           Response.ErrorListener errorListener) {
+            super(Method.POST, url, listener, errorListener);
+
+            params = new HashMap<>();
+            params.put("jobseeker_id", userId);
+        }
+
+        public Map<String, String> getParams() {
+            return params;
         }
     }
 

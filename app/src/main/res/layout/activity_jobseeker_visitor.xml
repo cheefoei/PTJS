@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:orientation="vertical"
+    tools:context="com.TimeToWork.TimeToWork.Jobseeker.JobseekerVisitorActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:background="@color/colorPrimaryDark"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/img_jobseeker"
+            android:layout_width="112dp"
+            android:layout_height="112dp"
+            android:layout_marginTop="@dimen/margin"
+            android:src="@drawable/user"
+            app:civ_border_color="@color/colorBackground"
+            app:civ_border_width="1dp" />
+
+        <LinearLayout
+            android:id="@+id/layout_profile_name"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin"
+            android:layout_marginTop="36dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_jobseeker_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:fontFamily="@string/font_family_regular"
+                android:gravity="center"
+                android:text="@string/example_company_name"
+                android:textColor="@color/colorWhite"
+                android:textSize="20sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <RatingBar
+                    android:id="@+id/rate_bar_jobseeker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:isIndicator="true"
+                    android:numStars="5"
+                    android:rating="5"
+                    android:scaleX="1.3"
+                    android:scaleY="1.3"
+                    android:stepSize="0.5" />
+
+                <TextView
+                    android:id="@+id/tv_jobseeker_rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:fontFamily="@string/font_family_light"
+                    android:text="@string/example_rate_value"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_review_tag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_review_tag_1"
+                android:layout_width="108dp"
+                android:layout_height="24dp"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/bg_review_tag_null"
+                android:fontFamily="@string/font_family_light"
+                android:gravity="center"
+                android:tag="0"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_review_tag_2"
+                android:layout_width="108dp"
+                android:layout_height="24dp"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/bg_review_tag_null"
+                android:fontFamily="@string/font_family_light"
+                android:gravity="center"
+                android:tag="1"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_review_tag_3"
+                android:layout_width="108dp"
+                android:layout_height="24dp"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/bg_review_tag_null"
+                android:fontFamily="@string/font_family_light"
+                android:gravity="center"
+                android:tag="2"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_review_tag_4"
+                android:layout_width="108dp"
+                android:layout_height="24dp"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/bg_review_tag_null"
+                android:fontFamily="@string/font_family_light"
+                android:gravity="center"
+                android:tag="3"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tab_application_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabGravity="center"
+        app:tabMode="scrollable" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager_applicant"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

@@ -22,6 +22,8 @@ import com.TimeToWork.TimeToWork.Adapter.JobPostAdapter;
 import com.TimeToWork.TimeToWork.Company.PostNewJobActivity;
 import com.TimeToWork.TimeToWork.CustomClass.CustomProgressDialog;
 import com.TimeToWork.TimeToWork.CustomClass.CustomVolleyErrorListener;
+import com.TimeToWork.TimeToWork.Database.CompanyDA;
+import com.TimeToWork.TimeToWork.Database.Entity.Company;
 import com.TimeToWork.TimeToWork.Database.Entity.JobLocation;
 import com.TimeToWork.TimeToWork.Database.Entity.JobPost;
 import com.TimeToWork.TimeToWork.R;
@@ -47,6 +49,8 @@ import static com.TimeToWork.TimeToWork.MainApplication.userId;
 public class CompanyHomeFragment extends Fragment {
 
     private CustomProgressDialog mProgressDialog;
+    private CustomVolleyErrorListener errorListener;
+
     private SwipeRefreshLayout swipeContainer;
     private TextView tvEmpty;
 
@@ -80,6 +84,7 @@ public class CompanyHomeFragment extends Fragment {
         tvAdsTotal = (TextView) view.findViewById(R.id.tv_ads_total);
 
         mProgressDialog = new CustomProgressDialog(getActivity());
+        errorListener = new CustomVolleyErrorListener(getActivity(), mProgressDialog, mRequestQueue);
         tvEmpty = (TextView) view.findViewById(R.id.tv_empty_job_post);
 
         swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
@@ -87,7 +92,7 @@ public class CompanyHomeFragment extends Fragment {
 
             @Override
             public void onRefresh() {
-                showJobPostSummary();
+//                showJobPostSummary();
                 setupCurrentJobPostList();
             }
         });
@@ -138,25 +143,14 @@ public class CompanyHomeFragment extends Fragment {
         mProgressDialog.setMessage("Loading your job post ...");
         mProgressDialog.show();
         // Show job post summary
-        showJobPostSummary();
+//        showJobPostSummary();
         // Show job posts in list
         setupCurrentJobPostList();
+        //Sync company data from server
+        syncCompanyData();
 
         return view;
     }
-
-//    @Override
-//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-//
-//        inflater.inflate(R.menu.menu_home, menu);
-//
-//        SearchView searchView = ((SearchView) menu.findItem(R.id.search).getActionView());
-//        searchView.setMaxWidth(Integer.MAX_VALUE);
-//        searchView.setQueryHint("Search job");
-//
-//        super.onCreateOptionsMenu(menu, inflater);
-//    }
-
 
     @Override
     public void onResume() {
@@ -166,7 +160,7 @@ public class CompanyHomeFragment extends Fragment {
         mProgressDialog.setMessage("Loading your job post ...");
         mProgressDialog.show();
         // Show job post summary
-        showJobPostSummary();
+//        showJobPostSummary();
         // Show job posts in list
         setupCurrentJobPostList();
     }
@@ -183,9 +177,10 @@ public class CompanyHomeFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    /*
     private void showJobPostSummary() {
 
-        final Response.Listener<String> responseListener = new Response.Listener<String>() {
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -229,21 +224,17 @@ public class CompanyHomeFragment extends Fragment {
                             })
                             .create()
                             .show();
-
                 }
             }
         };
 
-        CustomVolleyErrorListener errorListener
-                = new CustomVolleyErrorListener(getActivity(), mProgressDialog, mRequestQueue);
-        CompanyHomeFragment.FetchJobPostSummaryRequest fetchJobPostSummaryRequest
-                = new CompanyHomeFragment.FetchJobPostSummaryRequest(
+        FetchJobPostSummaryRequest fetchJobPostSummaryRequest = new FetchJobPostSummaryRequest(
                 root + getString(R.string.url_get_job_post_summary),
                 responseListener,
                 errorListener
         );
         mRequestQueue.add(fetchJobPostSummaryRequest);
-    }
+    }*/
 
     private void setupCurrentJobPostList() {
 
@@ -256,6 +247,7 @@ public class CompanyHomeFragment extends Fragment {
                     JSONObject jsonResponse = new JSONObject(response);
                     boolean success = jsonResponse.getBoolean("success");
                     int total = jsonResponse.getInt("total");
+                    int totalAds = 0;
 
                     if (success) {
 
@@ -295,20 +287,22 @@ public class CompanyHomeFragment extends Fragment {
                                 jobPost.setPositionNumber(jsonobject.getInt("job_post_position_num"));
                                 jobPost.setAds(jsonobject.getInt("job_post_isAds") == 1);
                                 jobPost.setStatus(jsonobject.getString("job_post_status"));
-
-//                                if (jsonobject.getString("job_post_prefer_gender").length() > 0) {
                                 jobPost.setPreferGender(jsonobject.getString("job_post_prefer_gender"));
-//                                }
 
+                                if (jobPost.isAds()) {
+                                    totalAds++;
+                                }
                                 jobPostList.add(jobPost);
                                 tvEmpty.setVisibility(View.GONE);
                             }
                         } else {
                             tvEmpty.setVisibility(View.VISIBLE);
                         }
+                        tvJobPostTotal.setText(String.format(Locale.ENGLISH, "%d", total));
+                        tvAdsTotal.setText(String.format(Locale.ENGLISH, "%d", totalAds));
+
                         adapter.notifyDataSetChanged();
                         swipeContainer.setRefreshing(false);
-
                     } else {
                         //If failed, then show alert dialog
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -351,9 +345,7 @@ public class CompanyHomeFragment extends Fragment {
             e.printStackTrace();
         }
 
-        CustomVolleyErrorListener errorListener
-                = new CustomVolleyErrorListener(getActivity(), mProgressDialog, mRequestQueue);
-        CompanyHomeFragment.FetchJobPostRequest fetchJobPostRequest = new CompanyHomeFragment.FetchJobPostRequest(
+        FetchJobPostRequest fetchJobPostRequest = new FetchJobPostRequest(
                 optionJSON.toString(),
                 root + getString(R.string.url_get_job_post_for_company),
                 responseListener,
@@ -362,6 +354,51 @@ public class CompanyHomeFragment extends Fragment {
         mRequestQueue.add(fetchJobPostRequest);
     }
 
+    private void syncCompanyData() {
+
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    JSONObject jsonResponse = new JSONObject(response);
+                    boolean success = jsonResponse.getBoolean("success");
+
+                    if (success) {
+
+                        //Change company JSON to Array
+                        JSONObject companyObject = jsonResponse.getJSONObject("COMPANY");
+                        //Create company object
+                        Company c = new Company();
+                        c.setId(companyObject.getString("company_id"));
+                        c.setName(companyObject.getString("company_name"));
+                        c.setAddress(companyObject.getString("company_address"));
+                        c.setPhone_number(companyObject.getString("company_phone_number"));
+                        c.setEmail(companyObject.getString("company_email"));
+                        c.setRating(companyObject.getDouble("company_rating"));
+                        c.setImg(companyObject.getString("company_img"));
+
+                        //Update jobseeker data
+                        CompanyDA companyDA = new CompanyDA(getActivity());
+                        companyDA.updateCompanyData(c);
+                        //Closing sqlite database
+                        companyDA.close();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        GetCompanyRequest getCompanyRequest = new GetCompanyRequest(
+                root + getString(R.string.url_get_company),
+                responseListener,
+                errorListener
+        );
+        mRequestQueue.add(getCompanyRequest);
+    }
+/*
     private class FetchJobPostSummaryRequest extends StringRequest {
 
         private Map<String, String> params;
@@ -379,7 +416,7 @@ public class CompanyHomeFragment extends Fragment {
         public Map<String, String> getParams() {
             return params;
         }
-    }
+    }*/
 
     private class FetchJobPostRequest extends StringRequest {
 
@@ -394,6 +431,24 @@ public class CompanyHomeFragment extends Fragment {
 
             params = new HashMap<>();
             params.put("option", option);
+        }
+
+        public Map<String, String> getParams() {
+            return params;
+        }
+    }
+
+    private class GetCompanyRequest extends StringRequest {
+
+        private Map<String, String> params;
+
+        GetCompanyRequest(String url,
+                          Response.Listener<String> listener,
+                          Response.ErrorListener errorListener) {
+            super(Method.POST, url, listener, errorListener);
+
+            params = new HashMap<>();
+            params.put("id", userId);
         }
 
         public Map<String, String> getParams() {

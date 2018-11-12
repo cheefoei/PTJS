@@ -37,7 +37,7 @@ public class SetFreeTimeActivity extends AppCompatActivity {
     private EditText editTextDate, txtFrom, txtTo;
     private DatePickerDialog.OnDateSetListener dateSetListener;
 
-    private String dob, scheduleId, scheduleListId;
+    private String scheduleDate, scheduleId, scheduleListId;
     private ArrayAdapter<String> adapterFrom, adapterTo;
     private AlertDialog dialogFrom, dialogTo;
 
@@ -83,7 +83,7 @@ public class SetFreeTimeActivity extends AppCompatActivity {
 
                 String date = day + "/" + (month + 1) + "/" + year;
                 editTextDate.setText(date);
-                dob = year + "-" + month + "-" + day;
+                scheduleDate = year + "-" + (month + 1) + "-" + day;
             }
         };
 
@@ -206,7 +206,7 @@ public class SetFreeTimeActivity extends AppCompatActivity {
                 Schedule detail = new Schedule(scheduleId, timeFrom, timeTo);
                 maintainFreeTime.insertShedule(detail);
 
-                Schedule details = new Schedule(scheduleId, scheduleListId, userId, dob);
+                Schedule details = new Schedule(scheduleId, scheduleListId, userId, scheduleDate);
                 maintainFreeTime.insertSheduleList(details);
 
                 handler.post(new Runnable() {

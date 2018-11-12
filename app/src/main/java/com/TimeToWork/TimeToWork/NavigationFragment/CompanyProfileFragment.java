@@ -23,11 +23,23 @@ import com.TimeToWork.TimeToWork.ChangePasswordActivity;
 import com.TimeToWork.TimeToWork.Company.CompanyDetailActivity;
 import com.TimeToWork.TimeToWork.Company.CompanyReportActivity;
 import com.TimeToWork.TimeToWork.CustomClass.CustomProgressDialog;
+import com.TimeToWork.TimeToWork.CustomClass.CustomVolleyErrorListener;
+import com.TimeToWork.TimeToWork.Database.CompanyDA;
 import com.TimeToWork.TimeToWork.Database.Control.MaintainCompany;
 import com.TimeToWork.TimeToWork.Database.Entity.Company;
 import com.TimeToWork.TimeToWork.R;
+import com.android.volley.Response;
+import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.TimeToWork.TimeToWork.MainApplication.clearAppData;
+import static com.TimeToWork.TimeToWork.MainApplication.mRequestQueue;
+import static com.TimeToWork.TimeToWork.MainApplication.root;
 import static com.TimeToWork.TimeToWork.MainApplication.userId;
 
 public class CompanyProfileFragment extends Fragment {
@@ -100,6 +112,15 @@ public class CompanyProfileFragment extends Fragment {
         }
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+
+        if (userId != null && company != null) {
+            syncCompanyData();
+        }
+        super.onResume();
     }
 
     @Override
@@ -183,4 +204,83 @@ public class CompanyProfileFragment extends Fragment {
             }
         }).start();
     }
+
+    private void syncCompanyData() {
+
+        //Show progress dialog
+        mProgressDialog.setMessage("Loading …");
+        mProgressDialog.show();
+
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    JSONObject jsonResponse = new JSONObject(response);
+                    boolean success = jsonResponse.getBoolean("success");
+
+                    if (success) {
+
+                        //Change company JSON to Array
+                        JSONObject companyObject = jsonResponse.getJSONObject("COMPANY");
+                        //Create company object
+                        Company c = new Company();
+                        c.setId(companyObject.getString("company_id"));
+                        c.setName(companyObject.getString("company_name"));
+                        c.setAddress(companyObject.getString("company_address"));
+                        c.setPhone_number(companyObject.getString("company_phone_number"));
+                        c.setEmail(companyObject.getString("company_email"));
+                        c.setRating(companyObject.getDouble("company_rating"));
+                        c.setImg(companyObject.getString("company_img"));
+
+                        //Update jobseeker data
+                        CompanyDA companyDA = new CompanyDA(getActivity());
+                        companyDA.updateCompanyData(c);
+                        //Closing sqlite database
+                        companyDA.close();
+
+                        txtViewName.setText(c.getName());
+                        if (c.getImg() != null && !c.getImg().equals("") && !c.getImg().equals("null")) {
+                            byte[] decodedString = Base64.decode(c.getImg(), Base64.DEFAULT);
+                            Bitmap decodedByte = BitmapFactory
+                                    .decodeByteArray(decodedString, 0, decodedString.length);
+                            imageView.setImageBitmap(decodedByte);
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                mProgressDialog.dismiss();
+            }
+        };
+
+        CustomVolleyErrorListener errorListener
+                = new CustomVolleyErrorListener(getActivity(), mProgressDialog, mRequestQueue);
+        GetCompanyRequest getCompanyRequest = new GetCompanyRequest(
+                root + getString(R.string.url_get_company),
+                responseListener,
+                errorListener
+        );
+        mRequestQueue.add(getCompanyRequest);
+    }
+
+    private class GetCompanyRequest extends StringRequest {
+
+        private Map<String, String> params;
+
+        GetCompanyRequest(String url,
+                          Response.Listener<String> listener,
+                          Response.ErrorListener errorListener) {
+            super(Method.POST, url, listener, errorListener);
+
+            params = new HashMap<>();
+            params.put("id", userId);
+        }
+
+        public Map<String, String> getParams() {
+            return params;
+        }
+    }
+
 }

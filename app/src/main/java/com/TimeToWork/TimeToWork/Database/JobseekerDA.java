@@ -11,6 +11,8 @@ import com.TimeToWork.TimeToWork.Database.Entity.Jobseeker;
 
 import java.util.Date;
 
+import static com.TimeToWork.TimeToWork.MainApplication.userId;
+
 public class JobseekerDA {
 
     private SQLiteDatabase mDatabase;
@@ -98,6 +100,27 @@ public class JobseekerDA {
         cursor.close();
 
         return jobseeker;
+    }
+
+    public void updateJobseekerData(Jobseeker jobseeker) {
+
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.COLUMN_JOBSEEKER_ID, jobseeker.getId());
+        values.put(DatabaseHelper.COLUMN_JOBSEEKER_NAME, jobseeker.getName());
+        values.put(DatabaseHelper.COLUMN_JOBSEEKER_GENDER, Character.toString(jobseeker.getGender()));
+        values.put(DatabaseHelper.COLUMN_JOBSEEKER_DOB, jobseeker.getDob().getTime());
+        values.put(DatabaseHelper.COLUMN_JOBSEEKER_IC, jobseeker.getIc());
+        values.put(DatabaseHelper.COLUMN_JOBSEEKER_ADDRESS, jobseeker.getAddress());
+        values.put(DatabaseHelper.COLUMN_JOBSEEKER_PHONE, jobseeker.getPhone_number());
+        values.put(DatabaseHelper.COLUMN_JOBSEEKER_EMAIL, jobseeker.getEmail());
+        values.put(DatabaseHelper.COLUMN_JOBSEEKER_PREFERRED_JOB, jobseeker.getPreferred_job());
+        values.put(DatabaseHelper.COLUMN_JOBSEEKER_PREFERRED_LOC, jobseeker.getPreferred_location());
+        values.put(DatabaseHelper.COLUMN_JOBSEEKER_EXPERIENCE, jobseeker.getExperience());
+        values.put(DatabaseHelper.COLUMN_JOBSEEKER_RATING, jobseeker.getRating());
+        values.put(DatabaseHelper.COLUMN_JOBSEEKER_IMG, jobseeker.getImg());
+
+        mDatabase.update(DatabaseHelper.TABLE_JOBSEEKER, values,
+                DatabaseHelper.COLUMN_JOBSEEKER_ID + " = ?", new String[]{userId});
     }
 
     public void close() {

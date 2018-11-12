@@ -15,6 +15,9 @@ public class Schedule implements Serializable {
     private String timeTo;
     private String schedule_list_date;
 
+    public Schedule() {
+    }
+
     public Schedule(String schedule_id, String timeFrom, String timeTo) {
 
         this.schedule_id = schedule_id;

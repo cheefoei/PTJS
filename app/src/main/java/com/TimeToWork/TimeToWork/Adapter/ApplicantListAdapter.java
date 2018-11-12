@@ -29,6 +29,7 @@ import com.TimeToWork.TimeToWork.CustomClass.CustomVolleyErrorListener;
 import com.TimeToWork.TimeToWork.Database.Entity.JobApplication;
 import com.TimeToWork.TimeToWork.Database.Entity.Jobseeker;
 import com.TimeToWork.TimeToWork.Database.Entity.Review;
+import com.TimeToWork.TimeToWork.Jobseeker.JobseekerVisitorActivity;
 import com.TimeToWork.TimeToWork.R;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
@@ -101,8 +102,8 @@ public class ApplicantListAdapter extends RecyclerView.Adapter<ApplicantListAdap
             @Override
             public void onClick(View v) {
 
-//                Intent intent = new Intent(mContext, ViewJobDetailActivity.class);
-//                mContext.startActivity(intent);
+                Intent intent = new Intent(mContext, JobseekerVisitorActivity.class);
+                mContext.startActivity(intent);
             }
         });
 
