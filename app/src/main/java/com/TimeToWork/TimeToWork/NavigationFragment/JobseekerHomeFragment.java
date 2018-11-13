@@ -1,6 +1,9 @@
 package com.TimeToWork.TimeToWork.NavigationFragment;
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,6 +13,7 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -29,7 +33,9 @@ import android.widget.TextView;
 import com.TimeToWork.TimeToWork.Adapter.JobListAdapter;
 import com.TimeToWork.TimeToWork.CustomClass.CustomProgressDialog;
 import com.TimeToWork.TimeToWork.CustomClass.CustomVolleyErrorListener;
+import com.TimeToWork.TimeToWork.Database.Control.MaintainNotification;
 import com.TimeToWork.TimeToWork.Database.Entity.Company;
+import com.TimeToWork.TimeToWork.Database.Entity.JobApplication;
 import com.TimeToWork.TimeToWork.Database.Entity.JobLocation;
 import com.TimeToWork.TimeToWork.Database.Entity.JobPost;
 import com.TimeToWork.TimeToWork.Database.Entity.Jobseeker;
@@ -44,6 +50,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -236,12 +243,14 @@ public class JobseekerHomeFragment extends Fragment
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-//        int id = item.getItemId();
-//
-//        if (id == R.id.notification) {
-//            startActivity(i);
-//        }
-
+        int id = item.getItemId();
+        if (id == R.id.notification) {
+            try {
+                notification();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -274,6 +283,40 @@ public class JobseekerHomeFragment extends Fragment
             setupDefaultOption();
             // Retrieve part time job
             setupJobPostList();
+        }
+    }
+
+    public void notification() throws SQLException {
+
+        MaintainNotification maintainNotification = new MaintainNotification();
+        List<JobApplication> jobApplicationList = maintainNotification.getJobApplicationDetails();
+
+        for (JobApplication jobApplication : jobApplicationList) {
+
+            if (jobApplication.getId().equals("JA10004")) {
+
+                NotificationCompat.Builder notificationBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(getActivity())
+                        .setDefaults(NotificationCompat.DEFAULT_ALL)
+                        .setSmallIcon(R.drawable.baseline_notifications_black_18)
+                        .setLargeIcon(BitmapFactory.decodeResource(getResources(),
+                                R.drawable.baseline_notifications_black_18))
+                        .setContentTitle("Message");
+
+                switch (jobApplication.getStatus()) {
+                    case "Sent":
+                        notificationBuilder.setContentText("Sent");
+                        break;
+                    case "Reject":
+                        notificationBuilder.setContentText("Reject");
+                        break;
+                    case "Approved":
+                        notificationBuilder.setContentText("Approved");
+                        break;
+                }
+                NotificationManager notificationManager = (NotificationManager) getActivity()
+                        .getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.notify(1, notificationBuilder.build());
+            }
         }
     }
 

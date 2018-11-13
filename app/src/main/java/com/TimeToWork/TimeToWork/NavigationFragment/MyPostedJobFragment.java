@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -60,19 +62,34 @@ public class MyPostedJobFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
-        inflater.inflate(R.menu.menu_home, menu);
+        inflater.inflate(R.menu.menu_help, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-//        int id = item.getItemId();
-//
-//        if (id == R.id.notification) {
-//            startActivity(i);
-//        }
+        int id = item.getItemId();
 
+        if (id == R.id.help) {
+
+            String message = "<b>Full Slot</b>: When the number of approved applicant matches " +
+                    "the position number of job, the system will make the job to this status.<br/><br/>" +
+                    "<b>Completed</b>: After you clicked 'Complete Job' button, means you made " +
+                    "the job to 'Completed' status. The job is allowed for the jobseeker and " +
+                    "employer to provide review.<br/><br/>" +
+                    "<b>Unavailable</b>: After you made the job unavailable or the working date of the job " +
+                    "already after current date, the system will make the job to " +
+                    "'Unavailable' status. The jobseeker cannot apply the job.";
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            //noinspection deprecation
+            builder.setTitle("Learn More")
+                    .setMessage(Html.fromHtml(message))
+                    .setPositiveButton("Close", null)
+                    .create()
+                    .show();
+        }
         return super.onOptionsItemSelected(item);
     }
 
