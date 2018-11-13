@@ -143,50 +143,76 @@ public class CompanyRegistrationActivity extends AppCompatActivity {
         String nameFormat = "[a-zA-Z_]+";
         Pattern pattern = Pattern.compile(nameFormat);
         Matcher matcher = pattern.matcher(name);
-        if (!matcher.matches()) {
-            editTextName.setError("Name cannot be numeric");
+
+        if (name.equals("")) {
+            editTextName.setError("Cannot be empty");
+            valid = false;
+        }else{
+            if (!matcher.matches()) {
+                editTextName.setError("Name cannot be numeric");
+                valid = false;
+            }
+        }
+
+        if (address.equals("")) {
+            editTextAddress.setError("Cannot be empty");
             valid = false;
         }
 
         String phoneNumFormat = "[0-9]+";
         pattern = Pattern.compile(phoneNumFormat);
         matcher = pattern.matcher(phoneNum);
-        if (!matcher.matches()) {
-            editTextPhoneNumber.setError("Invalid Phone Number Format");
+        if (phoneNum.equals("")) {
+            editTextPhoneNumber.setError("Cannot be empty");
             valid = false;
-        } else {
-            if (!checkPhoneNumber()) {
-                editTextPhoneNumber.setError("Phone Number Has Been Used.");
+        }else {
+            if (!matcher.matches()) {
+                editTextPhoneNumber.setError("Invalid Phone Number Format");
                 valid = false;
+            } else {
+                if (!checkPhoneNumber()) {
+                    editTextPhoneNumber.setError("Phone Number Has Been Used.");
+                    valid = false;
+                }
             }
         }
 
         String emailFormat = "^(.+)@(.+)$";
         pattern = Pattern.compile(emailFormat);
         matcher = pattern.matcher(email);
-        if (!matcher.matches()) {
-            editTextEmail.setError("Invalid Email Format");
+        if (email.equals("")) {
+            editTextEmail.setError("Cannot be empty");
             valid = false;
-        } else {
-            if (!checkEmail()) {
-                editTextEmail.setError("Email Has Been Used.");
+        }else {
+            if (!matcher.matches()) {
+                editTextEmail.setError("Invalid Email Format");
                 valid = false;
+            } else {
+                if (!checkEmail()) {
+                    editTextEmail.setError("Email Has Been Used.");
+                    valid = false;
+                }
             }
         }
 
-        if (pass.length() >= 8) {
-            if (Character.isUpperCase(pass.charAt(0))) {
-                if (!pass.equals(confirmPass)) {
-                    editTextPassword.setError("Not match with password and confirm password");
+        if (pass.equals("")) {
+            editTextPassword.setError("Cannot be empty");
+            valid = false;
+        }else {
+            if (pass.length() >= 8) {
+                if (Character.isUpperCase(pass.charAt(0))) {
+                    if (!pass.equals(confirmPass)) {
+                        editTextPassword.setError("Not match with password and confirm password");
+                        valid = false;
+                    }
+                } else {
+                    editTextPassword.setError("Invalid Password Format");
                     valid = false;
                 }
             } else {
                 editTextPassword.setError("Invalid Password Format");
                 valid = false;
             }
-        } else {
-            editTextPassword.setError("Invalid Password Format");
-            valid = false;
         }
 
         mProgressDialog.dismiss();
