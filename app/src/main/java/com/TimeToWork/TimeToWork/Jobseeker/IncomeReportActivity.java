@@ -78,6 +78,8 @@ public class IncomeReportActivity extends AppCompatActivity {
                         ListView listView = (ListView) findViewById(R.id.listView);
                         listView.setAdapter(adapter);
 
+                        title2.setText("Income Summary Report for " + month + "  " + year);
+
                         for (int i = 0; i < reportList.size(); i++) {
                             arrayList.add(i + 1 + "                   "
                                     + reportList.get(i).getCompany_name() + "          "
