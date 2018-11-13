@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.TimeToWork.TimeToWork.Company.CompanyVisitorActivity;
 import com.TimeToWork.TimeToWork.CustomClass.CategoryTagView;
 import com.TimeToWork.TimeToWork.CustomClass.CustomProgressDialog;
 import com.TimeToWork.TimeToWork.CustomClass.CustomVolleyErrorListener;
@@ -234,11 +235,15 @@ public class ViewJobDetailActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-//        int id = item.getItemId();
+        int id = item.getItemId();
 
-//        if (id == R.id.company_profile) {
-//
-//        } else if (id == R.id.share) {
+        if (id == R.id.company_profile) {
+
+            Intent intent = new Intent(this, CompanyVisitorActivity.class);
+            intent.putExtra("COMPANY", jobPost.getCompany());
+            startActivity(intent);
+        }
+// else if (id == R.id.share) {
 //
 //        }
         return super.onOptionsItemSelected(item);

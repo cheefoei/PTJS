@@ -10,6 +10,8 @@ public class Review implements Serializable {
     private String comment;
     private String tag;
     private double starValue;
+    private Jobseeker jobseeker;
+    private Company company;
 
     public Review() {
     }
@@ -52,5 +54,21 @@ public class Review implements Serializable {
 
     public void setStarValue(double starValue) {
         this.starValue = starValue;
+    }
+
+    public Jobseeker getJobseeker() {
+        return jobseeker;
+    }
+
+    public void setJobseeker(Jobseeker jobseeker) {
+        this.jobseeker = jobseeker;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 }

@@ -25,7 +25,6 @@ import com.TimeToWork.TimeToWork.Company.CompanyReportActivity;
 import com.TimeToWork.TimeToWork.CustomClass.CustomProgressDialog;
 import com.TimeToWork.TimeToWork.CustomClass.CustomVolleyErrorListener;
 import com.TimeToWork.TimeToWork.Database.CompanyDA;
-import com.TimeToWork.TimeToWork.Database.Control.MaintainCompany;
 import com.TimeToWork.TimeToWork.Database.Entity.Company;
 import com.TimeToWork.TimeToWork.R;
 import com.android.volley.Response;
@@ -52,8 +51,6 @@ public class CompanyProfileFragment extends Fragment {
     private RatingBar ratingBar;
 
     private Company company;
-
-    private MaintainCompany maintainCompany = new MaintainCompany();
 
     public CompanyProfileFragment() {
         // Required empty public constructor
@@ -177,8 +174,11 @@ public class CompanyProfileFragment extends Fragment {
             @Override
             public void run() {
 
-                company = maintainCompany.getCompanyDetail(userId);
-
+                //Reading company data
+                CompanyDA companyDA = new CompanyDA(getActivity());
+                company = companyDA.getCompanyData();
+                //Close company database
+                companyDA.close();
                 handler.post(new Runnable() {
 
                     @Override

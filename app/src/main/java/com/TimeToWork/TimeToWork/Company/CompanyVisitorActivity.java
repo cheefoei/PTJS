@@ -1,14 +1,14 @@
-package com.TimeToWork.TimeToWork.Jobseeker;
+package com.TimeToWork.TimeToWork.Company;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Base64;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,15 +16,15 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.TimeToWork.TimeToWork.Database.Entity.Jobseeker;
+import com.TimeToWork.TimeToWork.Database.Entity.Company;
 import com.TimeToWork.TimeToWork.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class JobseekerVisitorActivity extends AppCompatActivity
-        implements JobseekerReviewFragment.TagTotalNumberCallBack {
+public class CompanyVisitorActivity extends AppCompatActivity
+        implements CompanyReviewFragment.TagTotalNumberCallBack {
 
     private LinearLayout layoutRating, layoutReview;
     private TabLayout mTabLayout;
@@ -33,43 +33,43 @@ public class JobseekerVisitorActivity extends AppCompatActivity
     private List<String> tagStrings;
     private int totalReview = 0;
 
-    private Jobseeker jobseeker;
+    private Company company;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_jobseeker_visitor);
+        setContentView(R.layout.activity_company_visitor);
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setElevation(0);
         }
         setTitle("");
-        jobseeker = (Jobseeker) getIntent().getSerializableExtra("JOBSEEKER");
+        company = (Company) getIntent().getSerializableExtra("COMPANY");
 
         layoutRating = (LinearLayout) findViewById(R.id.layout_profile_rating);
         layoutReview = (LinearLayout) findViewById(R.id.layout_review_tag);
 
-        TextView tvJobseekerName = (TextView) findViewById(R.id.tv_jobseeker_name);
-        tvJobseekerName.setText(jobseeker.getName());
+        TextView tvJobseekerName = (TextView) findViewById(R.id.tv_company_name);
+        tvJobseekerName.setText(company.getName());
 
-        TextView tvRating = (TextView) findViewById(R.id.tv_jobseeker_rating);
-        tvRating.setText(String.valueOf(jobseeker.getRating()));
+        TextView tvRating = (TextView) findViewById(R.id.tv_company_rating);
+        tvRating.setText(String.valueOf(company.getRating()));
 
-        ImageView imgProfile = (ImageView) findViewById(R.id.img_jobseeker);
-        if (jobseeker.getImg() != null && !jobseeker.getImg().equals("")
-                && !jobseeker.getImg().equals("null")) {
-            byte[] decodedString = Base64.decode(jobseeker.getImg(), Base64.DEFAULT);
+        ImageView imgProfile = (ImageView) findViewById(R.id.img_company);
+        if (company.getImg() != null && !company.getImg().equals("")
+                && !company.getImg().equals("null")) {
+            byte[] decodedString = Base64.decode(company.getImg(), Base64.DEFAULT);
             Bitmap decodedByte = BitmapFactory
                     .decodeByteArray(decodedString, 0, decodedString.length);
             imgProfile.setImageBitmap(decodedByte);
         }
 
-        RatingBar ratingBar = (RatingBar) findViewById(R.id.rate_bar_jobseeker);
-        ratingBar.setRating((float) jobseeker.getRating());
+        RatingBar ratingBar = (RatingBar) findViewById(R.id.rate_bar_company);
+        ratingBar.setRating((float) company.getRating());
 
         tagStrings = Arrays.asList(
-                getResources().getStringArray(R.array.array_review_tag_company));
+                getResources().getStringArray(R.array.array_review_tag_jobseeker));
 
         TextView tvTag1 = (TextView) findViewById(R.id.tv_review_tag_1);
         TextView tvTag2 = (TextView) findViewById(R.id.tv_review_tag_2);
@@ -87,12 +87,12 @@ public class JobseekerVisitorActivity extends AppCompatActivity
             tag.setText(tagStrings.get(i));
         }
 
-        Fragment jobseekerInfoFragment = new JobseekerInfoFragment();
-        Fragment jobseekerReviewFragment = new JobseekerReviewFragment();
+        Fragment companyInfoFragment = new CompanyInfoFragment();
+        Fragment companyReviewFragment = new CompanyReviewFragment();
 
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        viewPagerAdapter.addFragment(jobseekerInfoFragment, "INFORMATION");
-        viewPagerAdapter.addFragment(jobseekerReviewFragment, "REVIEW");
+        viewPagerAdapter.addFragment(companyInfoFragment, "INFORMATION");
+        viewPagerAdapter.addFragment(companyReviewFragment, "REVIEW");
 
         ViewPager mViewPager = (ViewPager) findViewById(R.id.viewpager_visitor);
         mViewPager.setOffscreenPageLimit(1);
@@ -157,7 +157,7 @@ public class JobseekerVisitorActivity extends AppCompatActivity
         public Fragment getItem(int position) {
 
             Bundle bundle = new Bundle();
-            bundle.putSerializable("JOBSEEKER", jobseeker);
+            bundle.putSerializable("COMPANY", company);
             Fragment fragment = mFragmentList.get(position);
             fragment.setArguments(bundle);
             return fragment;

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
     android:orientation="vertical"
-    tools:context="com.TimeToWork.TimeToWork.Jobseeker.JobseekerVisitorActivity">
+    tools:context="com.TimeToWork.TimeToWork.Company.CompanyVisitorActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,7 +18,7 @@
         android:paddingStart="@dimen/padding">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/img_jobseeker"
+            android:id="@+id/img_company"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_gravity="center_horizontal"
@@ -34,7 +34,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_jobseeker_name"
+                android:id="@+id/tv_company_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
@@ -52,7 +52,7 @@
                 android:orientation="horizontal">
 
                 <RatingBar
-                    android:id="@+id/rate_bar_jobseeker"
+                    android:id="@+id/rate_bar_company"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -64,7 +64,7 @@
                     android:stepSize="0.5" />
 
                 <TextView
-                    android:id="@+id/tv_jobseeker_rating"
+                    android:id="@+id/tv_company_rating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"

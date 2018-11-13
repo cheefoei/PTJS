@@ -1,0 +1,112 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.TimeToWork.TimeToWork.Jobseeker.JobseekerInfoFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/padding">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:fontFamily="@string/font_family_regular"
+            android:text="Gender"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_jobseeker_gender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@string/font_family_light"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:fontFamily="@string/font_family_regular"
+            android:text="Identity Card Number"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_jobseeker_ic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@string/font_family_light"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:fontFamily="@string/font_family_regular"
+            android:text="Birthday"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_jobseeker_dob"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@string/font_family_light"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:fontFamily="@string/font_family_regular"
+            android:text="Address"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_jobseeker_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@string/font_family_light"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:fontFamily="@string/font_family_regular"
+            android:text="Phone Number"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_jobseeker_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoLink="phone"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@string/font_family_light"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:fontFamily="@string/font_family_regular"
+            android:text="@string/string_email"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_jobseeker_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoLink="email"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@string/font_family_light"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+</ScrollView>

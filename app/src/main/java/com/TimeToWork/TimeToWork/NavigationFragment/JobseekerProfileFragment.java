@@ -199,15 +199,16 @@ public class JobseekerProfileFragment extends Fragment {
     public void onResume() {
 
         if (userId != null && jobseeker != null) {
-            //Show progress dialog
-            mProgressDialog.setMessage("Loading …");
-            mProgressDialog.show();
             syncJobseekerData();
         }
         super.onResume();
     }
 
     private void syncJobseekerData() {
+
+        //Show progress dialog
+        mProgressDialog.setMessage("Loading …");
+        mProgressDialog.show();
 
         Response.Listener<String> responseListener = new Response.Listener<String>() {
 
@@ -269,9 +270,23 @@ public class JobseekerProfileFragment extends Fragment {
 
     private void getJobseekerProfile() {
 
-        //Show progress dialog
-        mProgressDialog.setMessage("Loading …");
-        mProgressDialog.show();
+        //Reading jobseeker data
+        JobseekerDA jobseekerDA = new JobseekerDA(getActivity());
+        jobseeker = jobseekerDA.getJobseekerData();
+        //Close jobseeker database
+        jobseekerDA.close();
+
+        textViewName.setText(jobseeker.getName());
+        ratingBar.setRating((float) jobseeker.getRating());
+        ratingValue.setText(String.valueOf(jobseeker.getRating()));
+
+        if (jobseeker.getImg() != null && !jobseeker.getImg().equals("")
+                && !jobseeker.getImg().equals("null")) {
+            byte[] decodedString = Base64.decode(jobseeker.getImg(), Base64.DEFAULT);
+            Bitmap decodedByte = BitmapFactory
+                    .decodeByteArray(decodedString, 0, decodedString.length);
+            imageView.setImageBitmap(decodedByte);
+        }
 
         new Thread(new Runnable() {
 
@@ -282,31 +297,13 @@ public class JobseekerProfileFragment extends Fragment {
                 final double amount = (Double) profileList.get(1);
                 final int totalCompleted = (Integer) profileList.get(2);
 
-                //Reading jobseeker data
-                JobseekerDA jobseekerDA = new JobseekerDA(getActivity());
-                jobseeker = jobseekerDA.getJobseekerData();
-                //Close jobseeker database
-                jobseekerDA.close();
-
                 handler.post(new Runnable() {
 
                     @Override
                     public void run() {
 
-                        textViewName.setText(jobseeker.getName());
                         txtViewSalary.setText(String.format(Locale.ENGLISH, "RM %.2f", amount));
                         txtViewCompleted.setText(String.valueOf(totalCompleted));
-                        ratingBar.setRating((float) jobseeker.getRating());
-                        ratingValue.setText(String.valueOf(jobseeker.getRating()));
-
-                        if (jobseeker.getImg() != null && !jobseeker.getImg().equals("")
-                                && !jobseeker.getImg().equals("null")) {
-                            byte[] decodedString = Base64.decode(jobseeker.getImg(), Base64.DEFAULT);
-                            Bitmap decodedByte = BitmapFactory
-                                    .decodeByteArray(decodedString, 0, decodedString.length);
-                            imageView.setImageBitmap(decodedByte);
-                        }
-                        mProgressDialog.dismiss();
                     }
                 });
             }

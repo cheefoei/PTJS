@@ -103,6 +103,7 @@ public class ApplicantListAdapter extends RecyclerView.Adapter<ApplicantListAdap
             public void onClick(View v) {
 
                 Intent intent = new Intent(mContext, JobseekerVisitorActivity.class);
+                intent.putExtra("JOBSEEKER", jobseeker);
                 mContext.startActivity(intent);
             }
         });
