@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -191,6 +192,16 @@ public class JobFilterNavigationView extends Fragment {
                 option[5] = "";
                 option[6] = "0";
                 option[7] = "60";
+
+                etStartDate.setText(null);
+                etEndDate.setText(null);
+                etStartTime.setText(null);
+                etEndTime.setText(null);
+                etLocation.setText(null);
+                spinnerCategory.setSelection(0);
+                spinnerPaymentTerm.setSelection(0);
+                seekBarWages.setProgress(0);
+
                 onFilterOptionChangeListener.OnFilterOptionChange(option);
             }
         });

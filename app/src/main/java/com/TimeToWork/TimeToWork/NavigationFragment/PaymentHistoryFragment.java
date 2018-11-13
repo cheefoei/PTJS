@@ -180,6 +180,7 @@ public class PaymentHistoryFragment extends Fragment {
                                 payment.setDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH)
                                         .parse(jsonobject.getString("payment_date")));
                                 payment.setAmount(jsonobject.getDouble("payment_amount"));
+                                payment.setCardNumber(jsonobject.getString("payment_card_number"));
 
                                 JobLocation jobLocation = new JobLocation();
                                 jobLocation.setId(jsonobject.getString("job_location_id"));

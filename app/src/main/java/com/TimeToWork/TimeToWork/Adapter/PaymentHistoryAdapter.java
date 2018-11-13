@@ -51,6 +51,7 @@ public class PaymentHistoryAdapter extends RecyclerView.Adapter<PaymentHistoryAd
         paymentHistoryViewHolder.paymentDate.setText(String.format("Made on %s",
                 new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH).format(payment.getDate())));
         paymentHistoryViewHolder.amount.setText(String.format(Locale.getDefault(), "RM %.2f", payment.getAmount()));
+        paymentHistoryViewHolder.cardNumber.setText(payment.getCardNumber());
 
         paymentHistoryViewHolder.layoutPayment.setOnClickListener(new View.OnClickListener() {
 
@@ -59,12 +60,13 @@ public class PaymentHistoryAdapter extends RecyclerView.Adapter<PaymentHistoryAd
 
                 Intent intent = new Intent(mContext, CompanyJobDetailActivity.class);
                 intent.putExtra("JOBPOST", jobPost);
-                if (jobPost.getStatus().equals("Completed") ||
-                        jobPost.getStatus().equals("Unavailable")) {
-                    intent.putExtra("MENU", jobPost.getStatus());
-                } else {
-                    intent.putExtra("MENU", "Ads");
-                }
+//                if (jobPost.getStatus().equals("Completed") ||
+//                        jobPost.getStatus().equals("Unavailable")) {
+//                    intent.putExtra("MENU", jobPost.getStatus());
+//                } else {
+//                    intent.putExtra("MENU", "Ads");
+//                }
+                intent.putExtra("MENU", "Paid");
                 mContext.startActivity(intent);
             }
         });
@@ -84,7 +86,7 @@ public class PaymentHistoryAdapter extends RecyclerView.Adapter<PaymentHistoryAd
 
     class PaymentHistoryViewHolder extends RecyclerView.ViewHolder {
 
-        TextView id, paymentDate, amount;
+        TextView id, paymentDate, amount, cardNumber;
         LinearLayout layoutPayment;
 
         PaymentHistoryViewHolder(View view) {
@@ -93,6 +95,7 @@ public class PaymentHistoryAdapter extends RecyclerView.Adapter<PaymentHistoryAd
             id = (TextView) view.findViewById(R.id.tv_payment_id);
             paymentDate = (TextView) view.findViewById(R.id.tv_payment_date);
             amount = (TextView) view.findViewById(R.id.tv_amount);
+            cardNumber = (TextView) view.findViewById(R.id.tv_payment_card_number);
             layoutPayment = (LinearLayout) view.findViewById(R.id.layout_payment);
         }
     }

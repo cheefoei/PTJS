@@ -191,6 +191,8 @@ public class CompanyJobDetailActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
 
         switch (menuMode) {
+            case "Paid":
+                break;
             case "Ads":
                 getMenuInflater().inflate(R.menu.menu_company_job_detail_ads, menu);
                 break;

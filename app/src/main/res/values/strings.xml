@@ -14,6 +14,7 @@
     <string name="activity_payment">Payment</string>
     <string name="activity_applicant">Applicant</string>
     <string name="activity_profile_detail">Profile Detail</string>
+    <string name="activity_profile_review">My Review</string>
     <string name="activity_preferred_job">Your Preferred Jobs</string>
     <string name="activity_preferred_location">Your Preferred Locations</string>
     <string name="activity_set_free_time">Set Your Free Time</string>

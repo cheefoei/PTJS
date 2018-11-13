@@ -96,7 +96,7 @@ public class PaymentActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if(isValid()){
+                if (isValid()) {
                     makeNewPayment();
                 }
             }
@@ -188,15 +188,23 @@ public class PaymentActivity extends AppCompatActivity {
                             })
                             .create()
                             .show();
-
                 }
             }
         };
+
+        String rawCardNumber = etCardNumber.getText().toString();
+        String encryptedCardNumber = "";
+        for (int i = 0; i < (rawCardNumber.length() - 4); i++) {
+            encryptedCardNumber += "*";
+        }
+        encryptedCardNumber += rawCardNumber.substring(
+                (rawCardNumber.length() - 4), rawCardNumber.length());
 
         CustomVolleyErrorListener errorListener
                 = new CustomVolleyErrorListener(this, mProgressDialog, mRequestQueue);
 
         NewPaymentRequest newPaymentRequest = new NewPaymentRequest(
+                encryptedCardNumber,
                 root + getString(R.string.url_make_new_payment),
                 responseListener,
                 errorListener
@@ -213,6 +221,7 @@ public class PaymentActivity extends AppCompatActivity {
         private Map<String, String> params;
 
         NewPaymentRequest(
+                String cardNumber,
                 String url,
                 Response.Listener<String> listener,
                 Response.ErrorListener errorListener) {
@@ -221,6 +230,7 @@ public class PaymentActivity extends AppCompatActivity {
             params = new HashMap<>();
             params.put("job_post_id", jobPost.getId());
             params.put("amount", "5");
+            params.put("card_number", cardNumber);
         }
 
         public Map<String, String> getParams() {

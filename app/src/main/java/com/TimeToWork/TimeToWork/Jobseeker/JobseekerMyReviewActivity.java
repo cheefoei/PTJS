@@ -1,21 +1,16 @@
-package com.TimeToWork.TimeToWork.Company;
+package com.TimeToWork.TimeToWork.Jobseeker;
 
-import android.content.Context;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.TimeToWork.TimeToWork.Adapter.ReviewAdapter;
 import com.TimeToWork.TimeToWork.CustomClass.CustomProgressDialog;
 import com.TimeToWork.TimeToWork.CustomClass.CustomVolleyErrorListener;
 import com.TimeToWork.TimeToWork.Database.Entity.Company;
-import com.TimeToWork.TimeToWork.Database.Entity.Jobseeker;
 import com.TimeToWork.TimeToWork.Database.Entity.Review;
 import com.TimeToWork.TimeToWork.R;
 import com.android.volley.Response;
@@ -28,6 +23,7 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -35,66 +31,62 @@ import java.util.Map;
 
 import static com.TimeToWork.TimeToWork.MainApplication.mRequestQueue;
 import static com.TimeToWork.TimeToWork.MainApplication.root;
+import static com.TimeToWork.TimeToWork.MainApplication.userId;
 
-public class CompanyReviewFragment extends Fragment {
+public class JobseekerMyReviewActivity extends AppCompatActivity {
 
     private CustomProgressDialog mProgressDialog;
+
+    private List<TextView> tags;
+    private List<String> tagStrings;
+    private int totalReview = 0;
 
     private ReviewAdapter adapter;
     private List<Review> reviewList;
     private int[] totalTagList = {0, 0, 0, 0};
 
-    private Company company;
-
-    private TagTotalNumberCallBack mCallback;
-
-    public CompanyReviewFragment() {
-        // Required empty public constructor
-    }
-
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
 
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_company_review, container, false);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_jobseeker_my_review);
 
-        mProgressDialog = new CustomProgressDialog(getActivity());
-        company = (Company) getArguments().getSerializable("COMPANY");
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setElevation(0);
+        }
+        mProgressDialog = new CustomProgressDialog(this);
+
+        tagStrings = Arrays.asList(
+                getResources().getStringArray(R.array.array_review_tag_company));
+
+        TextView tvTag1 = (TextView) findViewById(R.id.tv_review_tag_1);
+        TextView tvTag2 = (TextView) findViewById(R.id.tv_review_tag_2);
+        TextView tvTag3 = (TextView) findViewById(R.id.tv_review_tag_3);
+        TextView tvTag4 = (TextView) findViewById(R.id.tv_review_tag_4);
+
+        tags = new ArrayList<>();
+        tags.add(tvTag1);
+        tags.add(tvTag2);
+        tags.add(tvTag3);
+        tags.add(tvTag4);
+
+        for (int i = 0; i < tags.size(); i++) {
+            TextView tag = tags.get(i);
+            tag.setText(tagStrings.get(i));
+        }
 
         reviewList = new ArrayList<>();
-        adapter = new ReviewAdapter(reviewList, "Jobseeker");
+        adapter = new ReviewAdapter(reviewList, "Company");
 
-        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
+        LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
 
-        RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_review_list);
+        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.rv_review_list);
         mRecyclerView.setLayoutManager(llm);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(adapter);
 
         getReviewList();
-
-        return view;
-    }
-
-    @Override
-    public void onAttach(Context context) {
-
-        super.onAttach(context);
-        try {
-            mCallback = (TagTotalNumberCallBack) context;
-        } catch (ClassCastException ignored) {
-        }
-    }
-
-    @Override
-    public void onDetach() {
-
-        mCallback = null;
-        super.onDetach();
     }
 
     private void getReviewList() {
@@ -127,9 +119,9 @@ public class CompanyReviewFragment extends Fragment {
 
                                 JSONObject jsonobject = jobPostArray.getJSONObject(i);
 
-                                Jobseeker jobseeker = new Jobseeker();
-                                jobseeker.setName(jsonobject.getString("jobseeker_name"));
-                                jobseeker.setImg(jsonobject.getString("jobseeker_img"));
+                                Company company = new Company();
+                                company.setName(jsonobject.getString("company_name"));
+                                company.setImg(jsonobject.getString("company_img"));
 
                                 Review review = new Review();
                                 review.setId(jsonobject.getString("review_id"));
@@ -139,35 +131,44 @@ public class CompanyReviewFragment extends Fragment {
                                 review.setTag(jsonobject.getString("review_tag"));
                                 review.setComment(jsonobject.getString("review_comment"));
                                 review.setComment(jsonobject.getString("review_comment"));
-                                review.setJobseeker(jobseeker);
+                                review.setCompany(company);
 
                                 switch (review.getTag()) {
-                                    case "good company":
+                                    case "hardworking":
                                         totalTagList[0]++;
                                         break;
-                                    case "high wages":
+                                    case "punctual":
                                         totalTagList[1]++;
                                         break;
-                                    case "training provided":
+                                    case "open-mind":
                                         totalTagList[2]++;
                                         break;
-                                    case "helpful":
+                                    case "satisfied":
                                         totalTagList[3]++;
                                         break;
                                 }
                                 reviewList.add(review);
                             }
                         }
+
+                        for (int i = 0; i < tags.size(); i++) {
+                            TextView tv = tags.get(i);
+                            tv.setText(tagStrings.get(i) + " (" + totalTagList[i] + ")");
+                            totalReview += totalTagList[i];
+                        }
+                        JobseekerMyReviewActivity.this.setTitle(
+                                JobseekerMyReviewActivity.this.getTitle() + " (" + totalReview + ")");
                         adapter.notifyDataSetChanged();
+
                     } else {
                         //If failed, then show alert dialog
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        AlertDialog.Builder builder
+                                = new AlertDialog.Builder(JobseekerMyReviewActivity.this);
                         builder.setMessage(jsonResponse.getString("msg"))
                                 .setPositiveButton("OK", null)
                                 .create()
                                 .show();
                     }
-                    mCallback.setTagTotalNumber(totalTagList);
                     //To close progress dialog
                     mProgressDialog.dismiss();
 
@@ -177,7 +178,8 @@ public class CompanyReviewFragment extends Fragment {
                     //To close progress dialog
                     mProgressDialog.toggleProgressDialog();
                     //If exception, then show alert dialog
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    AlertDialog.Builder builder
+                            = new AlertDialog.Builder(JobseekerMyReviewActivity.this);
                     builder.setMessage(e.getMessage())
                             .setPositiveButton("OK", null)
                             .create()
@@ -187,13 +189,13 @@ public class CompanyReviewFragment extends Fragment {
         };
 
         CustomVolleyErrorListener errorListener
-                = new CustomVolleyErrorListener(getActivity(), mProgressDialog, mRequestQueue);
-        GetReviewRequest fetchJobApplicationRequest = new GetReviewRequest(
-                root + getString(R.string.url_get_review_of_company),
+                = new CustomVolleyErrorListener(this, mProgressDialog, mRequestQueue);
+        GetReviewRequest getReviewRequest = new GetReviewRequest(
+                root + getString(R.string.url_get_review_of_jobseeker),
                 responseListener,
                 errorListener
         );
-        mRequestQueue.add(fetchJobApplicationRequest);
+        mRequestQueue.add(getReviewRequest);
     }
 
     private class GetReviewRequest extends StringRequest {
@@ -207,15 +209,11 @@ public class CompanyReviewFragment extends Fragment {
             super(Method.POST, url, listener, errorListener);
 
             params = new HashMap<>();
-            params.put("company_id", company.getId());
+            params.put("jobseeker_id", userId);
         }
 
         public Map<String, String> getParams() {
             return params;
         }
-    }
-
-    interface TagTotalNumberCallBack {
-        void setTagTotalNumber(int[] tagTotalNumber);
     }
 }

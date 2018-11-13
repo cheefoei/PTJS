@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.TimeToWork.TimeToWork.ChangePasswordActivity;
 import com.TimeToWork.TimeToWork.Company.CompanyDetailActivity;
+import com.TimeToWork.TimeToWork.Company.CompanyMyReviewActivity;
 import com.TimeToWork.TimeToWork.Company.CompanyReportActivity;
 import com.TimeToWork.TimeToWork.CustomClass.CustomProgressDialog;
 import com.TimeToWork.TimeToWork.CustomClass.CustomVolleyErrorListener;
@@ -81,6 +82,15 @@ public class CompanyProfileFragment extends Fragment {
 
             public void onClick(View view) {
                 Intent myIntent = new Intent(getActivity(), CompanyDetailActivity.class);
+                startActivity(myIntent);
+            }
+        });
+
+        TextView myCompanyReview = (TextView) view.findViewById(R.id.mcr);
+        myCompanyReview.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View view) {
+                Intent myIntent = new Intent(getActivity(), CompanyMyReviewActivity.class);
                 startActivity(myIntent);
             }
         });

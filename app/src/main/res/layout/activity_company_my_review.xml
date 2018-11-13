@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:orientation="vertical"
+    tools:context="com.TimeToWork.TimeToWork.Company.CompanyMyReviewActivity">
+
+    <LinearLayout
+        android:id="@+id/layout_review_tag"
+        android:layout_width="match_parent"
+        android:layout_height="116dp"
+        android:background="@color/colorPrimaryDark"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="@dimen/padding">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_review_tag_1"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_marginBottom="@dimen/margin"
+                android:background="@drawable/bg_review_tag_borderless"
+                android:fontFamily="@string/font_family_light"
+                android:gravity="center"
+                android:tag="0"
+                android:textColor="@color/colorBackground"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_review_tag_2"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_marginBottom="@dimen/margin"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/bg_review_tag_borderless"
+                android:fontFamily="@string/font_family_light"
+                android:gravity="center"
+                android:tag="1"
+                android:textColor="@color/colorBackground"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_review_tag_3"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_marginBottom="@dimen/margin"
+                android:background="@drawable/bg_review_tag_borderless"
+                android:fontFamily="@string/font_family_light"
+                android:gravity="center"
+                android:tag="2"
+                android:textColor="@color/colorBackground"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_review_tag_4"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/bg_review_tag_borderless"
+                android:fontFamily="@string/font_family_light"
+                android:gravity="center"
+                android:tag="3"
+                android:textColor="@color/colorBackground"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_review_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/padding"
+        android:scrollbars="none" />
+
+</LinearLayout>

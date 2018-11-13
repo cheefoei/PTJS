@@ -8,6 +8,7 @@ public class Payment implements Serializable {
     private String id;
     private Date date;
     private double amount;
+    private String cardNumber;
 
     public Payment() {
     }
@@ -34,5 +35,13 @@ public class Payment implements Serializable {
 
     public void setAmount(double amount) {
         this.amount = amount;
+    }
+
+    public String getCardNumber() {
+        return cardNumber;
+    }
+
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber;
     }
 }

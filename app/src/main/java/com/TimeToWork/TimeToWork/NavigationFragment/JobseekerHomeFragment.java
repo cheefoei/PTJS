@@ -526,6 +526,7 @@ public class JobseekerHomeFragment extends Fragment
 
                         // Clear all item inside recycler view
                         adapter.clear();
+                        originalJobPostList.clear();
 
                         if (total != 0) {
 

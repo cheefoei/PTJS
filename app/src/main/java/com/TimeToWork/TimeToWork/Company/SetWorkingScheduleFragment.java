@@ -173,7 +173,13 @@ public class SetWorkingScheduleFragment extends DialogFragment {
 
             @Override
             public void onClick(View v) {
-                showTimePicker(etStartSecondBreakTime);
+
+                if (!etStartFirstBreakTime.getText().toString().isEmpty()) {
+                    showTimePicker(etStartSecondBreakTime);
+                } else {
+                    etStartFirstBreakTime.setError("First break time is required");
+                    etEndFirstBreakTime.setError("First break time is required");
+                }
             }
         });
 

@@ -25,6 +25,7 @@ import com.TimeToWork.TimeToWork.Database.Control.MaintainJobseeker;
 import com.TimeToWork.TimeToWork.Database.Entity.Jobseeker;
 import com.TimeToWork.TimeToWork.Database.JobseekerDA;
 import com.TimeToWork.TimeToWork.Jobseeker.JobseekerDetailActivity;
+import com.TimeToWork.TimeToWork.Jobseeker.JobseekerMyReviewActivity;
 import com.TimeToWork.TimeToWork.Jobseeker.JobseekerReportActivity;
 import com.TimeToWork.TimeToWork.Jobseeker.PreferredJobActivity;
 import com.TimeToWork.TimeToWork.Jobseeker.PreferredLocationActivity;
@@ -92,6 +93,14 @@ public class JobseekerProfileFragment extends Fragment {
         showPersonalDetails.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent myIntent = new Intent(getActivity(), JobseekerDetailActivity.class);
+                startActivity(myIntent);
+            }
+        });
+
+        TextView myReview = (TextView) view.findViewById(R.id.mr);
+        myReview.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Intent myIntent = new Intent(getActivity(), JobseekerMyReviewActivity.class);
                 startActivity(myIntent);
             }
         });

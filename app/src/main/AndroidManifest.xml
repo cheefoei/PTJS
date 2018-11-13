@@ -118,10 +118,15 @@
         <activity
             android:name=".Jobseeker.JobseekerVisitorActivity"
             android:parentActivityName=".Company.ApplicantListActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Jobseeker.JobseekerDetailActivity"
             android:label="@string/activity_profile_detail"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Jobseeker.JobseekerMyReviewActivity"
+            android:label="@string/activity_profile_review"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -162,10 +167,15 @@
         <activity
             android:name=".Company.CompanyVisitorActivity"
             android:parentActivityName=".Jobseeker.ViewJobDetailActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Company.CompanyDetailActivity"
             android:label="@string/activity_profile_detail"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Company.CompanyMyReviewActivity"
+            android:label="@string/activity_profile_review"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait" />
         <activity

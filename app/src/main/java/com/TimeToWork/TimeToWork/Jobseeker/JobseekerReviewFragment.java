@@ -65,7 +65,7 @@ public class JobseekerReviewFragment extends Fragment {
         jobseeker = (Jobseeker) getArguments().getSerializable("JOBSEEKER");
 
         reviewList = new ArrayList<>();
-        adapter = new ReviewAdapter(reviewList);
+        adapter = new ReviewAdapter(reviewList, "Company");
 
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -188,12 +188,12 @@ public class JobseekerReviewFragment extends Fragment {
 
         CustomVolleyErrorListener errorListener
                 = new CustomVolleyErrorListener(getActivity(), mProgressDialog, mRequestQueue);
-        GetReviewRequest fetchJobApplicationRequest = new GetReviewRequest(
+        GetReviewRequest getReviewRequest = new GetReviewRequest(
                 root + getString(R.string.url_get_review_of_jobseeker),
                 responseListener,
                 errorListener
         );
-        mRequestQueue.add(fetchJobApplicationRequest);
+        mRequestQueue.add(getReviewRequest);
     }
 
     private class GetReviewRequest extends StringRequest {

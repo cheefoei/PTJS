@@ -18,14 +18,14 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
-import static com.TimeToWork.TimeToWork.MainApplication.userType;
-
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.reviewViewHolder> {
 
     private List<Review> reviewList;
+    private String showRole;
 
-    public ReviewAdapter(List<Review> reviewList) {
+    public ReviewAdapter(List<Review> reviewList, String showRole) {
         this.reviewList = reviewList;
+        this.showRole = showRole;
     }
 
     @Override
@@ -41,7 +41,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.reviewView
 
         Review review = reviewList.get(i);
 
-        if (userType.equals("Company")) {
+        if (showRole.equals("Company")) {
 
             reviewViewHolder.tvUserName.setText(review.getCompany().getName());
             if (review.getCompany().getImg() != null && !review.getCompany().getImg().equals("")
@@ -51,7 +51,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.reviewView
                         .decodeByteArray(decodedString, 0, decodedString.length);
                 reviewViewHolder.imgProfile.setImageBitmap(decodedByte);
             }
-        } else if (userType.equals("Jobseeker")) {
+        } else if (showRole.equals("Jobseeker")) {
 
             reviewViewHolder.tvUserName.setText(review.getJobseeker().getName());
             if (review.getJobseeker().getImg() != null && !review.getJobseeker().getImg().equals("")
