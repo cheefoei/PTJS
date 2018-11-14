@@ -184,7 +184,7 @@
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Company.WorkerRatingReportActivity"
+            android:name=".Company.PaymentReport"
             android:label="@string/activity_report"
             android:parentActivityName=".Company.CompanyReportActivity"
             android:screenOrientation="landscape" />
