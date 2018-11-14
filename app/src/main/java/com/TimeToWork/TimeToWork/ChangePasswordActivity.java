@@ -30,8 +30,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
     private CustomProgressDialog mProgressDialog;
     private Handler handler;
 
-    private EditText editTextPassword;
-    private String password;
+    private EditText editTextPassword, editTextConfirmPassword;
+    private String password, confirmPass;
 //    private String confirmPassword, id, word;
 
     @Override
@@ -44,14 +44,17 @@ public class ChangePasswordActivity extends AppCompatActivity {
         handler = new Handler();
 
         editTextPassword = (EditText) findViewById(R.id.password);
-//        EditText editTextConfirmPassword = (EditText) findViewById(R.id.confirmPassword);
+        editTextConfirmPassword = (EditText) findViewById(R.id.confirmPassword);
 
         Button btnSave = (Button) findViewById(R.id.save);
         btnSave.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                changeUserPassword();
+                if (isValid()) {
+                    changeUserPassword();
+                }
+
             }
         });
     }
@@ -66,9 +69,6 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
             @Override
             public void run() {
-
-                password = editTextPassword.getText().toString().trim();
-//                String confirmPassword = editTextPassword.getText().toString().trim();
 
                 if (userType.equals("Jobseeker")) {
 
@@ -138,4 +138,32 @@ public class ChangePasswordActivity extends AppCompatActivity {
         return encryptedPassword;
     }
 
+    private boolean isValid() {
+
+        password = editTextPassword.getText().toString().trim();
+        confirmPass = editTextConfirmPassword.getText().toString().trim();
+        boolean valid = true;
+        if (password.equals("")) {
+            editTextPassword.setError("Cannot be empty");
+            valid = false;
+        } else {
+            if (password.length() >= 8) {
+                if (Character.isUpperCase(password.charAt(0))) {
+                    if (!password.equals(confirmPass)) {
+                        editTextPassword.setError("Not match with password and confirm password");
+                        valid = false;
+                    }
+                } else {
+                    editTextPassword.setError("Invalid Password Format. Eg.A1234567");
+                    valid = false;
+                }
+            } else {
+                editTextPassword.setError("Invalid Password Format. Eg.A1234567");
+                valid = false;
+            }
+        }
+        mProgressDialog.dismiss();
+
+        return valid;
+    }
 }
