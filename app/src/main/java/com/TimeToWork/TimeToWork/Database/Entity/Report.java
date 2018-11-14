@@ -8,49 +8,47 @@ import java.io.Serializable;
 
 public class Report implements Serializable{
 
-    private String company_name;
-    private String job;
-    private String date;
-    private String workerName;
-    private String rate;
-    private double salary;
+    String company_name, job, date, id, jobseeker_name;
+    double salary, paymentAmount;
 
     public Report(String company_name, String job, String date, double salary) {
-
         this.company_name = company_name;
         this.job = job;
         this.date = date;
         this.salary = salary;
     }
 
-    public Report(String company_name, String date, double salary) {
-
+    public Report(String company_name, String id, String jobseeker_name, String job, String date, double paymentAmount) {
         this.company_name = company_name;
-        this.date = date;
-        this.salary = salary;
-    }
-
-    public String getWorkerName() {
-        return workerName;
-    }
-
-    public void setWorkerName(String workerName) {
-        this.workerName = workerName;
-    }
-
-    public String getRate() {
-        return rate;
-    }
-
-    public void setRate(String rate) {
-        this.rate = rate;
-    }
-
-    public Report(String job, String workerName, String rate) {
-
+        this.id = id;
+        this.jobseeker_name = jobseeker_name;
         this.job = job;
-        this.workerName = workerName;
-        this.rate = rate;
+        this.date = date;
+        this.paymentAmount = paymentAmount;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getJobseeker_name() {
+        return jobseeker_name;
+    }
+
+    public void setJobseeker_name(String jobseeker_name) {
+        this.jobseeker_name = jobseeker_name;
+    }
+
+    public double getPaymentAmount() {
+        return paymentAmount;
+    }
+
+    public void setPaymentAmount(double paymentAmount) {
+        this.paymentAmount = paymentAmount;
     }
 
     public String getCompany_name() {
