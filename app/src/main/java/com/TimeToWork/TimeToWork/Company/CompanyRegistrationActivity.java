@@ -159,7 +159,7 @@ public class CompanyRegistrationActivity extends AppCompatActivity {
             valid = false;
         }
 
-        String phoneNumFormat = "[0-9]+";
+        String phoneNumFormat = "\\d{2}-\\d{8}";
         pattern = Pattern.compile(phoneNumFormat);
         matcher = pattern.matcher(phoneNum);
         if (phoneNum.equals("")) {
@@ -206,11 +206,11 @@ public class CompanyRegistrationActivity extends AppCompatActivity {
                         valid = false;
                     }
                 } else {
-                    editTextPassword.setError("Invalid Password Format");
+                    editTextPassword.setError("Invalid Password Format. Eg.A1234567");
                     valid = false;
                 }
             } else {
-                editTextPassword.setError("Invalid Password Format");
+                editTextPassword.setError("Invalid Password Format. Eg.A1234567");
                 valid = false;
             }
         }

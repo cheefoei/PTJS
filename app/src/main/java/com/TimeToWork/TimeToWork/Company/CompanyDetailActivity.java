@@ -29,6 +29,8 @@ import org.apache.commons.io.output.ByteArrayOutputStream;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.TimeToWork.TimeToWork.MainApplication.userId;
 
@@ -43,7 +45,7 @@ public class CompanyDetailActivity extends AppCompatActivity {
     private ImageView imageView;
 
     private static final int RESULT_LOAD_IMAGE = 5;
-    private String encodedImage;
+    private String encodedImage, name, phoneNum, email, address;
 
     private Company company;
 
@@ -66,7 +68,9 @@ public class CompanyDetailActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateCompanyDetail();
+                if (isValid()) {
+                    updateCompanyDetail();
+                }
             }
         });
 
@@ -182,11 +186,6 @@ public class CompanyDetailActivity extends AppCompatActivity {
             @Override
             public void run() {
 
-                String name = editTextName.getText().toString().trim();
-                String phoneNum = editTextPhoneNumber.getText().toString().trim();
-                String email = editTextEmail.getText().toString().trim();
-                String address = editTextAddress.getText().toString().trim();
-
                 try {
                     company = new Company();
                     company.setId(userId);
@@ -223,5 +222,68 @@ public class CompanyDetailActivity extends AppCompatActivity {
                 });
             }
         }).start();
+    }
+
+    private boolean isValid() {
+
+        CustomProgressDialog mProgressDialog = new CustomProgressDialog(this);
+        mProgressDialog.setMessage("Verifying your data  …");
+        mProgressDialog.show();
+
+        boolean valid = true;
+
+        name = editTextName.getText().toString().trim();
+        address = editTextAddress.getText().toString().trim();
+        email = editTextEmail.getText().toString().trim();
+        phoneNum = editTextPhoneNumber.getText().toString().trim();
+
+        String nameFormat = "[a-zA-Z_]+";
+        Pattern pattern = Pattern.compile(nameFormat);
+        Matcher matcher = pattern.matcher(name);
+
+        if (name.equals("")) {
+            editTextName.setError("Cannot be empty");
+            valid = false;
+        }else{
+            if (!matcher.matches()) {
+                editTextName.setError("Name cannot be numeric");
+                valid = false;
+            }
+        }
+
+        if (address.equals("")) {
+            editTextAddress.setError("Cannot be empty");
+            valid = false;
+        }
+
+        String phoneNumFormat = "\\d{2}-\\d{8}";
+        pattern = Pattern.compile(phoneNumFormat);
+        matcher = pattern.matcher(phoneNum);
+        if (phoneNum.equals("")) {
+            editTextPhoneNumber.setError("Cannot be empty");
+            valid = false;
+        }else {
+            if (!matcher.matches()) {
+                editTextPhoneNumber.setError("Invalid Phone Number Format");
+                valid = false;
+            } else {
+                if (!checkPhoneNumber()) {
+                    editTextPhoneNumber.setError("Phone Number Has Been Used.");
+                    valid = false;
+                }
+            }
+        }
+
+        mProgressDialog.dismiss();
+
+        return valid;
+    }
+
+    private Boolean checkPhoneNumber() {
+        return maintainCompany.checkPhoneNum(editTextPhoneNumber.getText().toString());
+    }
+
+    private Boolean checkEmail() {
+        return maintainCompany.checkEmail(editTextEmail.getText().toString());
     }
 }

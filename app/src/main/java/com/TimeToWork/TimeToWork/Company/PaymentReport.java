@@ -66,8 +66,7 @@ public class PaymentReport extends AppCompatActivity {
             public void run() {
 
                 maintainReport = new MaintainReport();
-//                reportList = maintainReport.getWorkerReport(userId, month, year);
-                reportList = maintainReport.getWorkerReport(userId);
+                reportList = maintainReport.getWorkerReport(userId, month, year);
 
                 handler.post(new Runnable() {
 
@@ -86,11 +85,11 @@ public class PaymentReport extends AppCompatActivity {
 
                         for (int i = 0; i < reportList.size(); i++) {
                             arrayList.add(i+1 + "                   "
-//                                    + reportList.get(i).getId() + "             "
-//                                    + reportList.get(i).getJobseeker_name() + "         "
+                                    + reportList.get(i).getId() + "             "
+                                    + reportList.get(i).getJobseeker_name() + "         "
                                     + reportList.get(i).getJob() + "         "
-                                    + reportList.get(i).getDate() + "         ");
-//                                    + reportList.get(i).getPaymentAmount());
+                                    + reportList.get(i).getDate() + "         "
+                                    + reportList.get(i).getPaymentAmount());
                             adapter.notifyDataSetChanged();
                         }
                         mProgressDialog.dismiss();
