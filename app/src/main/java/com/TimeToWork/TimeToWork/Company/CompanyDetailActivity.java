@@ -22,6 +22,11 @@ import com.TimeToWork.TimeToWork.Database.Control.MaintainCompany;
 import com.TimeToWork.TimeToWork.Database.Entity.Company;
 import com.TimeToWork.TimeToWork.R;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -49,11 +54,32 @@ public class CompanyDetailActivity extends AppCompatActivity {
 
     private Company company;
 
+    private DatabaseReference databaseRef;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_company_detail);
+
+        databaseRef = FirebaseDatabase.getInstance().getReference("company");
+
+        databaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String value = (String) dataSnapshot.child(userId).child("company_img").getValue();
+                //decode base64 string to image
+                byte[] imageBytes;
+                imageBytes = Base64.decode(value, Base64.DEFAULT);
+                Bitmap decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                imageView.setImageBitmap(decodedImage);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         mProgressDialog = new CustomProgressDialog(this);
         handler = new Handler();
@@ -196,6 +222,9 @@ public class CompanyDetailActivity extends AppCompatActivity {
                     company.setImg(encodedImage);
 
                     maintainCompany.updateCompanyDetail(company);
+
+                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("company").child(userId).child("company_img");
+                    databaseReference.setValue(encodedImage);
                 } catch (Exception e) {
                     Log.e("Error here : ", e.getMessage());
                 }
