@@ -199,19 +199,24 @@ public class CompanyRegistrationActivity extends AppCompatActivity {
             editTextPassword.setError("Cannot be empty");
             valid = false;
         }else {
-            if (pass.length() >= 8) {
-                if (Character.isUpperCase(pass.charAt(0))) {
-                    if (!pass.equals(confirmPass)) {
-                        editTextPassword.setError("Not match with password and confirm password");
+            if (confirmPass.equals("")) {
+                editTextConfirmPassword.setError("Cannot be empty");
+                valid = false;
+            } else {
+                if (pass.length() >= 8) {
+                    if (Character.isUpperCase(pass.charAt(0))) {
+                        if (!pass.equals(confirmPass)) {
+                            editTextPassword.setError("Not match with password and confirm password");
+                            valid = false;
+                        }
+                    } else {
+                        editTextPassword.setError("Invalid Password Format");
                         valid = false;
                     }
                 } else {
-                    editTextPassword.setError("Invalid Password Format. Eg.A1234567");
+                    editTextPassword.setError("Invalid Password Format");
                     valid = false;
                 }
-            } else {
-                editTextPassword.setError("Invalid Password Format. Eg.A1234567");
-                valid = false;
             }
         }
 
