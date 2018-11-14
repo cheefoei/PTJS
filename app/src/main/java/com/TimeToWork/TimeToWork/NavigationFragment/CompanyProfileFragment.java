@@ -30,6 +30,11 @@ import com.TimeToWork.TimeToWork.Database.Entity.Company;
 import com.TimeToWork.TimeToWork.R;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -52,6 +57,8 @@ public class CompanyProfileFragment extends Fragment {
     private RatingBar ratingBar;
 
     private Company company;
+
+    private DatabaseReference databaseRef;
 
     public CompanyProfileFragment() {
         // Required empty public constructor
@@ -76,6 +83,7 @@ public class CompanyProfileFragment extends Fragment {
         ratingValue = (TextView) view.findViewById(R.id.tv_company_rating);
         ratingBar = (RatingBar) view.findViewById(R.id.rate_bar_company);
         imageView = (ImageView) view.findViewById(R.id.imgUser);
+        databaseRef = FirebaseDatabase.getInstance().getReference("company");
 
         TextView showCompanyDetails = (TextView) view.findViewById(R.id.cd);
         showCompanyDetails.setOnClickListener(new View.OnClickListener() {
@@ -115,6 +123,23 @@ public class CompanyProfileFragment extends Fragment {
 
         if (userId != null) {
             // Get profile detail
+            databaseRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String value = (String) dataSnapshot.child(userId).child("company_img").getValue();
+                    //decode base64 string to image
+                    byte[] imageBytes;
+                    imageBytes = Base64.decode(value, Base64.DEFAULT);
+                    Bitmap decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                    imageView.setImageBitmap(decodedImage);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
             getCompanyProfile();
         }
 
