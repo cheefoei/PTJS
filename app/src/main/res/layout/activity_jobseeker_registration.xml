@@ -138,6 +138,17 @@
             android:hint=" Confirm Password (E.g. A1234567)"
             android:inputType="textPassword"
             android:maxLines="1" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="16dp"
+            android:fontFamily="@string/font_family_regular"
+            android:padding="7dp"
+            android:text="*After register cannot chnage (IC, Phone Number, Email, DOB)"
+            android:textColor="@color/colorButtonRed" />
+
     </LinearLayout>
 
 </ScrollView>

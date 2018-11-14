@@ -107,6 +107,7 @@
                     android:layout_weight="0.8"
                     android:inputType="textPersonName"
                     android:labelFor="@id/ic"
+                    android:focusable="false"
                     android:maxLines="1"
                     android:textSize="15sp" />
 
@@ -177,6 +178,7 @@
                     android:layout_width="100dp"
                     android:layout_height="@dimen/edit_text_height"
                     android:layout_weight="0.8"
+                    android:focusable="false"
                     android:inputType="textEmailAddress"
                     android:labelFor="@id/email"
                     android:maxLines="1"
@@ -205,6 +207,7 @@
                     android:layout_height="@dimen/edit_text_height"
                     android:layout_weight="0.8"
                     android:inputType="phone"
+                    android:focusable="false"
                     android:labelFor="@id/phoneNumber"
                     android:maxLines="1"
                     android:textSize="15sp" />
