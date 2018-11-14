@@ -126,15 +126,9 @@ public class JobseekerRegistrationActivity extends AppCompatActivity {
                         public void run() {
 
                             mProgressDialog.dismiss();
-                            if (!validIc) {
-                                editTextIC.setError("IC Has Been Used.");
-                            } else if (!validPhoneNumber) {
-                                editTextPhoneNumber.setError("Phone Number Has Been Used.");
-                            } else if (!validEmail) {
-                                editTextEmail.setError("Email Has Been Used.");
-                            } else {
-                                registerJobseeker();
-                            }
+
+                            registerJobseeker();
+
                         }
                     });
                 }
@@ -251,17 +245,24 @@ public class JobseekerRegistrationActivity extends AppCompatActivity {
         pattern = Pattern.compile(ICFormat);
         matcher = pattern.matcher(ic);
 
-        if (name.equals("")) {
-            editTextName.setError("Cannot be empty");
+        if (ic.equals("")) {
+            editTextIC.setError("Cannot be empty");
             valid = false;
         }else{
             if (!matcher.matches()) {
                 editTextIC.setError("Invalid IC Format");
                 valid = false;
             }
+            else {
+                if (!checkIc()) {
+                    editTextIC.setError("IC Has Been Used.");
+                    valid = false;
+                }
+            }
         }
 
-        String phoneNumFormat = "[0-9]+";
+
+        String phoneNumFormat = "\\d{3}-\\d{7}";
         pattern = Pattern.compile(phoneNumFormat);
         matcher = pattern.matcher(phoneNum);
         if (phoneNum.equals("")) {
@@ -297,24 +298,36 @@ public class JobseekerRegistrationActivity extends AppCompatActivity {
             }
         }
 
+        if (address.equals("")) {
+            editTextAddress.setError("Cannot be empty");
+            valid = false;
+        }
+
         if (pass.equals("")) {
             editTextPassword.setError("Cannot be empty");
             valid = false;
         }else {
-            if (pass.length() >= 8) {
-                if (Character.isUpperCase(pass.charAt(0))) {
-                    if (!pass.equals(confirmPass)) {
-                        editTextPassword.setError("Not match with password and confirm password");
+            if (confirmPass.equals("")) {
+                editTextConfirmPassword.setError("Cannot be empty");
+                valid = false;
+            }else
+            {
+                if (pass.length() >= 8) {
+                    if (Character.isUpperCase(pass.charAt(0))) {
+                        if (!pass.equals(confirmPass)) {
+                            editTextPassword.setError("Not match with password and confirm password");
+                            valid = false;
+                        }
+                    } else {
+                        editTextPassword.setError("Invalid Password Format");
                         valid = false;
                     }
                 } else {
                     editTextPassword.setError("Invalid Password Format");
                     valid = false;
                 }
-            } else {
-                editTextPassword.setError("Invalid Password Format");
-                valid = false;
             }
+
         }
 
         mProgressDialog.dismiss();

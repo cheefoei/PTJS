@@ -29,6 +29,7 @@ public class EditFreeTimeActivity extends AppCompatActivity {
 
     private ArrayAdapter<String> adapterFrom, adapterTo;
     private EditText txtFrom, txtTo;
+    private String id;
 
     private AlertDialog dialogFrom, dialogTo;
 
@@ -44,6 +45,7 @@ public class EditFreeTimeActivity extends AppCompatActivity {
         txtFrom = (EditText) findViewById(R.id.addFrom);
         txtTo = (EditText) findViewById(R.id.addTo);
 
+        id = getIntent().getExtras().getString("id");
         String timeFrom = getIntent().getExtras().getString("timeFrom");
         String timeTo = getIntent().getExtras().getString("timeTo");
 
@@ -129,7 +131,7 @@ public class EditFreeTimeActivity extends AppCompatActivity {
                 String timeFrom = txtFrom.getText().toString();
                 String timeTo = txtTo.getText().toString();
 
-                Schedule scheduleDetail = new Schedule("SL10001", timeFrom, timeTo);
+                Schedule scheduleDetail = new Schedule(id, timeFrom, timeTo);
 
                 maintainFreeTime = new MaintainFreeTime();
                 maintainFreeTime.updateFreeTime(scheduleDetail);

@@ -43,7 +43,8 @@ public class ViewFreeTimeActivity extends AppCompatActivity {
     private List<Schedule> scheduleList;
     private TimeArrayAdapter adapter;
 
-    private String date;
+    private String date, id, id2;
+    private int no;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,9 +107,9 @@ public class ViewFreeTimeActivity extends AppCompatActivity {
                                             int year, int month, int dayOfMonth) {
 
                 date = dayOfMonth + "/" + (month + 1) + "/" + year;
-                if (date.charAt(0) != 0) {
-                    date = "0" + dayOfMonth + "/" + (month + 1) + "/" + year;
-                }
+                //if (date.charAt(0) != 0) {
+                   // date = "0" + dayOfMonth + "/" + (month + 1) + "/" + year;
+                //}
                 initScheduleDetail();
             }
         });
@@ -147,6 +148,7 @@ public class ViewFreeTimeActivity extends AppCompatActivity {
                         for (int i = 0; i < scheduleList.size(); i++) {
 
                             if (scheduleList.get(i).getJobseeker_id().equals(userId)) {
+                                no = i;
 
                                 DateFormat outputFormat = new SimpleDateFormat(
                                         "dd/MM/yyyy", Locale.ENGLISH);
@@ -189,10 +191,12 @@ public class ViewFreeTimeActivity extends AppCompatActivity {
             @Override
             public void run() {
 
-                Schedule scheduleDetails = new Schedule(null, "JS10001", null, null);
+                id = scheduleList.get(no).getSchedule_id();
+                id2 = scheduleList.get(no).getSchedule_list_id();
+                Schedule scheduleDetails = new Schedule(null, id2, null, null);
                 maintainFreeTime.deleteScheduleList(scheduleDetails);
 
-                Schedule scheduleDetail = new Schedule("SL10001", null, null);
+                Schedule scheduleDetail = new Schedule(id, null, null);
                 maintainFreeTime.deleteSchedule(scheduleDetail);
 
                 handler.post(new Runnable() {
@@ -228,10 +232,12 @@ public class ViewFreeTimeActivity extends AppCompatActivity {
             switch (index) {
 
                 case 0:
+                    id = scheduleList.get(no).getSchedule_id();
                     String timeFrom = timeList.get(position).getTimeFrom();
                     String timeTo = timeList.get(position).getTimeTo();
 
                     Intent intent = new Intent(ViewFreeTimeActivity.this, EditFreeTimeActivity.class);
+                    intent.putExtra("id", id);
                     intent.putExtra("timeFrom", timeFrom);
                     intent.putExtra("timeTo", timeTo);
                     startActivityForResult(intent, 9487);
