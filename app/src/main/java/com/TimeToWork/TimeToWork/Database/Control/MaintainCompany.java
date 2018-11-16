@@ -22,12 +22,12 @@ public class MaintainCompany {
         return companyConnection.getCompanyDetail(companyId);
     }
 
-    public Boolean checkPhoneNum(String jobseeker_phone_number) {
-        return companyConnection.checkPhoneNum(jobseeker_phone_number);
+    public Boolean checkPhoneNum(String company_phone_number) {
+        return companyConnection.checkPhoneNum(company_phone_number);
     }
 
-    public Boolean checkEmail(String jobseeker_email) {
-        return companyConnection.checkEmail(jobseeker_email);
+    public Boolean checkEmail(String company_email) {
+        return companyConnection.checkEmail(company_email);
     }
 
     public List<Company> getAllCompanyDetails() {

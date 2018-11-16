@@ -17,7 +17,7 @@ public class MaintainReport {
         return reportConnection.getIncomeReport(jobseeker_id, month, year);
     }
 
-    public List<Report> getWorkerReport(String companyId) {
-        return reportConnection.getWorkerReport(companyId);
+    public List<Report> getWorkerReport(String company_id, int month, int year){
+        return reportConnection.getWorkerReport(company_id, month, year);
     }
 }

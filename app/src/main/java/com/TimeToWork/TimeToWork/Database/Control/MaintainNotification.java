@@ -14,7 +14,7 @@ public class MaintainNotification {
 
     private NotificationConnection notificationConnection = new NotificationConnection();
 
-    public List<JobApplication> getJobApplicationDetails() throws SQLException {
+    public JobApplication getJobApplicationDetails() throws SQLException {
         return notificationConnection.getJobApplicationDetails();
     }
 
