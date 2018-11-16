@@ -32,38 +32,33 @@ public class NotificationConnection {
         }*/
     }
 
-    public List<JobApplication> getJobApplicationDetails() throws SQLException {
+    public JobApplication getJobApplicationDetails() throws SQLException {
 
         ConnectionHelper connection = new ConnectionHelper();
         connect = connection.connectionClass();
 
-        List<JobApplication> jobApplicationArrayList = new ArrayList<>();
-        String query = "SELECT * FROM JobApplication";
+        JobApplication jobApplication = null;
+        String query = "SELECT company_name,job_post_title  FROM JobApplication a, jobpost j, company c WHERE a.job_post_id = j.job_post_id AND\n" +
+                "j.company_id = c.company_id AND job_application_status = 'Approved' Order BY job_application_date DESC";
 
         try {
             stmt = connect.prepareStatement(query);
             rs = stmt.executeQuery();
 
-            while (rs.next()) {
-
-                JobApplication jobApplication = new JobApplication();
-                jobApplication.setId(rs.getString("job_application_id"));
-                jobApplication.setDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH)
-                        .parse(rs.getString("job_application_date")));
-                jobApplication.setStatus(rs.getString("job_application_status"));
-
-                jobApplicationArrayList.add(jobApplication);
+            if (rs.next()) {
+                jobApplication = new JobApplication();
+                jobApplication.setId(rs.getString("company_name"));
+                jobApplication.setStatus(rs.getString("job_post_title"));
             }
+
         } catch (SQLException ex) {
             ex.getMessage();
-        } catch (ParseException e) {
-            e.printStackTrace();
         } finally {
             if (!connect.isClosed()){
                 connect.close();
             }
         }
-        return jobApplicationArrayList;
+        return jobApplication;
     }
 
     public JobApplication updateJobApplication(JobApplication jobApplication) throws SQLException {

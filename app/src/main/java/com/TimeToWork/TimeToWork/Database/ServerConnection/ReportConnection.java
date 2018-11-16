@@ -26,7 +26,7 @@ public class ReportConnection {
         connect = connection.connectionClass();
 
         List<Report> reportList = new ArrayList<>();
-        String query = "Select s.jobseeker_id, c.company_name, j.job_post_category, " +
+        String query = "Select c.company_name, j.job_post_category, " +
                 "date(p.payment_date), p.payment_amount " +
                 "From company c, jobpost j, jobseeker s, jobapplication a, payment p " +
                 "Where c.company_id = j.company_id AND j.job_post_id = a.job_post_id " +
@@ -55,29 +55,22 @@ public class ReportConnection {
         return reportList;
     }
 
-    // Read Income Report
-    public List<Report> getWorkerReport(String companyId) {
-
+    // Read Payment Report
+    public ArrayList<Report> getWorkerReport(String company_id, int month, int year) {
         ConnectionHelper connection = new ConnectionHelper(); // Open Connection
         connect = connection.connectionClass();
+        ArrayList<Report> reportList = new ArrayList<Report>();
 
-        List<Report> reportList = new ArrayList<>();
-        String query = "SELECT jobseeker_name, jobseeker_preferred_job, AVG(jobseeker_rating) " +
-                "From company c, jobpost j, jobseeker s, jobapplication a " +
-                "Where c.company_id = j.company_id AND j.job_post_id = a.job_post_id " +
-                "AND a.jobseeker_id = s.jobseeker_id AND c.company_id = ?";
-
+        String query = "Select company_name, j.job_post_category, date(p.payment_date), SUM(p.payment_amount) From company c, jobpost j, jobseeker s, jobapplication a, payment p Where c.company_id = j.company_id AND j.job_post_id = a.job_post_id AND a.jobseeker_id = s.jobseeker_id AND j.job_post_id = p.job_post_id AND c.company_id = ? AND MONTH(p.payment_date) = ? AND YEAR(p.payment_date) = ? GROUP BY j.job_post_category";
         try {
             stmt = connect.prepareStatement(query);
-            stmt.setString(1, companyId);
+            stmt.setString(1, company_id);
+            stmt.setInt(2, month);
+            stmt.setInt(3, year);
             rs = stmt.executeQuery();
 
             while (rs.next()) {
-                reportList.add(new Report(
-                        rs.getString("jobseeker_preferred_job"),
-                        rs.getString("jobseeker_name"),
-                        rs.getString("AVG(jobseeker_rating)"))
-                );
+                reportList.add(new Report(rs.getString("company_name"), rs.getString("j.job_post_category"), rs.getString("date(p.payment_date)"), rs.getDouble("SUM(p.payment_amount)")));
             }
             connect.close();
         } catch (SQLException ex) {

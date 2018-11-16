@@ -181,10 +181,9 @@ public class CompanyConnection {
 
         connect = connection.connectionClass();
         boolean chkPhoneNum = true;
-
-        String query = "SELECT company_phone_number FROM Jobseeker WHERE company_phone_number = ?";
+        String phoneNum = "";
+        String query = "SELECT company_phone_number FROM company WHERE company_phone_number = ?";
         try {
-
             stmt = connect.prepareStatement(query);
             stmt.setString(1, company_phone_number);
 
@@ -203,7 +202,8 @@ public class CompanyConnection {
 
         connect = connection.connectionClass();
         boolean chkEmail = true;
-        String query = "SELECT company_email FROM Jobseeker WHERE company_email = ?";
+        String email = "";
+        String query = "SELECT company_email FROM company WHERE company_email = ?";
 
         try {
             stmt = connect.prepareStatement(query);

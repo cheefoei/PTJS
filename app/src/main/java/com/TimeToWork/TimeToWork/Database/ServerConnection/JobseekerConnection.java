@@ -171,6 +171,8 @@ public class JobseekerConnection {
                 jobseeker.setAddress(rs.getString("jobseeker_address"));
                 jobseeker.setPhone_number(rs.getString("jobseeker_phone_number"));
                 jobseeker.setEmail(rs.getString("jobseeker_email"));
+                jobseeker.setPreferred_job(rs.getString("jobseeker_preferred_job"));
+                jobseeker.setPreferred_location(rs.getString("jobseeker_preferred_location"));
                 jobseeker.setImg(rs.getString("jobseeker_img"));
                 jobseeker.setGender(rs.getString("jobseeker_gender").charAt(0));
             }
@@ -201,7 +203,7 @@ public class JobseekerConnection {
             stmt.setString(4, jobseeker.getAddress());
             stmt.setString(5, jobseeker.getPhone_number());
             stmt.setString(6, jobseeker.getEmail());
-            stmt.setString(7, jobseeker.getImg());
+            stmt.setString(7, null);
             stmt.setString(8, String.valueOf(jobseeker.getGender()));
             stmt.setString(9, jobseeker.getId());
             stmt.executeUpdate();
