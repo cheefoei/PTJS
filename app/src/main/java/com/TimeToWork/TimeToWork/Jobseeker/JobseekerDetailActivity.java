@@ -63,7 +63,7 @@ public class JobseekerDetailActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jobseeker_detail);
-        databaseRef = FirebaseDatabase.getInstance().getReference("jobseeker");
+
 
 
         mProgressDialog = new CustomProgressDialog(this);
@@ -76,11 +76,13 @@ public class JobseekerDetailActivity extends AppCompatActivity {
         editTextEmail = (EditText) findViewById(R.id.email);
         editTextAddress = (EditText) findViewById(R.id.address);
         editTextDob = (EditText) findViewById(R.id.dob);
+        databaseRef = FirebaseDatabase.getInstance().getReference("jobseeker");
 
         databaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String value = (String) dataSnapshot.child(userId).child("jobseeker_img").getValue();
+                encodedImage = value;
                 //decode base64 string to image
                 byte[] imageBytes;
                 imageBytes = Base64.decode(value, Base64.DEFAULT);
@@ -98,7 +100,11 @@ public class JobseekerDetailActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updatePartTimerDetails();
+
+                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("jobseeker").child(userId).child("jobseeker_img");
+                    databaseReference.setValue(encodedImage);
+                    updatePartTimerDetails();
+
             }
         });
 
@@ -253,8 +259,6 @@ public class JobseekerDetailActivity extends AppCompatActivity {
                     jobseeker.setGender(gender);
                     maintainJobseeker.updateJobSeekerDetails(jobseeker);
 
-                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("jobseeker").child(userId).child("jobseeker_img");
-                    databaseReference.setValue(encodedImage);
                 } catch (Exception e) {
                     Log.e("error here : ", e.getMessage());
                 }

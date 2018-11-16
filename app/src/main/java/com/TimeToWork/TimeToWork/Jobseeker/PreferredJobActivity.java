@@ -31,6 +31,7 @@ public class PreferredJobActivity extends AppCompatActivity {
     private Handler handler;
 
     private ArrayList<String> selectedItems = new ArrayList<>();
+    private Jobseeker getJob = new Jobseeker();
     private String selectedJob = "";
 
     @Override
@@ -45,12 +46,32 @@ public class PreferredJobActivity extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.list_view_preferred_job);
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
-//        String jobList[] = {"Event & Promotion", "Restaurants & Cafes", "Fashion & Retail", "Administration", "Hotel & Tourism",
-//                "Beauty & Healthcare", "Education", "Sales & Marketing", "Transportation & Logistic"};
-
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.array_category, R.layout.list_view_preferred_job);
         listView.setAdapter(adapter);
+
+        getJob = maintainJobseeker.getJobseekerDetail(userId);
+
+        String jobs = getJob.getPreferred_job();
+        String[] job = jobs.split(",");
+        String joblist[] = {"Ambassador", "Driver", "Event Crew", "Promoter", "Tutor", "Waiter/Waitress", "Other"};
+
+        for(int i =0; i<job.length;i++)
+        {
+            selectedItems.add(job[i]);
+        }
+
+        for(int i = 0; i<selectedItems.size();i++)
+        {
+            String a = selectedItems.get(i);
+            for(int j = 0; j <7; j++)
+            {
+                if(a.equals(joblist[j])){
+                    listView.setItemChecked(j,true);
+                }
+            }
+
+        }
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -102,7 +123,7 @@ public class PreferredJobActivity extends AppCompatActivity {
                     if (selectedJob.equals("")) {
                         selectedJob = selectedItems.get(i);
                     } else {
-                        selectedJob += ", " + selectedItems.get(i);
+                        selectedJob += "," + selectedItems.get(i);
                     }
                 }
                 Jobseeker jobseeker = new Jobseeker();

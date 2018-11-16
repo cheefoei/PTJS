@@ -20,6 +20,8 @@ import com.TimeToWork.TimeToWork.CustomClass.CustomProgressDialog;
 import com.TimeToWork.TimeToWork.Database.Control.MaintainJobseeker;
 import com.TimeToWork.TimeToWork.Database.Entity.Jobseeker;
 import com.TimeToWork.TimeToWork.R;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -40,9 +42,11 @@ public class JobseekerRegistrationActivity extends AppCompatActivity {
     private DatePickerDialog.OnDateSetListener dateSetListener;
 
     private String name, ic, dob, phoneNum, email, address, pass;
+    private char gender;
 
     private CustomProgressDialog mProgressDialog;
     private Handler handler;
+    private DatabaseReference databaseRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +67,7 @@ public class JobseekerRegistrationActivity extends AppCompatActivity {
         editTextPassword = (EditText) findViewById(R.id.password);
         editTextConfirmPassword = (EditText) findViewById(R.id.confirmPassword);
         editTextDob = (EditText) findViewById(R.id.dob);
+        databaseRef = FirebaseDatabase.getInstance().getReference("jobseeker");
 
         editTextDob.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,10 +152,13 @@ public class JobseekerRegistrationActivity extends AppCompatActivity {
     private void registerJobseeker() {
 
         int rgID = radioGroup.getCheckedRadioButtonId();
-        final char gender;
-        if (rgID == 1) {
+
+        if(rgID == 1)
+        {
             gender = 'M';
-        } else {
+
+        } else
+        {
             gender = 'F';
         }
 
@@ -180,11 +188,15 @@ public class JobseekerRegistrationActivity extends AppCompatActivity {
                 jobseeker.setEmail(email);
                 jobseeker.setRating(0.0);
                 jobseeker.setPassword(encryptedPassword);
+
+                databaseRef.child(jobseekerId).child("jobseeker_img").setValue("");
+
                 try {
                     jobseeker.setDob(new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(dob));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
+
                 final boolean success = maintainJobseeker.insertJobSeekerDetail(jobseeker);
 
                 handler.post(new Runnable() {

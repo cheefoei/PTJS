@@ -27,48 +27,96 @@ import static com.TimeToWork.TimeToWork.MainApplication.userId;
 
 public class SelangorPage extends AppCompatActivity {
 
-    ArrayList<String> selectedItems = new ArrayList<>();
     private MaintainJobseeker maintainJobseeker = new MaintainJobseeker();
-    private String selectedLocation = "";
-    private Button btnOk;
-    private Jobseeker partTimerDetail = null;
+
     private CustomProgressDialog mProgressDialog;
     private Handler handler;
 
+    private ArrayList<String> selectedItems = new ArrayList<>();
+    private Jobseeker getLocation = new Jobseeker();
+    private String selectedLocation = "";
+    private String locationList[] = {"Bukit Raja", "Bukit Tinggi", "Klang", "Setia Alam", "Shah Alam"};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selangor_page);
+
+        mProgressDialog = new CustomProgressDialog(this);
+        handler = new Handler();
+
         ListView listView = (ListView) findViewById(R.id.listView);
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        String locationList[] = {"Bukit Raja", "Bukit Tinggi", "Klang", "Setia Alam", "Shah Alam"};
 
         ArrayAdapter adapter = new ArrayAdapter(this, R.layout.list_view_preferred_job, R.id.txt_lan, locationList);
         listView.setAdapter(adapter);
 
+        getLocation = maintainJobseeker.getJobseekerDetail(userId);
+
+        String locations = getLocation.getPreferred_location();
+
+        String[] location = locations.split(",");
+
+        getLocation = maintainJobseeker.getJobseekerDetail(userId);
+
+        for(int i =0; i<location.length;i++)
+        {
+            selectedItems.add(location[i]);
+        }
+
+        for(int i = 0; i<selectedItems.size();i++)
+        {
+            String a = selectedItems.get(i);
+            for(int j = 0; j <5; j++)
+            {
+                if(a.equals(locationList[j])){
+                    listView.setItemChecked(j,true);
+                }
+            }
+
+        }
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String selectedItem = ((TextView)view).getText().toString();
-                if(selectedItems.contains(selectedItem)){
+
+                String selectedItem = ((TextView) view).getText().toString();
+                if (selectedItems.contains(selectedItem)) {
                     selectedItems.remove(selectedItem); //uncheck item
-                }
-                else
+                } else {
                     selectedItems.add(selectedItem); //check item
+                }
             }
         });
     }
 
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.menu_done, menu);
         return true;
     }
 
-    private void updatePreferredLocation(){
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        if (id == R.id.done) {
+            updatePreferredJob();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void updatePreferredJob() {
+
         //Show progress dialog
-        //mProgressDialog.setMessage("Remembering your preferred jobs …");
-        //mProgressDialog.show();
+        mProgressDialog.setMessage("Remembering your preferred locations …");
+        mProgressDialog.show();
 
         new Thread(new Runnable() {
 
@@ -79,7 +127,7 @@ public class SelangorPage extends AppCompatActivity {
                     if (selectedLocation.equals("")) {
                         selectedLocation = selectedItems.get(i);
                     } else {
-                        selectedLocation += ", " + selectedItems.get(i);
+                        selectedLocation += "," + selectedItems.get(i);
                     }
                 }
                 Jobseeker jobseeker = new Jobseeker();
@@ -99,7 +147,7 @@ public class SelangorPage extends AppCompatActivity {
                         AlertDialog.Builder builder
                                 = new AlertDialog.Builder(SelangorPage.this)
                                 .setTitle("Successful")
-                                .setMessage("We remembered your preferred jobs.")
+                                .setMessage("We remembered your preferred locations.")
                                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
@@ -111,15 +159,5 @@ public class SelangorPage extends AppCompatActivity {
                 });
             }
         }).start();
-    }
-
-public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.done) {
-            updatePreferredLocation();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 }

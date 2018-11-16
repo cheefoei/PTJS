@@ -3,7 +3,9 @@ package com.TimeToWork.TimeToWork.Jobseeker;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -18,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 import static com.TimeToWork.TimeToWork.MainApplication.userId;
+import static com.TimeToWork.TimeToWork.R.id.view;
 
 public class IncomeReportActivity extends AppCompatActivity {
 
@@ -26,6 +29,7 @@ public class IncomeReportActivity extends AppCompatActivity {
     private CustomProgressDialog mProgressDialog;
     private Handler handler;
     private TextView title1, title2;
+    private String months;
 
 //    LinearLayout mChartLayout;
 //    TableLayout mTableLayout;
@@ -55,6 +59,55 @@ public class IncomeReportActivity extends AppCompatActivity {
         final int month = getIntent().getExtras().getInt("month");
         final int year = getIntent().getExtras().getInt("year");
 
+        if(month == 1)
+        {
+            months = "JANUARY";
+        }
+        else if(month == 2)
+        {
+            months = "FEBRUARY";
+        }
+        else if(month == 3)
+        {
+            months = "MARCH";
+        }
+        else if(month == 4)
+        {
+            months = "APRIL";
+        }
+        else if(month == 5)
+        {
+            months = "MAY";
+        }
+        else if(month == 6)
+        {
+            months = "JUNE";
+        }
+        else if(month == 7)
+        {
+            months = "JULY";
+        }
+        else if(month == 8)
+        {
+            months = "AUGUST";
+        }
+        else if(month == 9)
+        {
+            months = "SEPTEMBER";
+        }
+        else if(month == 10)
+        {
+            months = "OCTOBER";
+        }
+        else if(month == 11)
+        {
+            months = "NOVEMBER";
+        }
+        else if(month == 12)
+        {
+            months = "DECEMBER";
+        }
+
         //Show progress dialog
         mProgressDialog.setMessage("Loading …");
         mProgressDialog.show();
@@ -72,22 +125,14 @@ public class IncomeReportActivity extends AppCompatActivity {
                     @Override
                     public void run() {
 
-                        ArrayAdapter<String> adapter = new ArrayAdapter<>(IncomeReportActivity.this,
-                                R.layout.list_view_income_report, R.id.report, arrayList);
+                        IncomeListAdapter adapter = new IncomeListAdapter(IncomeReportActivity.this, R.layout.list_view_income_report, (ArrayList<Report>) reportList);
 
                         ListView listView = (ListView) findViewById(R.id.listView);
                         listView.setAdapter(adapter);
 
-                        title2.setText("Income Summary Report for " + month + "  " + year);
+                        title2.setText("Income Summary Report for " + months + "  " + year);
 
-                        for (int i = 0; i < reportList.size(); i++) {
-                            arrayList.add(i + 1 + "                   "
-                                    + reportList.get(i).getCompany_name() + "          "
-                                    + reportList.get(i).getJob() + "         "
-                                    + reportList.get(i).getDate() + "                "
-                                    + reportList.get(i).getSalary());
-                            adapter.notifyDataSetChanged();
-                        }
+
                         mProgressDialog.dismiss();
                     }
                 });
