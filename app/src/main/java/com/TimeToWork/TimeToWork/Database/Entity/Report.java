@@ -18,13 +18,7 @@ public class Report implements Serializable{
         this.salary = salary;
     }
 
-    public Report(String company_name, String id, String jobseeker_name, String job, String date, double paymentAmount) {
-        this.company_name = company_name;
-        this.id = id;
-        this.jobseeker_name = jobseeker_name;
-        this.job = job;
-        this.date = date;
-        this.paymentAmount = paymentAmount;
+    public Report() {
     }
 
     public String getId() {
