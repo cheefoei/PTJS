@@ -27,6 +27,7 @@ public class PaymentReport extends AppCompatActivity {
     private CustomProgressDialog mProgressDialog;
     private Handler handler;
     private TextView title1, title2;
+    private String months;
 
 //    LinearLayout mChartLayout;
 //    TableLayout mTableLayout;
@@ -56,6 +57,55 @@ public class PaymentReport extends AppCompatActivity {
         final int month = getIntent().getExtras().getInt("month");
         final int year = getIntent().getExtras().getInt("year");
 
+        if(month == 1)
+        {
+            months = "JANUARY";
+        }
+        else if(month == 2)
+        {
+            months = "FEBRUARY";
+        }
+        else if(month == 3)
+        {
+            months = "MARCH";
+        }
+        else if(month == 4)
+        {
+            months = "APRIL";
+        }
+        else if(month == 5)
+        {
+            months = "MAY";
+        }
+        else if(month == 6)
+        {
+            months = "JUNE";
+        }
+        else if(month == 7)
+        {
+            months = "JULY";
+        }
+        else if(month == 8)
+        {
+            months = "AUGUST";
+        }
+        else if(month == 9)
+        {
+            months = "SEPTEMBER";
+        }
+        else if(month == 10)
+        {
+            months = "OCTOBER";
+        }
+        else if(month == 11)
+        {
+            months = "NOVEMBER";
+        }
+        else if(month == 12)
+        {
+            months = "DECEMBER";
+        }
+
         //Show progress dialog
         mProgressDialog.setMessage("Loading …");
         mProgressDialog.show();
@@ -73,25 +123,15 @@ public class PaymentReport extends AppCompatActivity {
                     @Override
                     public void run() {
 
-                        ArrayAdapter<String> adapter = new ArrayAdapter<>(PaymentReport.this,
-                                R.layout.list_view_income_report, R.id.report, arrayList);
+                        PaymentListAdapter adapter = new PaymentListAdapter(PaymentReport.this, R.layout.list_view_payment_report, (ArrayList<Report>) reportList);
 
                         ListView listView = (ListView) findViewById(R.id.listView);
                         listView.setAdapter(adapter);
 
                         title1.setText(reportList.get(0).getCompany_name());
 
-                        title2.setText("Payment Summary Report for " + month + "  " + year);
+                        title2.setText("Payment Summary Report for " + months + "  " + year);
 
-                        for (int i = 0; i < reportList.size(); i++) {
-                            arrayList.add(i+1 + "                   "
-                                    + reportList.get(i).getId() + "             "
-                                    + reportList.get(i).getJobseeker_name() + "         "
-                                    + reportList.get(i).getJob() + "         "
-                                    + reportList.get(i).getDate() + "         "
-                                    + reportList.get(i).getPaymentAmount());
-                            adapter.notifyDataSetChanged();
-                        }
                         mProgressDialog.dismiss();
                     }
                 });

@@ -14,6 +14,8 @@ import com.TimeToWork.TimeToWork.CustomClass.CustomProgressDialog;
 import com.TimeToWork.TimeToWork.Database.Control.MaintainCompany;
 import com.TimeToWork.TimeToWork.Database.Entity.Company;
 import com.TimeToWork.TimeToWork.R;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -27,6 +29,7 @@ public class CompanyRegistrationActivity extends AppCompatActivity {
             editTextPhoneNumber, editTextPassword, editTextConfirmPassword;
 
     private String name, phoneNum, email, address, pass;
+    private DatabaseReference databaseRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,7 @@ public class CompanyRegistrationActivity extends AppCompatActivity {
         editTextPhoneNumber = (EditText) findViewById(R.id.phoneNumber);
         editTextPassword = (EditText) findViewById(R.id.password);
         editTextConfirmPassword = (EditText) findViewById(R.id.confirmPassword);
+        databaseRef = FirebaseDatabase.getInstance().getReference("company");
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -96,6 +100,8 @@ public class CompanyRegistrationActivity extends AppCompatActivity {
                 company.setEmail(email);
                 company.setRating(0.0);
                 company.setPassword(encryptedPassword);
+
+                databaseRef.child(companyId).child("company_img").setValue("");
 
                 return maintainCompany.insertCompanyDetail(company);
             }

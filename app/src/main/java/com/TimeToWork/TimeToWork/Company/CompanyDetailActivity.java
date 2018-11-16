@@ -69,6 +69,7 @@ public class CompanyDetailActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String value = (String) dataSnapshot.child(userId).child("company_img").getValue();
                 //decode base64 string to image
+                encodedImage = value;
                 byte[] imageBytes;
                 imageBytes = Base64.decode(value, Base64.DEFAULT);
                 Bitmap decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
@@ -95,6 +96,8 @@ public class CompanyDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (isValid()) {
+                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("company").child(userId).child("company_img");
+                    databaseReference.setValue(encodedImage);
                     updateCompanyDetail();
                 }
             }
@@ -295,11 +298,6 @@ public class CompanyDetailActivity extends AppCompatActivity {
             if (!matcher.matches()) {
                 editTextPhoneNumber.setError("Invalid Phone Number Format");
                 valid = false;
-            } else {
-                if (!checkPhoneNumber()) {
-                    editTextPhoneNumber.setError("Phone Number Has Been Used.");
-                    valid = false;
-                }
             }
         }
 
@@ -308,11 +306,4 @@ public class CompanyDetailActivity extends AppCompatActivity {
         return valid;
     }
 
-    private Boolean checkPhoneNumber() {
-        return maintainCompany.checkPhoneNum(editTextPhoneNumber.getText().toString());
-    }
-
-    private Boolean checkEmail() {
-        return maintainCompany.checkEmail(editTextEmail.getText().toString());
-    }
 }
