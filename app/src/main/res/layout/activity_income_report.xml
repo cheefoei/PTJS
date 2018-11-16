@@ -49,8 +49,9 @@
                 android:id="@+id/textView1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="20"
                 android:fontFamily="@string/font_family_regular"
+                android:gravity="center"
                 android:text="No"
                 android:textSize="16sp" />
 
@@ -58,7 +59,7 @@
                 android:id="@+id/textView2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="20"
                 android:fontFamily="@string/font_family_regular"
                 android:gravity="center"
                 android:text="Company"
@@ -67,7 +68,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="20"
                 android:fontFamily="@string/font_family_regular"
                 android:gravity="center"
                 android:text="Job"
@@ -76,7 +77,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="20"
                 android:fontFamily="@string/font_family_regular"
                 android:gravity="center"
                 android:text="Date"
@@ -85,18 +86,18 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="20"
                 android:fontFamily="@string/font_family_regular"
                 android:gravity="center"
                 android:text="Earn Salary"
                 android:textSize="16sp" />
         </TableRow>
-
     </TableLayout>
 
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        />
 
 </LinearLayout>
