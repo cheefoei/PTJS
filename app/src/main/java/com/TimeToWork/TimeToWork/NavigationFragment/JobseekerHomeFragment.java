@@ -155,6 +155,29 @@ public class JobseekerHomeFragment extends Fragment
         TextView tvHighestWages = (TextView) view.findViewById(R.id.tv_highest_wages);
         TextView tvHighestRating = (TextView) view.findViewById(R.id.tv_highest_rating);
 
+        //Notification
+        MaintainNotification maintainNotification = new MaintainNotification();
+        JobApplication jobApplication = null;
+        try {
+            jobApplication = maintainNotification.getJobApplicationDetails();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        NotificationCompat.Builder notificationBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(getActivity())
+                .setDefaults(NotificationCompat.DEFAULT_ALL)
+                .setSmallIcon(R.drawable.baseline_notifications_black_18)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(),
+                        R.drawable.baseline_notifications_black_18))
+                .setContentTitle(jobApplication.getId());
+
+                notificationBuilder.setContentText("Your " + jobApplication.getStatus() + " has been approved.");
+
+        NotificationManager notificationManager = (NotificationManager) getActivity()
+                .getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(1, notificationBuilder.build());
+
+
         tvNearest.setOnClickListener(new SortOnClickListener("distance"));
         tvHighestWages.setOnClickListener(new SortOnClickListener("wages"));
         tvHighestRating.setOnClickListener(new SortOnClickListener("rating"));
@@ -241,20 +264,6 @@ public class JobseekerHomeFragment extends Fragment
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-        if (id == R.id.notification) {
-            try {
-                notification();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public void OnFilterOptionChange(String[] option) {
 
         // Pass option to activity
@@ -283,40 +292,6 @@ public class JobseekerHomeFragment extends Fragment
             setupDefaultOption();
             // Retrieve part time job
             setupJobPostList();
-        }
-    }
-
-    public void notification() throws SQLException {
-
-        MaintainNotification maintainNotification = new MaintainNotification();
-        List<JobApplication> jobApplicationList = maintainNotification.getJobApplicationDetails();
-
-        for (JobApplication jobApplication : jobApplicationList) {
-
-            if (jobApplication.getId().equals("JA10004")) {
-
-                NotificationCompat.Builder notificationBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(getActivity())
-                        .setDefaults(NotificationCompat.DEFAULT_ALL)
-                        .setSmallIcon(R.drawable.baseline_notifications_black_18)
-                        .setLargeIcon(BitmapFactory.decodeResource(getResources(),
-                                R.drawable.baseline_notifications_black_18))
-                        .setContentTitle("Message");
-
-                switch (jobApplication.getStatus()) {
-                    case "Sent":
-                        notificationBuilder.setContentText("Sent");
-                        break;
-                    case "Reject":
-                        notificationBuilder.setContentText("Reject");
-                        break;
-                    case "Approved":
-                        notificationBuilder.setContentText("Approved");
-                        break;
-                }
-                NotificationManager notificationManager = (NotificationManager) getActivity()
-                        .getSystemService(Context.NOTIFICATION_SERVICE);
-                notificationManager.notify(1, notificationBuilder.build());
-            }
         }
     }
 

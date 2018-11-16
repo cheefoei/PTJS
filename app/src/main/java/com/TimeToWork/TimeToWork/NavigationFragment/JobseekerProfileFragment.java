@@ -15,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -98,7 +99,22 @@ public class JobseekerProfileFragment extends Fragment {
 
         databaseRef = FirebaseDatabase.getInstance().getReference("jobseeker");
 
+        databaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String value = (String) dataSnapshot.child(userId).child("jobseeker_img").getValue();
+                //decode base64 string to image
+                byte[] imageBytes;
+                imageBytes = Base64.decode(value, Base64.DEFAULT);
+                Bitmap decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                imageView.setImageBitmap(decodedImage);
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         TextView showPersonalDetails = (TextView) view.findViewById(R.id.pd);
         showPersonalDetails.setOnClickListener(new View.OnClickListener() {
@@ -166,22 +182,6 @@ public class JobseekerProfileFragment extends Fragment {
 
         if (userId != null) {
             // Get profile detail
-            databaseRef.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    String value = (String) dataSnapshot.child(userId).child("jobseeker_img").getValue();
-                    //decode base64 string to image
-                    byte[] imageBytes;
-                    imageBytes = Base64.decode(value, Base64.DEFAULT);
-                    Bitmap decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-                    imageView.setImageBitmap(decodedImage);
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
             getJobseekerProfile();
         }
 
