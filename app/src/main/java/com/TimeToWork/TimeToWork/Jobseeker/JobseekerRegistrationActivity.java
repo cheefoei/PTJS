@@ -331,11 +331,11 @@ public class JobseekerRegistrationActivity extends AppCompatActivity {
                             valid = false;
                         }
                     } else {
-                        editTextPassword.setError("Invalid Password Format");
+                        editTextPassword.setError("Invalid Password Format. Eg.A1234567");
                         valid = false;
                     }
                 } else {
-                    editTextPassword.setError("Invalid Password Format");
+                    editTextPassword.setError("Invalid Password Format. Eg.A1234567");
                     valid = false;
                 }
             }
