@@ -15,7 +15,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -35,11 +34,6 @@ import com.TimeToWork.TimeToWork.Jobseeker.ViewFreeTimeActivity;
 import com.TimeToWork.TimeToWork.R;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -69,8 +63,6 @@ public class JobseekerProfileFragment extends Fragment {
 
     private MaintainJobseeker maintainJobseeker = new MaintainJobseeker();
 
-    private DatabaseReference databaseRef;
-
     public JobseekerProfileFragment() {
         // Required empty public constructor
     }
@@ -96,25 +88,6 @@ public class JobseekerProfileFragment extends Fragment {
         ratingValue = (TextView) view.findViewById(R.id.tv_jobseeker_rating);
         ratingBar = (RatingBar) view.findViewById(R.id.rate_bar_jobseeker);
         imageView = (ImageView) view.findViewById(R.id.imgUser);
-
-        databaseRef = FirebaseDatabase.getInstance().getReference("jobseeker");
-
-        databaseRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String value = (String) dataSnapshot.child(userId).child("jobseeker_img").getValue();
-                //decode base64 string to image
-                byte[] imageBytes;
-                imageBytes = Base64.decode(value, Base64.DEFAULT);
-                Bitmap decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-                imageView.setImageBitmap(decodedImage);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
 
         TextView showPersonalDetails = (TextView) view.findViewById(R.id.pd);
         showPersonalDetails.setOnClickListener(new View.OnClickListener() {

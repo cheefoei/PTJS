@@ -1,9 +1,6 @@
 package com.TimeToWork.TimeToWork.NavigationFragment;
 
-import android.app.NotificationManager;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,7 +10,6 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -33,9 +29,7 @@ import android.widget.TextView;
 import com.TimeToWork.TimeToWork.Adapter.JobListAdapter;
 import com.TimeToWork.TimeToWork.CustomClass.CustomProgressDialog;
 import com.TimeToWork.TimeToWork.CustomClass.CustomVolleyErrorListener;
-import com.TimeToWork.TimeToWork.Database.Control.MaintainNotification;
 import com.TimeToWork.TimeToWork.Database.Entity.Company;
-import com.TimeToWork.TimeToWork.Database.Entity.JobApplication;
 import com.TimeToWork.TimeToWork.Database.Entity.JobLocation;
 import com.TimeToWork.TimeToWork.Database.Entity.JobPost;
 import com.TimeToWork.TimeToWork.Database.Entity.Jobseeker;
@@ -50,7 +44,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -154,7 +147,7 @@ public class JobseekerHomeFragment extends Fragment
         TextView tvNearest = (TextView) view.findViewById(R.id.tv_nearest_distance);
         TextView tvHighestWages = (TextView) view.findViewById(R.id.tv_highest_wages);
         TextView tvHighestRating = (TextView) view.findViewById(R.id.tv_highest_rating);
-
+/*
         //Notification
         MaintainNotification maintainNotification = new MaintainNotification();
         JobApplication jobApplication = null;
@@ -175,8 +168,7 @@ public class JobseekerHomeFragment extends Fragment
 
         NotificationManager notificationManager = (NotificationManager) getActivity()
                 .getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(1, notificationBuilder.build());
-
+        notificationManager.notify(1, notificationBuilder.build());*/
 
         tvNearest.setOnClickListener(new SortOnClickListener("distance"));
         tvHighestWages.setOnClickListener(new SortOnClickListener("wages"));

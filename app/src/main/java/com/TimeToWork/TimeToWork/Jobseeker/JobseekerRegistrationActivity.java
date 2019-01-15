@@ -20,8 +20,6 @@ import com.TimeToWork.TimeToWork.CustomClass.CustomProgressDialog;
 import com.TimeToWork.TimeToWork.Database.Control.MaintainJobseeker;
 import com.TimeToWork.TimeToWork.Database.Entity.Jobseeker;
 import com.TimeToWork.TimeToWork.R;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -46,7 +44,6 @@ public class JobseekerRegistrationActivity extends AppCompatActivity {
 
     private CustomProgressDialog mProgressDialog;
     private Handler handler;
-    private DatabaseReference databaseRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +64,6 @@ public class JobseekerRegistrationActivity extends AppCompatActivity {
         editTextPassword = (EditText) findViewById(R.id.password);
         editTextConfirmPassword = (EditText) findViewById(R.id.confirmPassword);
         editTextDob = (EditText) findViewById(R.id.dob);
-        databaseRef = FirebaseDatabase.getInstance().getReference("jobseeker");
 
         editTextDob.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,29 +117,26 @@ public class JobseekerRegistrationActivity extends AppCompatActivity {
                 @Override
                 public void run() {
 
-                    final boolean validIc = checkIc();
-                    final boolean   validPhoneNumber = checkPhoneNumber();
-                    final boolean   validEmail = checkEmail();
-
                     handler.post(new Runnable() {
 
                         @Override
                         public void run() {
 
-                            mProgressDialog.dismiss();
-
-                            registerJobseeker();
-
+                            if (isValid()) {
+                                mProgressDialog.dismiss();
+                                checkIc();
+                            } else {
+                                mProgressDialog.dismiss();
+                            }
                         }
                     });
                 }
             });
 
-            if (isValid()) {
-                mProgressDialog.setMessage("Verifying your data …");
-                mProgressDialog.show();
-                thread.start();
-            }
+            mProgressDialog.setMessage("Verifying your data …");
+            mProgressDialog.show();
+            thread.start();
+
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -153,12 +146,9 @@ public class JobseekerRegistrationActivity extends AppCompatActivity {
 
         int rgID = radioGroup.getCheckedRadioButtonId();
 
-        if(rgID == 1)
-        {
+        if (rgID == 1) {
             gender = 'M';
-
-        } else
-        {
+        } else {
             gender = 'F';
         }
 
@@ -188,8 +178,6 @@ public class JobseekerRegistrationActivity extends AppCompatActivity {
                 jobseeker.setEmail(email);
                 jobseeker.setRating(0.0);
                 jobseeker.setPassword(encryptedPassword);
-
-                databaseRef.child(jobseekerId).child("jobseeker_img").setValue("");
 
                 try {
                     jobseeker.setDob(new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(dob));
@@ -240,17 +228,12 @@ public class JobseekerRegistrationActivity extends AppCompatActivity {
         pass = editTextPassword.getText().toString().trim();
         String confirmPass = editTextConfirmPassword.getText().toString().trim();
 
-        String nameFormat = "[a-zA-Z_]+";
-        Pattern pattern = Pattern.compile(nameFormat);
-        Matcher matcher = pattern.matcher(name);
+        Pattern pattern;
+        Matcher matcher;
+
         if (name.equals("")) {
             editTextName.setError("Cannot be empty");
             valid = false;
-        }else{
-            if (!matcher.matches()) {
-                editTextName.setError("Name cannot be numeric");
-                valid = false;
-            }
         }
 
         String ICFormat = "\\d{6}-\\d{2}-\\d{4}";
@@ -260,19 +243,12 @@ public class JobseekerRegistrationActivity extends AppCompatActivity {
         if (ic.equals("")) {
             editTextIC.setError("Cannot be empty");
             valid = false;
-        }else{
+        } else {
             if (!matcher.matches()) {
                 editTextIC.setError("Invalid IC Format");
                 valid = false;
             }
-            else {
-                if (!checkIc()) {
-                    editTextIC.setError("IC Has Been Used.");
-                    valid = false;
-                }
-            }
         }
-
 
         String phoneNumFormat = "\\d{3}-\\d{7}";
         pattern = Pattern.compile(phoneNumFormat);
@@ -280,15 +256,10 @@ public class JobseekerRegistrationActivity extends AppCompatActivity {
         if (phoneNum.equals("")) {
             editTextPhoneNumber.setError("Cannot be empty");
             valid = false;
-        }else {
+        } else {
             if (!matcher.matches()) {
-                editTextPhoneNumber.setError("Invalid Phone Number Format");
+                editTextPhoneNumber.setError("Invalid Phone Number Format. Eg:012-3456789");
                 valid = false;
-            } else {
-                if (!checkPhoneNumber()) {
-                    editTextPhoneNumber.setError("Phone Number Has Been Used.");
-                    valid = false;
-                }
             }
         }
 
@@ -298,15 +269,10 @@ public class JobseekerRegistrationActivity extends AppCompatActivity {
         if (email.equals("")) {
             editTextEmail.setError("Cannot be empty");
             valid = false;
-        }else {
+        } else {
             if (!matcher.matches()) {
                 editTextEmail.setError("Invalid Email Format");
                 valid = false;
-            } else {
-                if (!checkEmail()) {
-                    editTextEmail.setError("Email Has Been Used.");
-                    valid = false;
-                }
             }
         }
 
@@ -318,12 +284,11 @@ public class JobseekerRegistrationActivity extends AppCompatActivity {
         if (pass.equals("")) {
             editTextPassword.setError("Cannot be empty");
             valid = false;
-        }else {
+        } else {
             if (confirmPass.equals("")) {
                 editTextConfirmPassword.setError("Cannot be empty");
                 valid = false;
-            }else
-            {
+            } else {
                 if (pass.length() >= 8) {
                     if (Character.isUpperCase(pass.charAt(0))) {
                         if (!pass.equals(confirmPass)) {
@@ -339,24 +304,97 @@ public class JobseekerRegistrationActivity extends AppCompatActivity {
                     valid = false;
                 }
             }
-
         }
-
         mProgressDialog.dismiss();
 
         return valid;
     }
 
-    private Boolean checkIc() {
-        return maintainJobseeker.checkIc(editTextIC.getText().toString());
+    private void checkIc() {
+
+        mProgressDialog.setMessage("Checking your IC number …");
+        mProgressDialog.show();
+
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+
+                final boolean result = maintainJobseeker.checkIc(editTextIC.getText().toString());
+
+                handler.post(new Runnable() {
+
+                    @Override
+                    public void run() {
+
+                        mProgressDialog.dismiss();
+                        if (!result) {
+                            editTextIC.setError("IC Has Been Used.");
+                        } else {
+                            checkPhoneNumber();
+                        }
+                    }
+                });
+            }
+        }).start();
     }
 
-    private Boolean checkPhoneNumber() {
-        return maintainJobseeker.checkPhoneNum(editTextPhoneNumber.getText().toString());
+    private void checkPhoneNumber() {
+
+        mProgressDialog.setMessage("Checking your phone number …");
+        mProgressDialog.show();
+
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+
+                final boolean result = maintainJobseeker.checkPhoneNum(editTextPhoneNumber.getText().toString());
+
+                handler.post(new Runnable() {
+
+                    @Override
+                    public void run() {
+
+                        mProgressDialog.dismiss();
+                        if (!result) {
+                            editTextPhoneNumber.setError("Phone Number Has Been Used.");
+                        } else {
+                            checkEmail();
+                        }
+                    }
+                });
+            }
+        }).start();
     }
 
-    private Boolean checkEmail() {
-        return maintainJobseeker.checkEmail(editTextEmail.getText().toString());
+    private void checkEmail() {
+
+        mProgressDialog.setMessage("Checking your email address …");
+        mProgressDialog.show();
+
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+
+                final boolean result = maintainJobseeker.checkEmail(editTextEmail.getText().toString());
+
+                handler.post(new Runnable() {
+
+                    @Override
+                    public void run() {
+
+                        mProgressDialog.dismiss();
+                        if (!result) {
+                            editTextEmail.setError("Email Has Been Used.");
+                        } else {
+                            registerJobseeker();
+                        }
+                    }
+                });
+            }
+        }).start();
     }
 
     private String getEncryptedPassword() {

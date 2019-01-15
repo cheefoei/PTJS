@@ -3,6 +3,7 @@ package com.TimeToWork.TimeToWork.Company;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -14,8 +15,6 @@ import com.TimeToWork.TimeToWork.CustomClass.CustomProgressDialog;
 import com.TimeToWork.TimeToWork.Database.Control.MaintainCompany;
 import com.TimeToWork.TimeToWork.Database.Entity.Company;
 import com.TimeToWork.TimeToWork.R;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -29,7 +28,9 @@ public class CompanyRegistrationActivity extends AppCompatActivity {
             editTextPhoneNumber, editTextPassword, editTextConfirmPassword;
 
     private String name, phoneNum, email, address, pass;
-    private DatabaseReference databaseRef;
+
+    private CustomProgressDialog mProgressDialog;
+    private Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,13 +38,15 @@ public class CompanyRegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_company_registration);
 
+        mProgressDialog = new CustomProgressDialog(CompanyRegistrationActivity.this);
+        handler = new Handler();
+
         editTextName = (EditText) findViewById(R.id.name);
         editTextAddress = (EditText) findViewById(R.id.address);
         editTextEmail = (EditText) findViewById(R.id.email);
         editTextPhoneNumber = (EditText) findViewById(R.id.phoneNumber);
         editTextPassword = (EditText) findViewById(R.id.password);
         editTextConfirmPassword = (EditText) findViewById(R.id.confirmPassword);
-        databaseRef = FirebaseDatabase.getInstance().getReference("company");
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -59,9 +62,31 @@ public class CompanyRegistrationActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.done) {
-            if (isValid()) {
-                registerCompany();
-            }
+
+            Thread thread = new Thread(new Runnable() {
+
+                @Override
+                public void run() {
+
+                    handler.post(new Runnable() {
+
+                        @Override
+                        public void run() {
+
+                            if (isValid()) {
+                                mProgressDialog.dismiss();
+                                checkPhoneNumber();
+                            } else {
+                                mProgressDialog.dismiss();
+                            }
+                        }
+                    });
+                }
+            });
+            mProgressDialog.setMessage("Verifying your company data …");
+            mProgressDialog.show();
+            thread.start();
+
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -100,8 +125,6 @@ public class CompanyRegistrationActivity extends AppCompatActivity {
                 company.setEmail(email);
                 company.setRating(0.0);
                 company.setPassword(encryptedPassword);
-
-                databaseRef.child(companyId).child("company_img").setValue("");
 
                 return maintainCompany.insertCompanyDetail(company);
             }
@@ -146,18 +169,12 @@ public class CompanyRegistrationActivity extends AppCompatActivity {
         pass = editTextPassword.getText().toString().trim();
         String confirmPass = editTextConfirmPassword.getText().toString().trim();
 
-        String nameFormat = "[a-zA-Z_]+";
-        Pattern pattern = Pattern.compile(nameFormat);
-        Matcher matcher = pattern.matcher(name);
+        Pattern pattern;
+        Matcher matcher;
 
         if (name.equals("")) {
             editTextName.setError("Cannot be empty");
             valid = false;
-        }else{
-            if (!matcher.matches()) {
-                editTextName.setError("Name cannot be numeric");
-                valid = false;
-            }
         }
 
         if (address.equals("")) {
@@ -171,15 +188,10 @@ public class CompanyRegistrationActivity extends AppCompatActivity {
         if (phoneNum.equals("")) {
             editTextPhoneNumber.setError("Cannot be empty");
             valid = false;
-        }else {
+        } else {
             if (!matcher.matches()) {
                 editTextPhoneNumber.setError("Invalid Phone Number Format");
                 valid = false;
-            } else {
-                if (!checkPhoneNumber()) {
-                    editTextPhoneNumber.setError("Phone Number Has Been Used.");
-                    valid = false;
-                }
             }
         }
 
@@ -189,22 +201,17 @@ public class CompanyRegistrationActivity extends AppCompatActivity {
         if (email.equals("")) {
             editTextEmail.setError("Cannot be empty");
             valid = false;
-        }else {
+        } else {
             if (!matcher.matches()) {
                 editTextEmail.setError("Invalid Email Format");
                 valid = false;
-            } else {
-                if (!checkEmail()) {
-                    editTextEmail.setError("Email Has Been Used.");
-                    valid = false;
-                }
             }
         }
 
         if (pass.equals("")) {
             editTextPassword.setError("Cannot be empty");
             valid = false;
-        }else {
+        } else {
             if (confirmPass.equals("")) {
                 editTextConfirmPassword.setError("Cannot be empty");
                 valid = false;
@@ -225,18 +232,67 @@ public class CompanyRegistrationActivity extends AppCompatActivity {
                 }
             }
         }
-
         mProgressDialog.dismiss();
 
         return valid;
     }
 
-    private Boolean checkPhoneNumber() {
-        return maintainCompany.checkPhoneNum(editTextPhoneNumber.getText().toString());
+    private void checkPhoneNumber() {
+
+        mProgressDialog.setMessage("Checking your phone number …");
+        mProgressDialog.show();
+
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+
+                final boolean result = maintainCompany.checkPhoneNum(editTextPhoneNumber.getText().toString());
+
+                handler.post(new Runnable() {
+
+                    @Override
+                    public void run() {
+
+                        mProgressDialog.dismiss();
+                        if (!result) {
+                            editTextPhoneNumber.setError("Phone Number Has Been Used.");
+                        } else {
+                            checkEmail();
+                        }
+                    }
+                });
+            }
+        }).start();
     }
 
-    private Boolean checkEmail() {
-        return maintainCompany.checkEmail(editTextEmail.getText().toString());
+    private void checkEmail() {
+
+        mProgressDialog.setMessage("Checking your email address …");
+        mProgressDialog.show();
+
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+
+                final boolean result = maintainCompany.checkEmail(editTextEmail.getText().toString());
+
+                handler.post(new Runnable() {
+
+                    @Override
+                    public void run() {
+
+                        mProgressDialog.dismiss();
+                        if (!result) {
+                            editTextEmail.setError("Email Has Been Used.");
+                        } else {
+                            registerCompany();
+                        }
+                    }
+                });
+            }
+        }).start();
     }
 
     private String getEncryptedPassword() {

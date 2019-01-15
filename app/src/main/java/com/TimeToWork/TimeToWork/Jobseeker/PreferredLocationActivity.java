@@ -61,10 +61,10 @@ public class PreferredLocationActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                if (position == 11) {
-                    Intent myIntent = new Intent(PreferredLocationActivity.this, SelangorPage.class);
-                    startActivity(myIntent);
-                }
+//                if (position == 11) {
+//                    Intent myIntent = new Intent(PreferredLocationActivity.this, SelangorPage.class);
+//                    startActivity(myIntent);
+//                }
             }
 
         });

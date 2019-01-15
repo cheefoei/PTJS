@@ -203,7 +203,7 @@ public class JobseekerConnection {
             stmt.setString(4, jobseeker.getAddress());
             stmt.setString(5, jobseeker.getPhone_number());
             stmt.setString(6, jobseeker.getEmail());
-            stmt.setString(7, null);
+            stmt.setString(7, jobseeker.getImg());
             stmt.setString(8, String.valueOf(jobseeker.getGender()));
             stmt.setString(9, jobseeker.getId());
             stmt.executeUpdate();

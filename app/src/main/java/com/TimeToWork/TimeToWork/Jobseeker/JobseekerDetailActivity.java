@@ -22,11 +22,7 @@ import com.TimeToWork.TimeToWork.CustomClass.CustomProgressDialog;
 import com.TimeToWork.TimeToWork.Database.Control.MaintainJobseeker;
 import com.TimeToWork.TimeToWork.Database.Entity.Jobseeker;
 import com.TimeToWork.TimeToWork.R;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -54,8 +50,6 @@ public class JobseekerDetailActivity extends AppCompatActivity {
     private Jobseeker jobseeker;
     private String encodedImage;
 
-    private DatabaseReference databaseRef;
-
     private static final int RESULT_LOAD_IMAGE = 5;
 
     @Override
@@ -63,8 +57,6 @@ public class JobseekerDetailActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jobseeker_detail);
-
-
 
         mProgressDialog = new CustomProgressDialog(this);
         handler = new Handler();
@@ -76,35 +68,12 @@ public class JobseekerDetailActivity extends AppCompatActivity {
         editTextEmail = (EditText) findViewById(R.id.email);
         editTextAddress = (EditText) findViewById(R.id.address);
         editTextDob = (EditText) findViewById(R.id.dob);
-        databaseRef = FirebaseDatabase.getInstance().getReference("jobseeker");
-
-        databaseRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String value = (String) dataSnapshot.child(userId).child("jobseeker_img").getValue();
-                encodedImage = value;
-                //decode base64 string to image
-                byte[] imageBytes;
-                imageBytes = Base64.decode(value, Base64.DEFAULT);
-                Bitmap decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-                imageView.setImageBitmap(decodedImage);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
 
         Button saveButton = (Button) findViewById(R.id.save);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("jobseeker").child(userId).child("jobseeker_img");
-                    databaseReference.setValue(encodedImage);
                     updatePartTimerDetails();
-
             }
         });
 

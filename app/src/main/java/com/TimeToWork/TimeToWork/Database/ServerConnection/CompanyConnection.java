@@ -147,7 +147,7 @@ public class CompanyConnection {
             stmt.setString(2, company.getAddress());
             stmt.setString(3, company.getEmail());
             stmt.setString(4, company.getPhone_number());
-            stmt.setString(5, null);
+            stmt.setString(5, company.getImg());
             stmt.setString(6, company.getId());
             stmt.executeUpdate();
             connect.close();
